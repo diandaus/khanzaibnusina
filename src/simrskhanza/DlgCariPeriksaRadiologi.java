@@ -1,7 +1,9 @@
 package simrskhanza;
 import bridging.ApiOrthanc;
+import bridging.ApiPeruri;
 import bridging.OrthancDICOM;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import kepegawaian.DlgCariPetugas;
 import keuangan.Jurnal;
 import fungsi.WarnaTable;
@@ -17,9 +19,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Base64;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
@@ -33,6 +41,9 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariDokter;
 import laporan.DlgBerkasRawat;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import rekammedis.MasterCariTemplateHasilRadiologi;
 import rekammedis.RMRiwayatPerawatan;
 
@@ -401,6 +412,7 @@ public class DlgCariPeriksaRadiologi extends javax.swing.JDialog {
         MnUbahDokterPetugas = new javax.swing.JMenuItem();
         ppBerkasDigital = new javax.swing.JMenuItem();
         ppRiwayat = new javax.swing.JMenuItem();
+        MnSendDokumen = new javax.swing.JMenuItem();
         Penjab = new widget.TextBox();
         Jk = new widget.TextBox();
         Umur = new widget.TextBox();
@@ -472,6 +484,14 @@ public class DlgCariPeriksaRadiologi extends javax.swing.JDialog {
         tbListDicom = new widget.Table();
         panelGlass7 = new widget.panelisi();
         btnDicom = new widget.Button();
+        PanelDataDicari = new widget.panelisi();
+        label17 = new widget.Label();
+        NoRawatDicari = new widget.Label();
+        label19 = new widget.Label();
+        TglDicari = new widget.Label();
+        JamDicari = new widget.Label();
+        label20 = new widget.Label();
+        PasienDicari = new widget.Label();
 
         Kd2.setName("Kd2"); // NOI18N
         Kd2.setPreferredSize(new java.awt.Dimension(207, 23));
@@ -537,6 +557,20 @@ public class DlgCariPeriksaRadiologi extends javax.swing.JDialog {
             }
         });
         jPopupMenu1.add(ppRiwayat);
+
+        MnSendDokumen.setBackground(new java.awt.Color(255, 255, 254));
+        MnSendDokumen.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        MnSendDokumen.setForeground(new java.awt.Color(50, 50, 50));
+        MnSendDokumen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        MnSendDokumen.setText("Cetak Nota Radiologi");
+        MnSendDokumen.setName("MnSendDokumen"); // NOI18N
+        MnSendDokumen.setPreferredSize(new java.awt.Dimension(220, 28));
+        MnSendDokumen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MnSendDokumenActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(MnSendDokumen);
 
         Penjab.setEditable(false);
         Penjab.setFocusTraversalPolicyProvider(true);
@@ -1189,6 +1223,62 @@ public class DlgCariPeriksaRadiologi extends javax.swing.JDialog {
 
         PanelAccor.add(TabData, java.awt.BorderLayout.CENTER);
 
+        PanelDataDicari.setBackground(new java.awt.Color(255, 250, 250));
+        PanelDataDicari.setBorder(null);
+        PanelDataDicari.setName("PanelDataDicari"); // NOI18N
+        PanelDataDicari.setPreferredSize(new java.awt.Dimension(100, 44));
+        PanelDataDicari.setWarnaAtas(new java.awt.Color(255, 250, 250));
+        PanelDataDicari.setWarnaBawah(new java.awt.Color(255, 250, 250));
+        PanelDataDicari.setLayout(null);
+
+        label17.setText("No.Rawat :");
+        label17.setName("label17"); // NOI18N
+        label17.setPreferredSize(new java.awt.Dimension(65, 23));
+        PanelDataDicari.add(label17);
+        label17.setBounds(0, 10, 74, 23);
+
+        NoRawatDicari.setBackground(new java.awt.Color(255, 255, 255));
+        NoRawatDicari.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        NoRawatDicari.setName("NoRawatDicari"); // NOI18N
+        NoRawatDicari.setPreferredSize(new java.awt.Dimension(105, 23));
+        PanelDataDicari.add(NoRawatDicari);
+        NoRawatDicari.setBounds(78, 10, 105, 23);
+
+        label19.setText("Tanggal :");
+        label19.setName("label19"); // NOI18N
+        label19.setPreferredSize(new java.awt.Dimension(53, 23));
+        PanelDataDicari.add(label19);
+        label19.setBounds(185, 10, 55, 23);
+
+        TglDicari.setBackground(new java.awt.Color(255, 255, 255));
+        TglDicari.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        TglDicari.setName("TglDicari"); // NOI18N
+        TglDicari.setPreferredSize(new java.awt.Dimension(65, 23));
+        PanelDataDicari.add(TglDicari);
+        TglDicari.setBounds(244, 10, 65, 23);
+
+        JamDicari.setBackground(new java.awt.Color(255, 255, 255));
+        JamDicari.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        JamDicari.setName("JamDicari"); // NOI18N
+        JamDicari.setPreferredSize(new java.awt.Dimension(52, 23));
+        PanelDataDicari.add(JamDicari);
+        JamDicari.setBounds(311, 10, 52, 23);
+
+        label20.setText("Pasien :");
+        label20.setName("label20"); // NOI18N
+        label20.setPreferredSize(new java.awt.Dimension(50, 23));
+        PanelDataDicari.add(label20);
+        label20.setBounds(368, 10, 51, 23);
+
+        PasienDicari.setBackground(new java.awt.Color(255, 255, 255));
+        PasienDicari.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        PasienDicari.setName("PasienDicari"); // NOI18N
+        PasienDicari.setPreferredSize(new java.awt.Dimension(470, 23));
+        PanelDataDicari.add(PasienDicari);
+        PasienDicari.setBounds(423, 10, 270, 23);
+
+        PanelAccor.add(PanelDataDicari, java.awt.BorderLayout.PAGE_START);
+
         internalFrame1.add(PanelAccor, java.awt.BorderLayout.EAST);
 
         getContentPane().add(internalFrame1, java.awt.BorderLayout.CENTER);
@@ -1313,7 +1403,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
             Sequel.queryu("delete from temporary_radiologi");
             int row=tabMode.getRowCount();
             for(i=0;i<row;i++){  
-                Sequel.menyimpan("temporary_radiologi","'0','"+
+                Sequel.menyimpan("temporary_radiologi","'"+i+"','"+
                                 tabMode.getValueAt(i,0).toString()+"','"+
                                 tabMode.getValueAt(i,1).toString()+"','"+
                                 tabMode.getValueAt(i,2).toString()+"','"+
@@ -1590,10 +1680,12 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                 ps2.setString(3,rs.getString("jam"));
                                 rs2=ps2.executeQuery();
                                 ttl=0;
+                                i=0;
                                 while(rs2.next()){
                                     item=rs2.getDouble("biaya");
                                     ttl=ttl+item;                    
-                                    Sequel.menyimpan("temporary_radiologi","'0','"+rs2.getString("nm_perawatan")+"','"+item+"','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''","Transaksi Biaya Lab");
+                                    Sequel.menyimpan("temporary_radiologi","'"+i+"','"+rs2.getString("nm_perawatan")+"','"+item+"','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''","Transaksi Biaya Lab");
+                                    i++;
                                 } 
                             } catch (Exception e) {
                                 System.out.println("simrskhanza.DlgCariPeriksaRadiologi.MnCetakNotaActionPerformed() ps2 : "+e);
@@ -1605,8 +1697,8 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                     ps2.close();
                                 }
                             }
-
-                            Sequel.menyimpan("temporary_radiologi","'0','Total Biaya Pemeriksaan Radiologi','"+ttl+"','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''","Transaksi Biaya Lab");
+                            i++;
+                            Sequel.menyimpan("temporary_radiologi","'"+i+"','Total Biaya Pemeriksaan Radiologi','"+ttl+"','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''","Transaksi Biaya Lab");
                             Valid.panggilUrl("billing/LaporanBiayaRadiologi.php?norm="+rs.getString("no_rkm_medis")+"&pasien="+rs.getString("nm_pasien").replaceAll(" ","_")
                                     +"&tanggal="+rs.getString("tgl_periksa")+"&jam="+rs.getString("jam")+"&pjlab="+rs.getString("nm_dokter").replaceAll(" ","_")
                                     +"&petugas="+rs.getString("nama").replaceAll(" ","_")+"&kasir="+Sequel.cariIsi("select pegawai.nama from pegawai where pegawai.nik=?",akses.getkode())
@@ -1645,9 +1737,9 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                             "on periksa_radiologi.kd_jenis_prw=jns_perawatan_radiologi.kd_jenis_prw where periksa_radiologi.no_rawat=? and periksa_radiologi.tgl_periksa=? "+
                             "and periksa_radiologi.jam=?"); 
                 try {
-                    ps2.setString(1,Kd2.getText());
-                    ps2.setString(2,tbDokter.getValueAt(tbDokter.getSelectedRow(),3).toString());
-                    ps2.setString(3,tbDokter.getValueAt(tbDokter.getSelectedRow(),4).toString());
+                    ps2.setString(1,NoRawatDicari.getText());
+                    ps2.setString(2,TglDicari.getText());
+                    ps2.setString(3,JamDicari.getText());
                     rs2=ps2.executeQuery();
                     while(rs2.next()){
                         pemeriksaan=rs2.getString("nm_perawatan")+", "+pemeriksaan;
@@ -1670,10 +1762,10 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
             }          
             Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat=? ",NoRM,Kd2.getText());
             Sequel.cariIsi("select pasien.jk from pasien where pasien.no_rkm_medis=? ",Jk,NoRM.getText());
-            Sequel.cariIsi("select umur from pasien where no_rkm_medis=?",Umur,NoRM.getText());
+            Sequel.cariIsi("select pasien.umur from pasien where pasien.no_rkm_medis=?",Umur,NoRM.getText());
             Sequel.cariIsi("select concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab) as alamat from pasien inner join kelurahan inner join kecamatan inner join kabupaten on pasien.kd_kel=kelurahan.kd_kel and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kab=kabupaten.kd_kab where no_rkm_medis=? ",Alamat,NoRM.getText());
             
-            kamar=Sequel.cariIsi("select ifnull(kd_kamar,'') from kamar_inap where no_rawat='"+Kd2.getText()+"' order by tgl_masuk desc limit 1");
+            kamar=Sequel.cariIsi("select ifnull(kamar_inap.kd_kamar,'') from kamar_inap where kamar_inap.no_rawat='"+Kd2.getText()+"' order by kamar_inap.tgl_masuk desc limit 1");
             if(!kamar.equals("")){
                 namakamar=kamar+", "+Sequel.cariIsi("select bangsal.nm_bangsal from bangsal inner join kamar on bangsal.kd_bangsal=kamar.kd_bangsal "+
                             " where kamar.kd_kamar='"+kamar+"' ");            
@@ -1712,10 +1804,11 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
             finger=Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",kdpetugas);
             param.put("finger2","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+tbDokter.getValueAt(tbDokter.getSelectedRow(),2).toString()+"\nID "+(finger.equals("")?kdpetugas:finger)+"\n"+Valid.SetTgl3(tbDokter.getValueAt(tbDokter.getSelectedRow(),3).toString()));  
 
-            pilihan = (String)JOptionPane.showInputDialog(null,"Silahkan pilih hasil pemeriksaan..!","Hasil Pemeriksaan",JOptionPane.QUESTION_MESSAGE,null,new Object[]{"Model 1","Model 2", "Model 3","PDF Model 1","PDF Model 2","PDF Model 3"},"Model 1");
+            pilihan = (String)JOptionPane.showInputDialog(null,"Silahkan pilih hasil pemeriksaan..!","Hasil Pemeriksaan",JOptionPane.QUESTION_MESSAGE,null,
+            new Object[]{"Model 1","Model 2", "Model 3","PDF Model 1","PDF Model 2","PDF Model 3","Send Dokument","Tanda Tangan","Download Dokumen TTE"},"Model 1");
             switch (pilihan) {
                 case "Model 1":
-                      Valid.MyReport("rptPeriksaRadiologi.jasper","report","::[ Pemeriksaan Radiologi ]::",param);
+                      Valid.MyReport("rptPeriksaRadiologiTTE.jasper","report","::[ Pemeriksaan Radiologi ]::",param);
                       break;
                 case "Model 2":
                       Valid.MyReport("rptPeriksaRadiologi2.jasper","report","::[ Pemeriksaan Radiologi ]::",param);
@@ -1732,9 +1825,346 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                 case "PDF Model 3":
                       Valid.MyReportPDF("rptPeriksaRadiologi3.jasper","report","::[ Pemeriksaan Radiologi ]::",param);
                       break;
-            }                        
+                case "Send Dokument":
+            try {
+                // Buat direktori temporary jika belum ada
+                File tempDir = new File("temporary");
+                if (!tempDir.exists()) {
+                    tempDir.mkdir();
+                }
+                
+                // Generate nama file PDF
+                String outputFile = "temporary/" + Valid.SetTgl(tbDokter.getValueAt(tbDokter.getSelectedRow(),3).toString()).replaceAll("-","") 
+                                  + "_" + NoRawatDicari.getText().replaceAll("/","") 
+                                  + "_radiologi.pdf";
+                
+                // Generate PDF menggunakan JasperReport
+                JasperPrint jasperPrint = JasperFillManager.fillReport("report/rptPeriksaRadiologiTTE.jasper", param, koneksi);
+                JasperExportManager.exportReportToPdfFile(jasperPrint, outputFile);
+                
+                // Konversi PDF ke Base64
+                byte[] pdfBytes = Files.readAllBytes(Paths.get(outputFile));
+                String base64Document = Base64.getEncoder().encodeToString(pdfBytes);
+                
+                // Inisialisasi API Peruri dan dapatkan token
+                ApiPeruri apiPeruri = new ApiPeruri();
+                String jwtToken = apiPeruri.generateJwtToken();
+                
+                if(jwtToken != null) {
+                    String email = Sequel.cariIsi(
+                        "SELECT pegawai.email FROM dokter INNER JOIN pegawai ON dokter.kd_dokter=pegawai.nik WHERE dokter.kd_dokter=?",
+                        kdpenjab
+                    );
+                    
+                    if(email.isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Maaf Dokter/Pegawai Tersebut Belum Terdaftar Akun TTE Peruri");
+                        return;
+                    }
+                    
+                    String fileName = "Radiologi_" + NoRawatDicari.getText().replaceAll("/","_") + ".pdf";
+                    
+                    // Kirim dokumen dan dapatkan response
+                    Map<String, Object> response = apiPeruri.sendDocument(jwtToken, email, fileName, base64Document);
+                    
+                    if (response != null && "0".equals(response.get("resultCode"))) {
+                        Map<String, Object> data = (Map<String, Object>) response.get("data");
+                        String orderId = (String) data.get("orderId");
+                        
+                        // Simpan tracking ke database
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        String now = dateFormat.format(new Date());
+                        
+                        boolean sukses = false;
+                        try {
+                            String[] params = {
+                                NoRawatDicari.getText(),
+                                fileName,
+                                now,
+                                orderId,
+                                "Belum",
+                                "Dokumen telah dikirim ke Peruri",
+                                akses.getkode(),
+                                email
+                            };
+                            
+                            sukses = Sequel.queryu2tf(
+                                "INSERT INTO tracking_dokumen_ttd (no_rawat,nama_dokumen,tgl_kirim,order_id,status_ttd,keterangan,user_pengirim,email_ttd) VALUES (?,?,?,?,?,?,?,?)",
+                                8,
+                                params
+                            );
+                            
+                            if(sukses) {
+                                JOptionPane.showMessageDialog(null, 
+                                    "Dokumen berhasil dikirim untuk ditandatangani\n" +
+                                    "Order ID: " + orderId + "\n" +
+                                    "Status: Menunggu tanda tangan");
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Gagal menyimpan tracking dokumen");
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Error simpan tracking: " + e);
+                            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+                        }
+                    } else {
+                        throw new RuntimeException("Gagal mengirim dokumen: " + response.get("resultDesc"));
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Gagal mendapatkan token JWT");
+                }
+                
+                // Hapus file temporary
+                Files.deleteIfExists(Paths.get(outputFile));
+                
+            } catch (Exception e) {
+                System.out.println("Error: " + e);
+                JOptionPane.showMessageDialog(null, "Terjadi kesalahan: " + e.getMessage());
+            }
+            break;
             
-            this.setCursor(Cursor.getDefaultCursor());
+            
+           
+            case "Tanda Tangan":
+        if(tbDokter.getSelectedRow() <= -1) {
+            JOptionPane.showMessageDialog(null, "Silakan pilih data radiologi yang akan ditandatangani");
+            return;
+        }
+
+        try {
+            // Generate JWT token baru
+            ApiPeruri apiPeruri = new ApiPeruri();
+            String jwtToken = apiPeruri.generateJwtToken();
+            
+            if(jwtToken == null) {
+                JOptionPane.showMessageDialog(null, "Gagal mendapatkan token JWT");
+                return;
+            }
+
+            // Set JWT token ke ApiPeruri instance
+            apiPeruri.setJwtToken(jwtToken);
+            
+            String email = Sequel.cariIsi(
+                "SELECT pegawai.email FROM dokter " +
+                "INNER JOIN pegawai ON dokter.kd_dokter=pegawai.nik " +
+                "WHERE dokter.kd_dokter=?",
+                kdpenjab
+            );
+
+            if(email.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Email dokter belum diset di data pegawai");
+                return;
+            }
+
+            // Ambil order_id dari tracking dokumen
+            String orderId = Sequel.cariIsi(
+                "SELECT order_id FROM tracking_dokumen_ttd " +
+                "WHERE no_rawat=? AND status_ttd='Belum' " +
+                "ORDER BY tgl_kirim DESC LIMIT 1",
+                NoRawatDicari.getText()
+            );
+
+            if(orderId.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Order ID tidak ditemukan");
+                return;
+            }
+
+            // Cek session OTP aktif
+            String activeSession = Sequel.cariIsi(
+                "SELECT token_session FROM tracking_tte_session WHERE " +
+                "email='" + email + "' AND status='Aktif' AND " +
+                "tgl_session >= DATE_SUB(NOW(), INTERVAL 24 HOUR) " +
+                "ORDER BY tgl_session DESC LIMIT 1"
+            );
+
+            String tokenSession;
+            boolean needOTP = true;
+            
+            if(!activeSession.isEmpty()) {
+                tokenSession = activeSession;
+                needOTP = false;
+            } else {
+                // Kirim OTP baru
+                String response = apiPeruri.initiateSession(email);
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode rootNode = mapper.readTree(response);
+                
+                if(rootNode.has("resultCode") && "0".equals(rootNode.get("resultCode").asText())) {
+                    JsonNode dataNode = rootNode.get("data");
+                    tokenSession = dataNode.get("tokenSession").asText();
+                    
+                    // Nonaktifkan session lama
+                    Sequel.queryu2(
+                        "UPDATE tracking_tte_session SET status='Expired' " +
+                        "WHERE email=? AND status='Aktif'",
+                        1,
+                        new String[]{email}
+                    );
+                    
+                    // Simpan session baru
+                    boolean sukses = Sequel.queryu2tf(
+                        "INSERT INTO tracking_tte_session (email,token_session,tgl_session,status) " +
+                        "VALUES (?,?,NOW(),?)",
+                        3,
+                        new String[]{email, tokenSession, "Aktif"}
+                    );
+                    
+                    if(!sukses) {
+                        JOptionPane.showMessageDialog(null, "Gagal menyimpan token session");
+                        return;
+                    }
+                    
+                    JOptionPane.showMessageDialog(null, "OTP baru telah dikirim ke email: " + email);
+                } else {
+                    String resultDesc = rootNode.has("resultDesc") ? 
+                        rootNode.get("resultDesc").asText() : "Unknown error";
+                    JOptionPane.showMessageDialog(null, "Gagal mengirim OTP: " + resultDesc);
+                    return;
+                }
+            }
+            
+            String otp = "";
+            if(needOTP) {
+                otp = JOptionPane.showInputDialog(null, 
+                    "Masukkan kode OTP yang dikirim ke email:\n" + email);
+                
+                if(otp == null || otp.trim().isEmpty()) {
+                    return;
+                }
+                
+                // Validasi OTP
+                String validationResponse = apiPeruri.validateSession(email, tokenSession, otp);
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode validationNode = mapper.readTree(validationResponse);
+                
+                if(!validationNode.has("resultCode") || !"0".equals(validationNode.get("resultCode").asText())) {
+                    String resultDesc = validationNode.has("resultDesc") ? 
+                        validationNode.get("resultDesc").asText() : "Kode OTP tidak valid";
+                    JOptionPane.showMessageDialog(null, "Validasi OTP gagal: " + resultDesc);
+                    return;
+                }
+            }
+   
+            // Generate JWT token baru untuk signing
+            jwtToken = apiPeruri.generateJwtToken();
+            apiPeruri.setJwtToken(jwtToken);
+            
+            // Signing session
+            String signingResponse = apiPeruri.signingSession(orderId);
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode signingNode = mapper.readTree(signingResponse);
+            
+            if(signingNode.has("resultCode") && "0".equals(signingNode.get("resultCode").asText())) {
+                // Update status tracking
+                Sequel.queryu2(
+                    "UPDATE tracking_dokumen_ttd SET status_ttd='Sudah', " +
+                    "keterangan='Dokumen telah ditandatangani' " +
+                    "WHERE order_id=?",
+                    1,
+                    new String[]{orderId}
+                );
+                
+                JOptionPane.showMessageDialog(null, "Dokumen berhasil ditandatangani");
+            } else {
+                String resultDesc = signingNode.has("resultDesc") ? 
+                    signingNode.get("resultDesc").asText() : "Unknown error";
+                JOptionPane.showMessageDialog(null, "Gagal signing session: " + resultDesc);
+            }
+            
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Terjadi kesalahan: " + e.getMessage());
+        }
+        break;
+        
+        case "Download Dokumen TTE":
+        if(tbDokter.getSelectedRow() <= -1) {
+            JOptionPane.showMessageDialog(null, "Silakan pilih data radiologi yang akan diunduh");
+            return;
+        }
+
+        try {
+            // Ambil order_id dari tracking dokumen
+            String orderId = Sequel.cariIsi(
+                "SELECT order_id FROM tracking_dokumen_ttd " +
+                "WHERE no_rawat=? AND status_ttd='Sudah' " +
+                "ORDER BY tgl_kirim DESC LIMIT 1",
+                NoRawatDicari.getText()
+            );
+
+            if(orderId.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Dokumen belum ditandatangani atau Order ID tidak ditemukan");
+                return;
+            }
+
+            // Generate JWT token baru
+            ApiPeruri apiPeruri = new ApiPeruri();
+            String jwtToken = apiPeruri.generateJwtToken();
+            
+            if(jwtToken == null) {
+                JOptionPane.showMessageDialog(null, "Gagal mendapatkan token JWT");
+                return;
+            }
+
+            // Set JWT token ke ApiPeruri instance
+            apiPeruri.setJwtToken(jwtToken);
+
+            // Download dokumen
+            String response = apiPeruri.downloadDocument(orderId);
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode rootNode = mapper.readTree(response);
+            
+            if(rootNode.has("resultCode") && "0".equals(rootNode.get("resultCode").asText())) {
+                JsonNode dataNode = rootNode.get("data");
+                if(dataNode != null && dataNode.has("base64Document")) {
+                    String base64Document = dataNode.get("base64Document").asText();
+                    
+                    // Buat direktori dokumen pengguna
+                    String userDocumentsPath = System.getProperty("user.home") + "/Documents/signed_documents";
+                    File dir = new File(userDocumentsPath);
+                    if (!dir.exists()) {
+                        dir.mkdirs();
+                    }
+                    
+                    // Generate nama file
+                    String fileName = "Radiologi_" + 
+                        NoRawatDicari.getText().replaceAll("/","_") + 
+                        "_signed.pdf";
+                    String filePath = userDocumentsPath + "/" + fileName;
+                    
+                    // Decode base64 dan simpan sebagai file PDF
+                    byte[] pdfBytes = Base64.getDecoder().decode(base64Document);
+                    Files.write(Paths.get(filePath), pdfBytes);
+                    
+                    // Buka file PDF
+                    try {
+                        File pdfFile = new File(filePath);
+                        if(pdfFile.exists()) {
+                            if(Desktop.isDesktopSupported()) {
+                                Desktop.getDesktop().open(pdfFile);
+                            } else {
+                                JOptionPane.showMessageDialog(null, 
+                                    "Dokumen berhasil diunduh ke: " + filePath + "\n" +
+                                    "Silakan buka file secara manual.");
+                            }
+                        }
+                    } catch(Exception e) {
+                        JOptionPane.showMessageDialog(null, 
+                            "Dokumen berhasil diunduh ke: " + filePath + "\n" +
+                            "Terjadi kesalahan saat membuka file: " + e.getMessage());
+                    }
+                }
+            } else {
+                String resultDesc = rootNode.has("resultDesc") ? 
+                    rootNode.get("resultDesc").asText() : "Unknown error";
+                JOptionPane.showMessageDialog(null, "Gagal mengunduh dokumen: " + resultDesc);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Terjadi kesalahan: " + e.getMessage());
+        }
+        break;
+    }
+    this.setCursor(Cursor.getDefaultCursor());
         }
     }//GEN-LAST:event_BtnPrint1ActionPerformed
 
@@ -1752,18 +2182,15 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         }else{
             if(HasilPeriksa.getText().equals("")){
                 Sequel.queryu2("delete from hasil_radiologi where no_rawat=? and tgl_periksa=? and jam=?",3,new String[]{
-                    tbDokter.getValueAt(tbDokter.getSelectedRow(),0).toString(),tbDokter.getValueAt(tbDokter.getSelectedRow(),3).toString(),tbDokter.getValueAt(tbDokter.getSelectedRow(),4).toString()
+                    NoRawatDicari.getText(),TglDicari.getText(),JamDicari.getText()
                 });
             }else{
-                if(Sequel.menyimpantf2("hasil_radiologi","?,?,?,?","Hasil Pemeriksaan", 4,new String[]{
-                    tbDokter.getValueAt(tbDokter.getSelectedRow(),0).toString(),tbDokter.getValueAt(tbDokter.getSelectedRow(),3).toString(),
-                    tbDokter.getValueAt(tbDokter.getSelectedRow(),4).toString(),HasilPeriksa.getText()
-                })==false){
-                    Sequel.queryu2("update hasil_radiologi set hasil=? where no_rawat=? and tgl_periksa=? and jam=?",4,new String[]{
-                        HasilPeriksa.getText(),tbDokter.getValueAt(tbDokter.getSelectedRow(),0).toString(),
-                        tbDokter.getValueAt(tbDokter.getSelectedRow(),3).toString(),tbDokter.getValueAt(tbDokter.getSelectedRow(),4).toString()
-                    });                
-                }
+                Sequel.queryu2("delete from hasil_radiologi where no_rawat=? and tgl_periksa=? and jam=?",3,new String[]{
+                    NoRawatDicari.getText(),TglDicari.getText(),JamDicari.getText()
+                });
+                Sequel.menyimpan("hasil_radiologi","?,?,?,?","Hasil Pemeriksaan", 4,new String[]{
+                    NoRawatDicari.getText(),TglDicari.getText(),JamDicari.getText(),HasilPeriksa.getText()
+                });
             }
                 
             JOptionPane.showMessageDialog(null,"Proses update selesai...!!!!"); 
@@ -1925,7 +2352,7 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                JOptionPane.showMessageDialog(null,"Maaf, silahkan pilih data terlebih dahulu...!!!!"); 
             }else{
                 this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                Valid.panggilUrl("radiologi/login.php?act=login&usere="+koneksiDB.USERHYBRIDWEB()+"&passwordte="+koneksiDB.PASHYBRIDWEB()+"&no_rawat="+tbDokter.getValueAt(tbDokter.getSelectedRow(),0).toString()+"&tanggal="+tbDokter.getValueAt(tbDokter.getSelectedRow(),3).toString()+"&jam="+tbDokter.getValueAt(tbDokter.getSelectedRow(),4).toString());
+                Valid.panggilUrl("radiologi/login.php?act=login&usere="+koneksiDB.USERHYBRIDWEB()+"&passwordte="+koneksiDB.PASHYBRIDWEB()+"&no_rawat="+NoRawatDicari.getText()+"&tanggal="+TglDicari.getText()+"&jam="+JamDicari.getText());
                 this.setCursor(Cursor.getDefaultCursor()); 
             }         
         }
@@ -2012,6 +2439,10 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         }
     }//GEN-LAST:event_ppRiwayatBtnPrintActionPerformed
 
+    private void MnSendDokumenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnSendDokumenActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_MnSendDokumenActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -2047,6 +2478,7 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private widget.PanelBiasa FormPass2;
     private widget.PanelBiasa FormPhoto;
     private widget.TextArea HasilPeriksa;
+    private widget.Label JamDicari;
     private widget.TextBox Jk;
     private widget.TextBox Kd2;
     private widget.TextBox KdPtgUbah;
@@ -2054,13 +2486,17 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private widget.TextBox KodePj;
     private widget.editorpane LoadHTML;
     private javax.swing.JMenuItem MnCetakNota;
+    private javax.swing.JMenuItem MnSendDokumen;
     private javax.swing.JMenuItem MnUbahDokterPetugas;
     private widget.TextBox NmDokterPj;
     private widget.TextBox NmPerujuk;
     private widget.TextBox NmPtgUbah;
     private widget.TextBox NoRM;
     private widget.TextBox NoRawat;
+    private widget.Label NoRawatDicari;
     private widget.PanelBiasa PanelAccor;
+    private widget.panelisi PanelDataDicari;
+    private widget.Label PasienDicari;
     private widget.TextBox Penjab;
     private widget.TextBox Petugas;
     private widget.ScrollPane Scroll3;
@@ -2070,6 +2506,7 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JTabbedPane TabData;
     private widget.Tanggal Tgl1;
     private widget.Tanggal Tgl2;
+    private widget.Label TglDicari;
     private widget.TextBox Umur;
     private javax.swing.JDialog WindowGantiDokterParamedis;
     private widget.Button btnAmbilPhoto;
@@ -2093,7 +2530,10 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private widget.Label label13;
     private widget.Label label15;
     private widget.Label label16;
+    private widget.Label label17;
     private widget.Label label18;
+    private widget.Label label19;
+    private widget.Label label20;
     private widget.Label label9;
     private widget.TextBox nmmem;
     private widget.TextBox nmptg;
@@ -2114,23 +2554,23 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
             if(NoRawat.getText().equals("")&&kdmem.getText().equals("")&&kdptg.getText().equals("")&&TCari.getText().equals("")){
                 ps=koneksi.prepareStatement(
                         "select periksa_radiologi.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,petugas.nama,periksa_radiologi.tgl_periksa,"+
-                        "periksa_radiologi.jam,periksa_radiologi.dokter_perujuk,periksa_radiologi.kd_dokter,penjab.png_jawab,dokter.nm_dokter,permintaan_radiologi.informasi_tambahan,permintaan_radiologi.diagnosa_klinis "+
+                        "periksa_radiologi.jam,periksa_radiologi.dokter_perujuk,periksa_radiologi.kd_dokter,penjab.png_jawab,dokter.nm_dokter "+
                         "from periksa_radiologi inner join reg_periksa on periksa_radiologi.no_rawat=reg_periksa.no_rawat "+
                         "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
                         "inner join petugas on periksa_radiologi.nip=petugas.nip "+
                         "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "+
-                        "inner join dokter on periksa_radiologi.kd_dokter=dokter.kd_dokter inner join permintaan_radiologi on permintaan_radiologi.tgl_hasil=periksa_radiologi.tgl_periksa and permintaan_radiologi.jam_hasil=periksa_radiologi.jam where "+
+                        "inner join dokter on periksa_radiologi.kd_dokter=dokter.kd_dokter where "+
                         "periksa_radiologi.tgl_periksa between ? and ? group by concat(periksa_radiologi.no_rawat,periksa_radiologi.tgl_periksa,periksa_radiologi.jam) "+
                         "order by periksa_radiologi.tgl_periksa desc,periksa_radiologi.jam desc");
             }else{
                 ps=koneksi.prepareStatement(
                         "select periksa_radiologi.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,petugas.nama,periksa_radiologi.tgl_periksa,"+
-                        "periksa_radiologi.jam,periksa_radiologi.dokter_perujuk,periksa_radiologi.kd_dokter,penjab.png_jawab,dokter.nm_dokter,permintaan_radiologi.informasi_tambahan,permintaan_radiologi.diagnosa_klinis "+
+                        "periksa_radiologi.jam,periksa_radiologi.dokter_perujuk,periksa_radiologi.kd_dokter,penjab.png_jawab,dokter.nm_dokter "+
                         "from periksa_radiologi inner join reg_periksa on periksa_radiologi.no_rawat=reg_periksa.no_rawat "+
                         "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
                         "inner join petugas on periksa_radiologi.nip=petugas.nip "+
                         "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "+
-                        "inner join dokter on periksa_radiologi.kd_dokter=dokter.kd_dokter inner join permintaan_radiologi on permintaan_radiologi.tgl_hasil=periksa_radiologi.tgl_periksa and permintaan_radiologi.jam_hasil=periksa_radiologi.jam where "+
+                        "inner join dokter on periksa_radiologi.kd_dokter=dokter.kd_dokter where "+
                         "periksa_radiologi.tgl_periksa between ? and ? and periksa_radiologi.no_rawat like ? and reg_periksa.no_rkm_medis like ? "+
                         "and petugas.nip like ? and (pasien.nm_pasien like ? or petugas.nama like ? or reg_periksa.no_rkm_medis like ? or penjab.png_jawab like ? ) "+
                         "group by concat(periksa_radiologi.no_rawat,periksa_radiologi.tgl_periksa,periksa_radiologi.jam) "+
@@ -2191,7 +2631,6 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                         while(rs2.next()){  
                             ttl=ttl+rs2.getDouble("biaya");
                             tabMode.addRow(new Object[]{"",rs2.getString("proyeksi"),rs2.getString("kd_jenis_prw"),rs2.getString("nm_perawatan"),Valid.SetAngka(rs2.getDouble("biaya")),"",""});
-                            tabMode.addRow(new Object[]{"","Anamnesa:" +rs.getString("informasi_tambahan"),"Diagnosa: "+rs.getString("diagnosa_klinis")});
                         }
                     } catch (Exception e) {
                         System.out.println("simrskhanza.DlgCariPeriksaRadiologi.tampil() ps2 : "+e);
@@ -2323,6 +2762,7 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
  
     private void isPhoto(){
         if(ChkAccor.isSelected()==true){
+            PanelDataDicari.setVisible(true);
             ChkAccor.setVisible(false);
             PanelAccor.setPreferredSize(new Dimension(internalFrame1.getWidth()-300,HEIGHT));
             TabData.setVisible(true);  
@@ -2331,6 +2771,7 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
             ChkAccor.setVisible(false);
             PanelAccor.setPreferredSize(new Dimension(15,HEIGHT));
             TabData.setVisible(false);
+            PanelDataDicari.setVisible(false);
             ChkAccor.setVisible(true);
         }
     }
@@ -2339,6 +2780,10 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         if(TabData.isVisible()==true){
             if(tbDokter.getSelectedRow()!= -1){
                 if((!Kd2.getText().equals(""))&&(!Petugas.getText().equals(""))){
+                     NoRawatDicari.setText(tbDokter.getValueAt(tbDokter.getSelectedRow(),0).toString());
+                     PasienDicari.setText(tbDokter.getValueAt(tbDokter.getSelectedRow(),1).toString());
+                     TglDicari.setText(tbDokter.getValueAt(tbDokter.getSelectedRow(),3).toString());
+                     JamDicari.setText(tbDokter.getValueAt(tbDokter.getSelectedRow(),4).toString());
                      try {
                         ps=koneksi.prepareStatement("select gambar_radiologi.lokasi_gambar from gambar_radiologi where gambar_radiologi.no_rawat=? and gambar_radiologi.tgl_periksa=? and gambar_radiologi.jam=? ");
                         try {
@@ -2393,6 +2838,10 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                         System.out.println("Notif : "+e);
                     } 
                 }else{
+                    NoRawatDicari.setText("");
+                    PasienDicari.setText("");
+                    TglDicari.setText("");
+                    JamDicari.setText("");
                     LoadHTML.setText("<html><body><center><br><br><font face='tahoma' size='2' color='#434343'></font></center></body></html>");
                     HasilPeriksa.setText("");
                 }

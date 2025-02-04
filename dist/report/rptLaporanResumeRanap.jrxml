@@ -6,8 +6,8 @@
 	<property name="ireport.y" value="0"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
 	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="lokal"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
 	<parameter name="namars" class="java.lang.String"/>
 	<parameter name="alamatrs" class="java.lang.String"/>
 	<parameter name="kotars" class="java.lang.String"/>
@@ -249,9 +249,9 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 		<property name="com.jaspersoft.studio.field.tree.path" value="resume_pasien_ranap"/>
 	</field>
 	<field name="konsul_dokter" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="alergi"/>
-		<property name="com.jaspersoft.studio.field.label" value="alergi"/>
+		<property name="com.jaspersoft.studio.field.label" value="konsul_dokter"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="resume_pasien_ranap"/>
+		<property name="com.jaspersoft.studio.field.name" value="alergi"/>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="edukasi" class="java.lang.String">
@@ -607,7 +607,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{keluhan_utama}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="366" y="630" width="164" height="22" uuid="61481e35-032b-4bda-8774-c5fa08d79a61"/>
+				<reportElement positionType="Float" x="366" y="853" width="164" height="22" uuid="61481e35-032b-4bda-8774-c5fa08d79a61"/>
 				<textElement textAlignment="Center">
 					<font fontName="Tahoma" size="8" isBold="false" isItalic="false" isUnderline="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -615,21 +615,13 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{nm_dokter}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement positionType="Float" x="366" y="568" width="164" height="11" uuid="e310e9c8-eb47-4aab-8710-9d2c1ca5fff8"/>
+				<reportElement positionType="Float" x="366" y="791" width="164" height="11" uuid="e310e9c8-eb47-4aab-8710-9d2c1ca5fff8"/>
 				<textElement textAlignment="Center">
 					<font fontName="Tahoma" size="8" isBold="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[Dokter Penanggung Jawab]]></text>
 			</staticText>
-			<componentElement>
-				<reportElement positionType="Float" x="370" y="581" width="157" height="49" isRemoveLineWhenBlank="true" uuid="92ab0356-8454-4b64-a117-5ac52c90d28f">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-				</reportElement>
-				<jr:QRCode xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" errorCorrectionLevel="H">
-					<jr:codeExpression><![CDATA[$P{finger}]]></jr:codeExpression>
-				</jr:QRCode>
-			</componentElement>
 			<line>
 				<reportElement x="0" y="880" width="534" height="1" uuid="b3a4f55b-ef2f-4f60-bbb5-92b2f31a7ad7"/>
 				<graphicElement>
@@ -1300,7 +1292,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{kd_prosedur_sekunder3}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" mode="Transparent" x="74" y="523" width="216" height="10" backcolor="#CCCCCC" uuid="51217d14-1991-4630-a2b8-93eae8bf2052">
+				<reportElement positionType="Float" mode="Transparent" x="74" y="546" width="216" height="10" backcolor="#CCCCCC" uuid="51217d14-1991-4630-a2b8-93eae8bf2052">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1310,7 +1302,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{keadaan}+($F{ket_keadaan}.equals("")?"":", "+$F{ket_keadaan})]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement positionType="Float" x="6" y="523" width="62" height="10" uuid="0141c4cc-1938-4fec-9867-82ba5cae343e">
+				<reportElement positionType="Float" x="6" y="546" width="62" height="10" uuid="0141c4cc-1938-4fec-9867-82ba5cae343e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1320,7 +1312,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[Keadaan Pulang]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" mode="Transparent" x="16" y="545" width="514" height="20" backcolor="#CCCCCC" uuid="9f72a80f-6098-45c1-b6c3-f7ba8e7debab">
+				<reportElement positionType="Float" mode="Transparent" x="16" y="568" width="514" height="20" backcolor="#CCCCCC" uuid="9f72a80f-6098-45c1-b6c3-f7ba8e7debab">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1330,7 +1322,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{obat_pulang}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement positionType="Float" x="6" y="534" width="239" height="10" uuid="cf9d4e4a-55b8-47d8-b9ea-a03e097acb46">
+				<reportElement positionType="Float" x="6" y="557" width="239" height="10" uuid="cf9d4e4a-55b8-47d8-b9ea-a03e097acb46">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1380,7 +1372,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[Obat-obatan Selama Perawatan :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="6" y="489" width="239" height="10" uuid="e7c4c239-e3a1-4893-9bad-4dc3effc163b">
+				<reportElement positionType="Float" x="6" y="512" width="239" height="10" uuid="e7c4c239-e3a1-4893-9bad-4dc3effc163b">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1390,7 +1382,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[Instruksi/Anjuran Dan Edukasi (Follow Up) :]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" mode="Transparent" x="16" y="500" width="514" height="20" backcolor="#CCCCCC" uuid="52f85866-0463-4451-b5c0-7d7891d9f297">
+				<reportElement positionType="Float" mode="Transparent" x="16" y="523" width="514" height="20" backcolor="#CCCCCC" uuid="52f85866-0463-4451-b5c0-7d7891d9f297">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1400,7 +1392,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{edukasi}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" mode="Transparent" x="358" y="523" width="173" height="10" backcolor="#CCCCCC" uuid="f25076ad-802b-4ad0-a3ad-b1b706609b06">
+				<reportElement positionType="Float" mode="Transparent" x="358" y="546" width="173" height="10" backcolor="#CCCCCC" uuid="f25076ad-802b-4ad0-a3ad-b1b706609b06">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1410,7 +1402,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{cara_keluar}+($F{ket_keluar}.equals("")?"":", "+$F{ket_keluar})]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement positionType="Float" x="291" y="523" width="60" height="10" uuid="256420ee-1b33-4764-a544-b81c764e81a1">
+				<reportElement positionType="Float" x="291" y="546" width="60" height="10" uuid="256420ee-1b33-4764-a544-b81c764e81a1">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left">
@@ -1420,7 +1412,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[Cara Keluar]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="68" y="523" width="5" height="10" uuid="7927d23a-09fe-4fb8-80dc-aacfb43596b1">
+				<reportElement positionType="Float" x="68" y="546" width="5" height="10" uuid="7927d23a-09fe-4fb8-80dc-aacfb43596b1">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1430,7 +1422,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement positionType="Float" x="352" y="523" width="5" height="10" uuid="4297345e-f5cc-4bcd-bd2b-715de5d64d63">
+				<reportElement positionType="Float" x="352" y="546" width="5" height="10" uuid="4297345e-f5cc-4bcd-bd2b-715de5d64d63">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1440,7 +1432,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="189" y="630" width="164" height="22" uuid="fae1507e-cf7f-423f-9d85-4c84604706d3">
+				<reportElement positionType="Float" x="189" y="853" width="164" height="22" uuid="fae1507e-cf7f-423f-9d85-4c84604706d3">
 					<printWhenExpression><![CDATA[(!$P{namadokter2}.toLowerCase().equals("") ? 
   Boolean.TRUE:Boolean.FALSE)]]></printWhenExpression>
 				</reportElement>
@@ -1451,7 +1443,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$P{namadokter2}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement positionType="Float" x="189" y="568" width="164" height="11" uuid="d284ebcf-9d5f-4513-919b-ee8e3c96a6d9">
+				<reportElement positionType="Float" x="189" y="791" width="164" height="11" uuid="d284ebcf-9d5f-4513-919b-ee8e3c96a6d9">
 					<printWhenExpression><![CDATA[(!$P{namadokter2}.toLowerCase().equals("") ? 
   Boolean.TRUE:Boolean.FALSE)]]></printWhenExpression>
 				</reportElement>
@@ -1461,18 +1453,8 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				</textElement>
 				<text><![CDATA[Dokter Penanggung Jawab 2]]></text>
 			</staticText>
-			<componentElement>
-				<reportElement positionType="Float" x="193" y="581" width="157" height="49" isRemoveLineWhenBlank="true" uuid="048d3d12-a99d-4b7e-9f96-7b9a4c98a0ed">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<printWhenExpression><![CDATA[(!$P{namadokter2}.toLowerCase().equals("") ? 
-  Boolean.TRUE:Boolean.FALSE)]]></printWhenExpression>
-				</reportElement>
-				<jr:QRCode xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" errorCorrectionLevel="H">
-					<jr:codeExpression><![CDATA[$P{finger2}]]></jr:codeExpression>
-				</jr:QRCode>
-			</componentElement>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="7" y="630" width="164" height="22" uuid="8d9bd58a-1076-4fcb-a6c4-321344f19078">
+				<reportElement positionType="Float" x="7" y="853" width="164" height="22" uuid="8d9bd58a-1076-4fcb-a6c4-321344f19078">
 					<printWhenExpression><![CDATA[(!$P{namadokter3}.toLowerCase().equals("") ? 
   Boolean.TRUE:Boolean.FALSE)]]></printWhenExpression>
 				</reportElement>
@@ -1482,18 +1464,8 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{namadokter3}]]></textFieldExpression>
 			</textField>
-			<componentElement>
-				<reportElement positionType="Float" x="11" y="581" width="157" height="49" isRemoveLineWhenBlank="true" uuid="f3e41863-9d58-4531-9429-8a1c97b56bd8">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<printWhenExpression><![CDATA[(!$P{namadokter3}.toLowerCase().equals("") ? 
-  Boolean.TRUE:Boolean.FALSE)]]></printWhenExpression>
-				</reportElement>
-				<jr:QRCode xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" errorCorrectionLevel="H">
-					<jr:codeExpression><![CDATA[$P{finger3}]]></jr:codeExpression>
-				</jr:QRCode>
-			</componentElement>
 			<staticText>
-				<reportElement positionType="Float" x="7" y="568" width="164" height="11" uuid="d7e956d3-251c-4999-99d5-3eb04bebd3b6">
+				<reportElement positionType="Float" x="7" y="791" width="164" height="11" uuid="d7e956d3-251c-4999-99d5-3eb04bebd3b6">
 					<printWhenExpression><![CDATA[(!$P{namadokter3}.toLowerCase().equals("") ? 
   Boolean.TRUE:Boolean.FALSE)]]></printWhenExpression>
 				</reportElement>
@@ -1680,6 +1652,26 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{kd_prosedur_sekunder3}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="107" y="492" width="62" height="10" uuid="2bbb1fc5-389a-41a3-894f-7c135a9cb672">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Tahoma" size="8" isBold="false" isItalic="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[Konsul Dokter :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" mode="Transparent" x="169" y="492" width="260" height="20" backcolor="#CCCCCC" uuid="a46d384c-ef1b-4a25-98f6-ae536773f9b1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Tahoma" size="8" isItalic="false" isUnderline="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{konsul_dokter}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

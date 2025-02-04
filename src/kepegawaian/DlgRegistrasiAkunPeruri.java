@@ -86,8 +86,6 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
     private ResultSet rs;
     private DlgCariPegawai pegawai=new DlgCariPegawai(null,false);
     private String ktpPhotoBase64;
-    private String npwpPhotoBase64;
-    private String selfPhotoBase64;
 
     /** Creates new form DlgPetugas
      * @param parent
@@ -99,8 +97,8 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
         this.setLocation(8,1);
         setSize(885,674);
 
-        Object[] row={"Name", "Phone", "Email", "Password", "Type", "KTP", "KTP Photo", 
-                "NPWP", "NPWP Photo", "Self Photo", "Address", "City", "Province", 
+        Object[] row={"Name", "Phone", "Email", "Type", "KTP", "KTP Photo", 
+                "Address", "City", "Province", 
                 "Gender", "Place of Birth", "Date of Birth", "Org Unit", "Work Unit", 
                 "Position"};
         tabMode=new DefaultTableModel(null,row){
@@ -113,7 +111,7 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
         tbPetugas.setPreferredScrollableViewportSize(new Dimension(800,800));
         tbPetugas.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (int i = 0; i < 19; i++) {
+        for (int i = 0; i < 15; i++) {
             TableColumn column = tbPetugas.getColumnModel().getColumn(i);
             if(i==0){
                 column.setPreferredWidth(200);
@@ -145,26 +143,14 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
                 column.setPreferredWidth(200);
             }else if(i==14){
                 column.setPreferredWidth(200);
-            }else if(i==15){
-                column.setPreferredWidth(200);
-            }else if(i==16){
-                column.setPreferredWidth(200);
-            }else if(i==17){
-                column.setPreferredWidth(200);
-            }else if(i==18){
-                column.setPreferredWidth(200);
-            }else if(i==19){
-                column.setPreferredWidth(200);
             }
         }
         tbPetugas.setDefaultRenderer(Object.class, new WarnaTable());
 
         Name.setDocument(new batasInput((byte)50).getKata(Name));  
         Phone.setDocument(new batasInput((byte)15).getOnlyAngka(Phone));  
-        Email.setDocument(new batasInput((byte)50).getKata(Email));  
-        Password.setDocument(new batasInput((byte)20).getKata(Password));  
-        Ktp.setDocument(new batasInput((byte)16).getOnlyAngka(Ktp)); 
-        Npwp.setDocument(new batasInput((byte)15).getOnlyAngka(Npwp));  
+        Email.setDocument(new batasInput((byte)50).getKata(Email)); 
+        Ktp.setDocument(new batasInput((byte)16).getOnlyAngka(Ktp));  
         Address.setDocument(new batasInput((byte)100).getKata(Address));  
         City.setDocument(new batasInput((byte)50).getKata(City));  
         Province.setDocument(new batasInput((byte)50).getKata(Province));  
@@ -209,7 +195,6 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
                     WorkUnit.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(),5).toString());
                     Position.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(),3).toString());
                     Ktp.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(),23).toString());
-                    Npwp.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(),9).toString());
                     Gender.setSelectedItem(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(),2).toString().replaceAll("Wanita","PEREMPUAN").replaceAll("Pria","LAKI-LAKI"));
                     PlaceOfBirth.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(),11).toString());
                     City.setText(pegawai.tbKamar.getValueAt(pegawai.tbKamar.getSelectedRow(),14).toString());
@@ -289,28 +274,19 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
         Type = new widget.ComboBox();
         jLabel12 = new widget.Label();
         Name = new widget.TextBox();
-        BtnCariPhoto = new widget.Button();
         jLabel5 = new widget.Label();
         jLabel15 = new widget.Label();
         City = new widget.TextBox();
         jLabel17 = new widget.Label();
-        jLabel22 = new widget.Label();
         jLabel23 = new widget.Label();
         jLabel24 = new widget.Label();
-        jLabel25 = new widget.Label();
-        jLabel26 = new widget.Label();
-        jLabel27 = new widget.Label();
         jLabel28 = new widget.Label();
         jLabel29 = new widget.Label();
         jLabel30 = new widget.Label();
         Phone = new widget.TextBox();
         Email = new widget.TextBox();
-        Password = new widget.TextBox();
         Ktp = new widget.TextBox();
         KtpPhoto = new widget.TextBox();
-        Npwp = new widget.TextBox();
-        NpwpPhoto = new widget.TextBox();
-        SelfPhoto = new widget.TextBox();
         Address = new widget.TextBox();
         Province = new widget.TextBox();
         BtnCariPegawai = new widget.Button();
@@ -319,7 +295,6 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
         jLabel32 = new widget.Label();
         OrgUnit = new widget.TextBox();
         WorkUnit = new widget.TextBox();
-        BtnCariPhotoNpwp = new widget.Button();
         Position = new widget.TextBox();
         ChkInput = new widget.CekBox();
 
@@ -621,7 +596,7 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
             }
         });
         FormInput.add(PlaceOfBirth);
-        PlaceOfBirth.setBounds(460, 160, 200, 23);
+        PlaceOfBirth.setBounds(440, 130, 200, 23);
 
         Gender.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "LAKI-LAKI", "PEREMPUAN" }));
         Gender.setName("Gender"); // NOI18N
@@ -631,20 +606,20 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
             }
         });
         FormInput.add(Gender);
-        Gender.setBounds(470, 130, 140, 23);
+        Gender.setBounds(450, 100, 140, 23);
 
         jLabel8.setText("Jenis Kelamin :");
         jLabel8.setName("jLabel8"); // NOI18N
         FormInput.add(jLabel8);
-        jLabel8.setBounds(360, 130, 95, 23);
+        jLabel8.setBounds(340, 100, 95, 23);
 
         jLabel13.setText("Tmp/Tgl. Lahir :");
         jLabel13.setName("jLabel13"); // NOI18N
         FormInput.add(jLabel13);
-        jLabel13.setBounds(360, 160, 95, 23);
+        jLabel13.setBounds(340, 130, 95, 23);
 
         DateOfBirth.setForeground(new java.awt.Color(50, 70, 50));
-        DateOfBirth.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "03-01-2025" }));
+        DateOfBirth.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15-01-2025" }));
         DateOfBirth.setDisplayFormat("dd-MM-yyyy");
         DateOfBirth.setName("DateOfBirth"); // NOI18N
         DateOfBirth.setOpaque(false);
@@ -654,7 +629,7 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
             }
         });
         FormInput.add(DateOfBirth);
-        DateOfBirth.setBounds(670, 160, 100, 23);
+        DateOfBirth.setBounds(650, 130, 100, 23);
 
         Type.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "INDIVIDUAL" }));
         Type.setLightWeightPopupEnabled(false);
@@ -665,12 +640,12 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
             }
         });
         FormInput.add(Type);
-        Type.setBounds(120, 130, 125, 23);
+        Type.setBounds(120, 100, 125, 23);
 
         jLabel12.setText("Jabatan  :");
         jLabel12.setName("jLabel12"); // NOI18N
         FormInput.add(jLabel12);
-        jLabel12.setBounds(375, 250, 80, 23);
+        jLabel12.setBounds(350, 220, 80, 23);
 
         Name.setHighlighter(null);
         Name.setName("Name"); // NOI18N
@@ -682,18 +657,6 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
         FormInput.add(Name);
         Name.setBounds(110, 10, 200, 23);
 
-        BtnCariPhoto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/190.png"))); // NOI18N
-        BtnCariPhoto.setMnemonic('1');
-        BtnCariPhoto.setToolTipText("ALt+1");
-        BtnCariPhoto.setName("BtnCariPhoto"); // NOI18N
-        BtnCariPhoto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnCariPhotoActionPerformed(evt);
-            }
-        });
-        FormInput.add(BtnCariPhoto);
-        BtnCariPhoto.setBounds(660, 10, 28, 23);
-
         jLabel5.setText("Email :");
         jLabel5.setName("jLabel5"); // NOI18N
         FormInput.add(jLabel5);
@@ -702,7 +665,7 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
         jLabel15.setText("type :");
         jLabel15.setName("jLabel15"); // NOI18N
         FormInput.add(jLabel15);
-        jLabel15.setBounds(20, 130, 80, 23);
+        jLabel15.setBounds(20, 100, 80, 23);
 
         City.setHighlighter(null);
         City.setName("City"); // NOI18N
@@ -712,57 +675,37 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
             }
         });
         FormInput.add(City);
-        City.setBounds(460, 70, 200, 23);
+        City.setBounds(440, 40, 200, 23);
 
         jLabel17.setText("Phone :");
         jLabel17.setName("jLabel17"); // NOI18N
         FormInput.add(jLabel17);
         jLabel17.setBounds(20, 40, 80, 23);
 
-        jLabel22.setText("Password :");
-        jLabel22.setName("jLabel22"); // NOI18N
-        FormInput.add(jLabel22);
-        jLabel22.setBounds(20, 100, 80, 23);
-
         jLabel23.setText("KTP :");
         jLabel23.setName("jLabel23"); // NOI18N
         FormInput.add(jLabel23);
-        jLabel23.setBounds(20, 160, 80, 23);
+        jLabel23.setBounds(20, 130, 80, 23);
 
         jLabel24.setText("Foto KTP :");
         jLabel24.setName("jLabel24"); // NOI18N
         FormInput.add(jLabel24);
-        jLabel24.setBounds(20, 190, 80, 23);
-
-        jLabel25.setText("NPWP :");
-        jLabel25.setName("jLabel25"); // NOI18N
-        FormInput.add(jLabel25);
-        jLabel25.setBounds(20, 220, 80, 23);
-
-        jLabel26.setText("Foto NPWP :");
-        jLabel26.setName("jLabel26"); // NOI18N
-        FormInput.add(jLabel26);
-        jLabel26.setBounds(20, 250, 80, 23);
-
-        jLabel27.setText("Foto Profil :");
-        jLabel27.setName("jLabel27"); // NOI18N
-        FormInput.add(jLabel27);
-        jLabel27.setBounds(370, 10, 80, 23);
+        jLabel24.setBounds(20, 160, 80, 23);
 
         jLabel28.setText("Alamat :");
         jLabel28.setName("jLabel28"); // NOI18N
         FormInput.add(jLabel28);
-        jLabel28.setBounds(370, 40, 80, 23);
+        jLabel28.setBounds(350, 10, 80, 23);
 
         jLabel29.setText("Kota :");
         jLabel29.setName("jLabel29"); // NOI18N
         FormInput.add(jLabel29);
-        jLabel29.setBounds(370, 70, 80, 23);
+        jLabel29.setBounds(350, 40, 80, 23);
 
         jLabel30.setText("Provinsi :");
         jLabel30.setName("jLabel30"); // NOI18N
         FormInput.add(jLabel30);
-        jLabel30.setBounds(370, 100, 80, 23);
+        jLabel30.setBounds(350, 70, 80, 23);
 
         Phone.setHighlighter(null);
         Phone.setName("Phone"); // NOI18N
@@ -789,16 +732,6 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
         FormInput.add(Email);
         Email.setBounds(110, 70, 200, 23);
 
-        Password.setHighlighter(null);
-        Password.setName("Password"); // NOI18N
-        Password.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                PasswordKeyPressed(evt);
-            }
-        });
-        FormInput.add(Password);
-        Password.setBounds(110, 100, 200, 23);
-
         Ktp.setHighlighter(null);
         Ktp.setName("Ktp"); // NOI18N
         Ktp.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -807,7 +740,7 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
             }
         });
         FormInput.add(Ktp);
-        Ktp.setBounds(110, 160, 200, 23);
+        Ktp.setBounds(110, 130, 200, 23);
 
         KtpPhoto.setHighlighter(null);
         KtpPhoto.setName("KtpPhoto"); // NOI18N
@@ -817,37 +750,7 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
             }
         });
         FormInput.add(KtpPhoto);
-        KtpPhoto.setBounds(110, 190, 200, 23);
-
-        Npwp.setHighlighter(null);
-        Npwp.setName("Npwp"); // NOI18N
-        Npwp.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                NpwpKeyPressed(evt);
-            }
-        });
-        FormInput.add(Npwp);
-        Npwp.setBounds(110, 220, 200, 23);
-
-        NpwpPhoto.setHighlighter(null);
-        NpwpPhoto.setName("NpwpPhoto"); // NOI18N
-        NpwpPhoto.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                NpwpPhotoKeyPressed(evt);
-            }
-        });
-        FormInput.add(NpwpPhoto);
-        NpwpPhoto.setBounds(110, 250, 200, 23);
-
-        SelfPhoto.setHighlighter(null);
-        SelfPhoto.setName("SelfPhoto"); // NOI18N
-        SelfPhoto.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                SelfPhotoKeyPressed(evt);
-            }
-        });
-        FormInput.add(SelfPhoto);
-        SelfPhoto.setBounds(460, 10, 200, 23);
+        KtpPhoto.setBounds(110, 160, 200, 23);
 
         Address.setHighlighter(null);
         Address.setName("Address"); // NOI18N
@@ -857,7 +760,7 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
             }
         });
         FormInput.add(Address);
-        Address.setBounds(460, 40, 200, 23);
+        Address.setBounds(440, 10, 200, 23);
 
         Province.setHighlighter(null);
         Province.setName("Province"); // NOI18N
@@ -867,7 +770,7 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
             }
         });
         FormInput.add(Province);
-        Province.setBounds(460, 100, 200, 23);
+        Province.setBounds(440, 70, 200, 23);
 
         BtnCariPegawai.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/190.png"))); // NOI18N
         BtnCariPegawai.setMnemonic('1');
@@ -891,17 +794,17 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
             }
         });
         FormInput.add(BtnCariPhotoKtp);
-        BtnCariPhotoKtp.setBounds(310, 190, 28, 23);
+        BtnCariPhotoKtp.setBounds(310, 160, 28, 23);
 
         jLabel31.setText("Unit Organisasi :");
         jLabel31.setName("jLabel31"); // NOI18N
         FormInput.add(jLabel31);
-        jLabel31.setBounds(350, 190, 105, 23);
+        jLabel31.setBounds(330, 160, 105, 23);
 
         jLabel32.setText("Unit Kerja :");
         jLabel32.setName("jLabel32"); // NOI18N
         FormInput.add(jLabel32);
-        jLabel32.setBounds(350, 220, 105, 23);
+        jLabel32.setBounds(330, 190, 105, 23);
 
         OrgUnit.setHighlighter(null);
         OrgUnit.setName("OrgUnit"); // NOI18N
@@ -911,7 +814,7 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
             }
         });
         FormInput.add(OrgUnit);
-        OrgUnit.setBounds(460, 190, 200, 23);
+        OrgUnit.setBounds(440, 160, 200, 23);
 
         WorkUnit.setHighlighter(null);
         WorkUnit.setName("WorkUnit"); // NOI18N
@@ -921,19 +824,7 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
             }
         });
         FormInput.add(WorkUnit);
-        WorkUnit.setBounds(460, 220, 200, 23);
-
-        BtnCariPhotoNpwp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/190.png"))); // NOI18N
-        BtnCariPhotoNpwp.setMnemonic('1');
-        BtnCariPhotoNpwp.setToolTipText("ALt+1");
-        BtnCariPhotoNpwp.setName("BtnCariPhotoNpwp"); // NOI18N
-        BtnCariPhotoNpwp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnCariPhotoNpwpActionPerformed(evt);
-            }
-        });
-        FormInput.add(BtnCariPhotoNpwp);
-        BtnCariPhotoNpwp.setBounds(310, 250, 28, 23);
+        WorkUnit.setBounds(440, 190, 200, 23);
 
         Position.setHighlighter(null);
         Position.setName("Position"); // NOI18N
@@ -943,7 +834,7 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
             }
         });
         FormInput.add(Position);
-        Position.setBounds(460, 250, 200, 23);
+        Position.setBounds(440, 220, 200, 23);
 
         PanelInput.add(FormInput, java.awt.BorderLayout.CENTER);
 
@@ -989,7 +880,7 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
 }//GEN-LAST:event_DateOfBirthKeyPressed
 
     private void TypeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TypeKeyPressed
-        Valid.pindah(evt,Password,Ktp);
+        Valid.pindah(evt,Type,Ktp);
 }//GEN-LAST:event_TypeKeyPressed
 
     private void NameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NameKeyPressed
@@ -1013,10 +904,7 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
         Valid.textKosong(Email, "Email");
         return; // Hentikan eksekusi jika field kosong
     }
-    if (Password.getText().trim().isEmpty()) {
-        Valid.textKosong(Password, "Password");
-        return; // Hentikan eksekusi jika field kosong
-    }
+    
     if (Ktp.getText().trim().isEmpty()) {
         Valid.textKosong(Ktp, "KTP");
         return; // Hentikan eksekusi jika field kosong
@@ -1047,22 +935,20 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
 
     // Mengonversi foto ke Base64
     String ktpPhotoBase64 = convertImageToBase64(KtpPhoto.getText());
-    String npwpPhotoBase64 = convertImageToBase64(NpwpPhoto.getText());
-    String selfPhotoBase64 = convertImageToBase64(SelfPhoto.getText());
+    
 
     // Simpan data ke database
-    if (Sequel.menyimpantf("akun_peruri", "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "Registrasi Akun", 19, new String[]{
-        Name.getText(), Phone.getText(), Email.getText(), Password.getText(), Type.getSelectedItem().toString(),
-        Ktp.getText(), ktpPhotoBase64, Npwp.getText(), npwpPhotoBase64, selfPhotoBase64,
-        Address.getText(), City.getText(), Province.getText(), genderValue,
+    if (Sequel.menyimpantf("akun_peruri", "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?", "Registrasi Akun", 15, new String[]{
+        Name.getText(), Phone.getText(), Email.getText(), Type.getSelectedItem().toString(),
+        Ktp.getText(), ktpPhotoBase64, Address.getText(), City.getText(), Province.getText(), genderValue,
         PlaceOfBirth.getText(), dateOfBirthValue,
         OrgUnit.getText(), WorkUnit.getText(), Position.getText()
     }) == true) {
 
         // Tambahkan data ke tabMode
         tabMode.addRow(new String[]{
-            Name.getText(), Phone.getText(), Email.getText(), Password.getText(), Type.getSelectedItem().toString(),
-            Ktp.getText(), ktpPhotoBase64, Npwp.getText(), npwpPhotoBase64, selfPhotoBase64,
+            Name.getText(), Phone.getText(), Email.getText(), Type.getSelectedItem().toString(),
+            Ktp.getText(), ktpPhotoBase64, 
             Address.getText(), City.getText(), Province.getText(), genderValue,
             PlaceOfBirth.getText(), dateOfBirthValue,
             OrgUnit.getText(), WorkUnit.getText(), Position.getText()
@@ -1099,7 +985,22 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
+       try {
+        // Ambil email dari baris yang dipilih
+        String email = tabMode.getValueAt(tbPetugas.getSelectedRow(), 2).toString(); // Pastikan indeks sesuai dengan kolom email
 
+        // Query untuk menghapus data berdasarkan email
+        String query = "DELETE FROM akun_peruri WHERE email='" + email + "'";
+        if(Sequel.mengedittf("akun_peruri", "email='" + email + "'", "") == true) {
+            if(tbPetugas.getSelectedRow() != -1) {
+                tabMode.removeRow(tbPetugas.getSelectedRow());
+                emptTeks();
+                LCount.setText("" + tabMode.getRowCount());
+            }
+        }
+    } catch (Exception ex) {
+        System.out.println("Notifikasi : " + ex);
+    }  
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
@@ -1184,13 +1085,11 @@ public final class DlgRegistrasiAkunPeruri extends javax.swing.JDialog {
     Name.setText(tabMode.getValueAt(selectedRow, 0).toString());
     Phone.setText(tabMode.getValueAt(selectedRow, 1).toString());
     Email.setText(tabMode.getValueAt(selectedRow, 2).toString());
-    Password.setText(tabMode.getValueAt(selectedRow, 3).toString());
+    
     Type.setSelectedItem(tabMode.getValueAt(selectedRow, 4).toString());
     Ktp.setText(tabMode.getValueAt(selectedRow, 5).toString());
     KtpPhoto.setText(tabMode.getValueAt(selectedRow, 6).toString());
-    Npwp.setText(tabMode.getValueAt(selectedRow, 7).toString());
-    NpwpPhoto.setText(tabMode.getValueAt(selectedRow, 8).toString());
-    SelfPhoto.setText(tabMode.getValueAt(selectedRow, 9).toString());
+    
     Address.setText(tabMode.getValueAt(selectedRow, 10).toString());
     City.setText(tabMode.getValueAt(selectedRow, 11).toString());
     Province.setText(tabMode.getValueAt(selectedRow, 12).toString());
@@ -1291,39 +1190,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
   isForm();                
 }//GEN-LAST:event_ChkInputActionPerformed
 
-    private void BtnCariPhotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariPhotoActionPerformed
-       JFileChooser fileChooser = new JFileChooser();
-    fileChooser.setDialogTitle("Pilih Foto Diri");
-
-    // Mengatur filter untuk hanya menampilkan file gambar
-    FileNameExtensionFilter filter = new FileNameExtensionFilter("Image Files", "jpg", "jpeg", "png", "gif");
-    fileChooser.addChoosableFileFilter(filter);
-    fileChooser.setFileFilter(filter);
-
-    int userSelection = fileChooser.showOpenDialog(this);
-
-    if (userSelection == JFileChooser.APPROVE_OPTION) {
-        File fileToUpload = fileChooser.getSelectedFile();
-
-        // Menampilkan path file yang dipilih di JTextField SelfPhoto
-        SelfPhoto.setText(fileToUpload.getAbsolutePath());
-
-        // Konversi file gambar ke Base64
-        String base64Image = convertImageToBase64(fileToUpload.getAbsolutePath());
-        if (base64Image != null) {
-            // Simpan Base64 ke database atau ke variabel lain untuk digunakan saat menyimpan ke database
-            // Misalnya, Anda bisa menyimpan base64Image ke JTextField atau variabel lain
-            // Contoh: SelfPhotoBase64.setText(base64Image); // Jika Anda ingin menampilkannya di JTextField
-        } else {
-            JOptionPane.showMessageDialog(this, "Gagal mengonversi gambar ke Base64.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-
-        // Jika Anda ingin menampilkan preview gambar, Anda bisa menambahkan kode di sini
-        // ImageIcon icon = new ImageIcon(fileToUpload.getAbsolutePath());
-        // lblPreviewSelfPhoto.setIcon(icon); // lblPreviewSelfPhoto adalah JLabel untuk menampilkan gambar foto diri
-    }
-    }//GEN-LAST:event_BtnCariPhotoActionPerformed
-
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         tampil();
     }//GEN-LAST:event_formWindowOpened
@@ -1402,29 +1268,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_tbPetugasKeyReleased
 
     private void MnSendSpecimentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnSendSpecimentActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Pilih File Spesimen");
-        int userSelection = fileChooser.showOpenDialog(this);
-
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
-            File fileToUpload = fileChooser.getSelectedFile();
-            String email = Email.getText(); // Ambil email dari field Email
-
-            try {
-                // Mengonversi file spesimen ke base64
-                byte[] fileContent = Files.readAllBytes(fileToUpload.toPath());
-                String base64Specimen = Base64.getEncoder().encodeToString(fileContent);
-
-                // Mengirim spesimen ke API Peruri
-                ApiPeruri apiPeruri = new ApiPeruri();
-                String response = apiPeruri.sendSpeciment(email, base64Specimen);
-                System.out.println("Response dari API Send Specimen: " + response);
-            } catch (IOException e) {
-                System.err.println("Error membaca file: " + e.getMessage());
-            } catch (Exception e) {
-                System.err.println("Error saat mengirim spesimen ke API Peruri: " + e.getMessage());
-            }
-        }
+        
     }//GEN-LAST:event_MnSendSpecimentActionPerformed
 
     private void CityKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CityKeyPressed
@@ -1439,10 +1283,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         // TODO add your handling code here:
     }//GEN-LAST:event_EmailKeyPressed
 
-    private void PasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PasswordKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_PasswordKeyPressed
-
     private void KtpKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KtpKeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_KtpKeyPressed
@@ -1450,18 +1290,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private void KtpPhotoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KtpPhotoKeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_KtpPhotoKeyPressed
-
-    private void NpwpKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NpwpKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_NpwpKeyPressed
-
-    private void NpwpPhotoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_NpwpPhotoKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_NpwpPhotoKeyPressed
-
-    private void SelfPhotoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SelfPhotoKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_SelfPhotoKeyPressed
 
     private void AddressKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_AddressKeyPressed
         // TODO add your handling code here:
@@ -1515,39 +1343,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private void WorkUnitKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_WorkUnitKeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_WorkUnitKeyPressed
-
-    private void BtnCariPhotoNpwpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariPhotoNpwpActionPerformed
-     JFileChooser fileChooser = new JFileChooser();
-    fileChooser.setDialogTitle("Pilih Foto NPWP");
-    
-    // Mengatur filter untuk hanya menampilkan file gambar
-    FileNameExtensionFilter filter = new FileNameExtensionFilter("Image Files", "jpg", "jpeg", "png", "gif");
-    fileChooser.addChoosableFileFilter(filter);
-    fileChooser.setFileFilter(filter);
-    
-    int userSelection = fileChooser.showOpenDialog(this);
-    
-    if (userSelection == JFileChooser.APPROVE_OPTION) {
-        File fileToUpload = fileChooser.getSelectedFile();
-        
-        // Menampilkan path file yang dipilih di JTextField NpwpPhoto
-        NpwpPhoto.setText(fileToUpload.getAbsolutePath());
-        
-        // Konversi file gambar ke Base64
-        String base64Image = convertImageToBase64(fileToUpload.getAbsolutePath());
-        if (base64Image != null) {
-            // Simpan Base64 ke database atau ke variabel lain untuk digunakan saat menyimpan ke database
-            // Misalnya, Anda bisa menyimpan base64Image ke JTextField atau variabel lain
-            // Contoh: SelfPhoto.setText(base64Image); // Jika Anda ingin menampilkannya di JTextField
-        } else {
-            JOptionPane.showMessageDialog(this, "Gagal mengonversi gambar ke Base64.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        
-        // Jika Anda ingin menampilkan preview gambar, Anda bisa menambahkan kode di sini
-        // ImageIcon icon = new ImageIcon(fileToUpload.getAbsolutePath());
-        // lblPreviewNpwp.setIcon(icon); // lblPreviewNpwp adalah JLabel untuk menampilkan gambar NPWP
-    }
-    }//GEN-LAST:event_BtnCariPhotoNpwpActionPerformed
 
     private void MnCheckCertificateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnCheckCertificateActionPerformed
         // Ambil baris yang dipilih dari tabel
@@ -1630,9 +1425,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.Button BtnBatal;
     private widget.Button BtnCari;
     private widget.Button BtnCariPegawai;
-    private widget.Button BtnCariPhoto;
     private widget.Button BtnCariPhotoKtp;
-    private widget.Button BtnCariPhotoNpwp;
     private widget.Button BtnEdit;
     private widget.Button BtnHapus;
     private widget.Button BtnKeluar;
@@ -1651,18 +1444,14 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JMenuItem MnSendLinkRegistration;
     private javax.swing.JMenuItem MnSendSpeciment;
     private widget.TextBox Name;
-    private widget.TextBox Npwp;
-    private widget.TextBox NpwpPhoto;
     private widget.TextBox OrgUnit;
     private javax.swing.JPanel PanelInput;
-    private widget.TextBox Password;
     private widget.TextBox Phone;
     private widget.TextBox PlaceOfBirth;
     private javax.swing.JPopupMenu Popup;
     private widget.TextBox Position;
     private widget.TextBox Province;
     private widget.ScrollPane Scroll;
-    private widget.TextBox SelfPhoto;
     private widget.TextBox TCari;
     private widget.ComboBox Type;
     private widget.TextBox WorkUnit;
@@ -1672,12 +1461,8 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.Label jLabel13;
     private widget.Label jLabel15;
     private widget.Label jLabel17;
-    private widget.Label jLabel22;
     private widget.Label jLabel23;
     private widget.Label jLabel24;
-    private widget.Label jLabel25;
-    private widget.Label jLabel26;
-    private widget.Label jLabel27;
     private widget.Label jLabel28;
     private widget.Label jLabel29;
     private widget.Label jLabel30;
@@ -1710,13 +1495,9 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 rs.getString("name"),
                 rs.getString("phone"),
                 rs.getString("email"),
-                rs.getString("password"),
                 rs.getString("type"),
                 rs.getString("ktp"),
                 rs.getString("ktp_photo"),
-                rs.getString("npwp"),
-                rs.getString("npwp_photo"),
-                rs.getString("self_photo"),
                 rs.getString("address"),
                 rs.getString("city"),
                 rs.getString("province"),
@@ -1742,14 +1523,10 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     public void emptTeks() {  
     Name.setText("");  
     Phone.setText("");  
-    Email.setText("");  
-    Password.setText("");  
+    Email.setText("");
     Type.setSelectedIndex(0);  
     Ktp.setText("");  
-    KtpPhoto.setText("");  
-    Npwp.setText("");  
-    NpwpPhoto.setText("");  
-    SelfPhoto.setText("");  
+    KtpPhoto.setText(""); 
     Address.setText("");  
     City.setText("");  
     Province.setText("");  
@@ -1769,22 +1546,18 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         Name.setText(tabMode.getValueAt(row, 0).toString());  
         Phone.setText(tabMode.getValueAt(row, 1).toString());  
         Email.setText(tabMode.getValueAt(row, 2).toString());  
-        Password.setText(tabMode.getValueAt(row, 3).toString());  
-        Type.setSelectedItem(tabMode.getValueAt(row, 4).toString());  
-        Ktp.setText(tabMode.getValueAt(row, 5).toString());  
-        KtpPhoto.setText(tabMode.getValueAt(row, 6).toString());  
-        Npwp.setText(tabMode.getValueAt(row, 7).toString());  
-        NpwpPhoto.setText(tabMode.getValueAt(row, 8).toString());  
-        SelfPhoto.setText(tabMode.getValueAt(row, 9).toString());  
-        Address.setText(tabMode.getValueAt(row, 10).toString());  
-        City.setText(tabMode.getValueAt(row, 11).toString());  
-        Province.setText(tabMode.getValueAt(row, 12).toString());  
-        Gender.setSelectedItem(tabMode.getValueAt(row, 13).toString());  
-        PlaceOfBirth.setText(tabMode.getValueAt(row, 14).toString());  
-        Valid.SetTgl(DateOfBirth,tbPetugas.getValueAt(row,15).toString()); 
-        OrgUnit.setText(tabMode.getValueAt(row, 16).toString());  
-        WorkUnit.setText(tabMode.getValueAt(row, 17).toString());  
-        Position.setText(tabMode.getValueAt(row, 18).toString());  
+        Type.setSelectedItem(tabMode.getValueAt(row, 3).toString());  
+        Ktp.setText(tabMode.getValueAt(row, 4).toString());  
+        KtpPhoto.setText(tabMode.getValueAt(row, 5).toString()); 
+        Address.setText(tabMode.getValueAt(row, 6).toString());  
+        City.setText(tabMode.getValueAt(row, 7).toString());  
+        Province.setText(tabMode.getValueAt(row, 8).toString());  
+        Gender.setSelectedItem(tabMode.getValueAt(row, 9).toString());  
+        PlaceOfBirth.setText(tabMode.getValueAt(row, 10).toString());  
+        Valid.SetTgl(DateOfBirth,tbPetugas.getValueAt(row,11).toString()); 
+        OrgUnit.setText(tabMode.getValueAt(row, 12).toString());  
+        WorkUnit.setText(tabMode.getValueAt(row, 13).toString());  
+        Position.setText(tabMode.getValueAt(row, 14).toString());  
     }  
     }
 
