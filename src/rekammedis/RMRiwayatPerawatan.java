@@ -2205,8 +2205,8 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
             chkHasilPemeriksaanUSG.setSelected(true);
             chkSkriningNutrisiLansia.setSelected(true);
             chkSkriningNutrisiAnak.setSelected(true);
-            chkKonselingFarmasi.setSelected(true);
-            chkPelayananInformasiObat.setSelected(true);
+            //chkKonselingFarmasi.setSelected(true);
+            //chkPelayananInformasiObat.setSelected(true);
             chkTransferAntarRuang.setSelected(true);
             chkCatatanCekGDS.setSelected(true);
             chkChecklistPreOperasi.setSelected(true);
@@ -2214,7 +2214,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
             chkTimeOutSebelumInsisi.setSelected(true);
             chkSignOutSebelumMenutupLuka.setSelected(true);
             chkChecklistPostOperasi.setSelected(true);
-            chkRekonsiliasiObat.setSelected(true);
+            //chkRekonsiliasiObat.setSelected(true);
             chkPenilaianPasienTerminal.setSelected(true);
             chkMonitoringReaksiTranfusi.setSelected(true);
             chkPenilaianKorbanKekerasan.setSelected(true);
@@ -2333,8 +2333,8 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
             chkHasilPemeriksaanUSG.setSelected(false);
             chkSkriningNutrisiLansia.setSelected(false);
             chkSkriningNutrisiAnak.setSelected(false);
-            chkKonselingFarmasi.setSelected(false);
-            chkPelayananInformasiObat.setSelected(false);
+            //chkKonselingFarmasi.setSelected(false);
+            //chkPelayananInformasiObat.setSelected(false);
             chkTransferAntarRuang.setSelected(false);
             chkCatatanCekGDS.setSelected(false);
             chkChecklistPreOperasi.setSelected(false);
@@ -2342,7 +2342,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
             chkTimeOutSebelumInsisi.setSelected(false);
             chkSignOutSebelumMenutupLuka.setSelected(false);
             chkChecklistPostOperasi.setSelected(false);
-            chkRekonsiliasiObat.setSelected(false);
+            //chkRekonsiliasiObat.setSelected(false);
             chkPenilaianPasienTerminal.setSelected(false);
             chkMonitoringReaksiTranfusi.setSelected(false);
             chkPenilaianKorbanKekerasan.setSelected(false);
@@ -2419,49 +2419,15 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
             BufferedWriter bg = new BufferedWriter(new FileWriter(g));
             bg.write(".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}.isi a{text-decoration:none;color:#8b9b95;padding:0 0 0 0px;font-family: Tahoma;font-size: 8.5px;border: white;}");
             bg.close();
-    
             
-    
-
                // Ambil data pasien dari database
-            String noRM = Sequel.cariIsi(
-                "SELECT pasien.no_rkm_medis FROM reg_periksa " +
-                "INNER JOIN pasien ON reg_periksa.no_rkm_medis=pasien.no_rkm_medis " +
-                "WHERE reg_periksa.no_rawat=?", 
-                NoRawat.getText()
-            );
-
-            String namaPasien = Sequel.cariIsi(
+               String namaPasien = Sequel.cariIsi(
                 "SELECT pasien.nm_pasien FROM reg_periksa " +
                 "INNER JOIN pasien ON reg_periksa.no_rkm_medis=pasien.no_rkm_medis " +
                 "WHERE reg_periksa.no_rawat=?", 
                 NoRawat.getText()
             );
 
-            String alamat = Sequel.cariIsi(
-                "SELECT concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab) " +
-                "FROM reg_periksa " +
-                "INNER JOIN pasien ON reg_periksa.no_rkm_medis=pasien.no_rkm_medis " +
-                "INNER JOIN kelurahan ON pasien.kd_kel=kelurahan.kd_kel " +
-                "INNER JOIN kecamatan ON pasien.kd_kec=kecamatan.kd_kec " +
-                "INNER JOIN kabupaten ON pasien.kd_kab=kabupaten.kd_kab " +
-                "WHERE reg_periksa.no_rawat=?", 
-                NoRawat.getText()
-            );
-
-            String jk = Sequel.cariIsi(
-                "SELECT pasien.jk FROM reg_periksa " +
-                "INNER JOIN pasien ON reg_periksa.no_rkm_medis=pasien.no_rkm_medis " +
-                "WHERE reg_periksa.no_rawat=?", 
-                NoRawat.getText()
-            );
-
-            String ttl = Sequel.cariIsi(
-                "SELECT CONCAT(pasien.tmp_lahir, ', ', DATE_FORMAT(pasien.tgl_lahir,'%d-%m-%Y')) FROM reg_periksa " +
-                "INNER JOIN pasien ON reg_periksa.no_rkm_medis=pasien.no_rkm_medis " +
-                "WHERE reg_periksa.no_rawat=?", 
-                NoRawat.getText()
-            );
                 // Generate nama file PDF
             String outputFile = "temporary/RiwayatPerawatan_" + 
                 NoRawat.getText().replaceAll("/","_") + "_" + 
@@ -2494,29 +2460,29 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                  "</table><br>" +
                 "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>" +
                 "<tr class='isi'>" + 
-                "<td valign='top' width='20%'>No.RM</td>" +
-                "<td valign='top' width='1%' align='center'>:</td>" +
-                "<td valign='top' width='79%'>" + noRM + "</td>" +
-                "</tr>" +
-                "<tr class='isi'>" + 
-                "<td valign='top' width='20%'>Nama Pasien</td>" +
-                "<td valign='top' width='1%' align='center'>:</td>" +
-                "<td valign='top' width='79%'>" + namaPasien + "</td>" +
-                "</tr>" +
-                "<tr class='isi'>" + 
-                "<td valign='top' width='20%'>Alamat</td>" +
-                "<td valign='top' width='1%' align='center'>:</td>" +
-                "<td valign='top' width='79%'>" + alamat + "</td>" +
-                "</tr>" +
-                "<tr class='isi'>" + 
-                "<td valign='top' width='20%'>Jenis Kelamin</td>" +
-                "<td valign='top' width='1%' align='center'>:</td>" +
-                "<td valign='top' width='79%'>" + (jk.equals("L") ? "Laki-Laki" : "Perempuan") + "</td>" +
-                "</tr>" +
-                "<tr class='isi'>" + 
-                "<td valign='top' width='20%'>Tempat & Tanggal Lahir</td>" +
-                "<td valign='top' width='1%' align='center'>:</td>" +
-                "<td valign='top' width='79%'>" + ttl + "</td>" +
+                "<td valign='top' width='20%'>No.RM</td>"+
+                "<td valign='top' width='1%' align='center'>:</td>"+
+                "<td valign='top' width='79%'>"+NoRM.getText().trim()+"</td>"+
+                "</tr>"+
+                "<tr class='isi'>"+ 
+                  "<td valign='top' width='20%'>Nama Pasien</td>"+
+                  "<td valign='top' width='1%' align='center'>:</td>"+
+                  "<td valign='top' width='79%'>"+NmPasien.getText()+"</td>"+
+                "</tr>"+
+                "<tr class='isi'>"+ 
+                  "<td valign='top' width='20%'>Alamat</td>"+
+                  "<td valign='top' width='1%' align='center'>:</td>"+
+                  "<td valign='top' width='79%'>"+Alamat.getText()+"</td>"+
+                "</tr>"+
+                "<tr class='isi'>"+ 
+                  "<td valign='top' width='20%'>Jenis Kelamin</td>"+
+                  "<td valign='top' width='1%' align='center'>:</td>"+
+                  "<td valign='top' width='79%'>"+Jk.getText().replaceAll("L","Laki-Laki").replaceAll("P","Perempuan")+"</td>"+
+                "</tr>"+
+                "<tr class='isi'>"+ 
+                  "<td valign='top' width='20%'>Tempat & Tanggal Lahir</td>"+
+                  "<td valign='top' width='1%' align='center'>:</td>"+
+                  "<td valign='top' width='79%'>"+TempatLahir.getText()+" "+TanggalLahir.getText()+"</td>"+
                 "</tr>" +
                 "</table><br>" +
                 "<table width='100%' border='0' align='center' cellpadding='2px' cellspacing='0' class='tbl_form'>" +
@@ -2613,9 +2579,13 @@ if(email.isEmpty()) {
 
     private void LoadHTMLRiwayatPerawatanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoadHTMLRiwayatPerawatanMouseClicked
     if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {  
-        // Tampilkan JPopupMenu di lokasi klik
-        jPopupMenu1.show(evt.getComponent(), evt.getX(), evt.getY());
-    }        // TODO add your handling code here:
+           // Ambil nilai no rawat
+           String noRawat = NoRawat.getText();
+           System.out.println("No Rawat: " + noRawat); // Debugging
+
+           // Tampilkan JPopupMenu di lokasi klik
+           jPopupMenu1.show(evt.getComponent(), evt.getX(), evt.getY());
+       }          // TODO add your handling code here:
     }//GEN-LAST:event_LoadHTMLRiwayatPerawatanMouseClicked
 
     private void MnTandaTanganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnTandaTanganActionPerformed

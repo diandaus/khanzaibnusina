@@ -342,7 +342,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<detail>
-		<band height="880">
+		<band height="679">
 			<staticText>
 				<reportElement x="1" y="58" width="532" height="20" uuid="31b7a553-01e5-4309-8eb3-388b59493704"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -587,7 +587,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[Tanggal Masuk]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="6" y="153" width="422" height="10" uuid="5bdfae5d-42a6-4fc4-beb9-1c3cfccc706e">
+				<reportElement positionType="Float" x="6" y="153" width="422" height="10" uuid="5bdfae5d-42a6-4fc4-beb9-1c3cfccc706e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -596,18 +596,8 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				</textElement>
 				<text><![CDATA[Keluhan Utama Riwayat Penyakit :]]></text>
 			</staticText>
-			<textField>
-				<reportElement mode="Transparent" x="16" y="164" width="510" height="20" backcolor="#CCCCCC" uuid="c42de0a3-e391-4512-87c7-eb412a6450b6">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Tahoma" size="8" isItalic="false" isUnderline="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{keluhan_utama}]]></textFieldExpression>
-			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="363" y="684" width="164" height="22" uuid="61481e35-032b-4bda-8774-c5fa08d79a61"/>
+				<reportElement positionType="Float" x="363" y="651" width="164" height="22" uuid="61481e35-032b-4bda-8774-c5fa08d79a61"/>
 				<textElement textAlignment="Center">
 					<font fontName="Tahoma" size="8" isBold="false" isItalic="false" isUnderline="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -615,19 +605,13 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{nm_dokter}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="363" y="621" width="164" height="11" uuid="e310e9c8-eb47-4aab-8710-9d2c1ca5fff8"/>
+				<reportElement positionType="Float" x="363" y="588" width="164" height="11" uuid="e310e9c8-eb47-4aab-8710-9d2c1ca5fff8"/>
 				<textElement textAlignment="Center">
 					<font fontName="Tahoma" size="8" isBold="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<text><![CDATA[Dokter Penanggung Jawab]]></text>
 			</staticText>
-			<line>
-				<reportElement x="0" y="864" width="534" height="1" uuid="b3a4f55b-ef2f-4f60-bbb5-92b2f31a7ad7"/>
-				<graphicElement>
-					<pen lineWidth="0.5"/>
-				</graphicElement>
-			</line>
 			<staticText>
 				<reportElement x="5" y="121" width="70" height="10" uuid="f92a4437-1f82-4af9-a5e4-033d9bb6a0ca"/>
 				<textElement>
@@ -681,18 +665,8 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{no_rkm_medis}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement mode="Transparent" x="16" y="230" width="510" height="20" backcolor="#CCCCCC" uuid="960c30f5-afa4-46eb-a156-261ddb442c78">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Tahoma" size="8" isItalic="false" isUnderline="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{pemeriksaan_penunjang}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="6" y="219" width="239" height="10" uuid="18aa9357-97f6-47ad-956a-b99e97d209b7">
+				<reportElement positionType="Float" x="6" y="219" width="239" height="10" uuid="18aa9357-97f6-47ad-956a-b99e97d209b7">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -701,18 +675,8 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				</textElement>
 				<text><![CDATA[Pemeriksaan Penunjang Radiologi Terpenting :]]></text>
 			</staticText>
-			<textField>
-				<reportElement mode="Transparent" x="16" y="263" width="510" height="20" backcolor="#CCCCCC" uuid="c097d9ac-7f62-4f3a-a160-b9fecd37c1f9">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Tahoma" size="8" isItalic="false" isUnderline="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{hasil_laborat}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="6" y="252" width="239" height="10" uuid="2cfb31db-d13f-414d-b98c-869aa0726316">
+				<reportElement positionType="Float" x="6" y="252" width="239" height="10" uuid="2cfb31db-d13f-414d-b98c-869aa0726316">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -722,7 +686,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[Pemeriksaan Penunjang Laboratorium Terpenting :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="6" y="346" width="239" height="10" uuid="fdaeb5e6-63e5-4e6c-8b08-7ed1cab69d18">
+				<reportElement positionType="Float" x="6" y="319" width="239" height="10" uuid="fdaeb5e6-63e5-4e6c-8b08-7ed1cab69d18">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -732,7 +696,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[Diagnosa Akhir :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="16" y="358" width="109" height="10" uuid="484e864c-633d-4c4f-aca2-25c5481ccc58">
+				<reportElement positionType="Float" x="16" y="331" width="109" height="10" uuid="484e864c-633d-4c4f-aca2-25c5481ccc58">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -742,7 +706,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[- Diagnosa Utama]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="128" y="358" width="5" height="10" uuid="7e06aa0b-1f5e-4678-a161-d4b98b00503c">
+				<reportElement positionType="Float" x="128" y="331" width="5" height="10" uuid="7e06aa0b-1f5e-4678-a161-d4b98b00503c">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -753,7 +717,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="16" y="370" width="109" height="10" uuid="626b4ceb-4cbc-4bb5-8e91-18638a41fdef">
+				<reportElement positionType="Float" x="16" y="343" width="109" height="10" uuid="626b4ceb-4cbc-4bb5-8e91-18638a41fdef">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -763,7 +727,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[- Diagnosa Sekunder]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="128" y="370" width="5" height="10" uuid="e25b671e-a05c-412c-9ddf-11cc627475de">
+				<reportElement positionType="Float" x="128" y="343" width="5" height="10" uuid="e25b671e-a05c-412c-9ddf-11cc627475de">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -774,7 +738,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="134" y="370" width="9" height="10" uuid="f1e06bc2-45cb-43d6-8cf4-9be37be875cd">
+				<reportElement positionType="Float" x="134" y="343" width="9" height="10" uuid="f1e06bc2-45cb-43d6-8cf4-9be37be875cd">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -784,7 +748,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[1.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="134" y="382" width="9" height="10" uuid="47ba1fac-a37a-4716-bbf8-ba556294ea67">
+				<reportElement positionType="Float" x="134" y="355" width="9" height="10" uuid="47ba1fac-a37a-4716-bbf8-ba556294ea67">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -794,7 +758,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[2.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="134" y="394" width="9" height="10" uuid="730634d0-8c1a-4c5e-a2f5-4600f9d3763e">
+				<reportElement positionType="Float" x="134" y="367" width="9" height="10" uuid="730634d0-8c1a-4c5e-a2f5-4600f9d3763e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -804,7 +768,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[3.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="15" y="433" width="109" height="10" uuid="a1a2c3f4-4c8e-409a-8579-982b5da62021">
+				<reportElement positionType="Float" x="15" y="406" width="109" height="10" uuid="a1a2c3f4-4c8e-409a-8579-982b5da62021">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -814,7 +778,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[- Prosedur/Tindakan Utama]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="127" y="433" width="5" height="10" uuid="f07d481b-97fc-4cb4-b4bb-1262fce7578f">
+				<reportElement positionType="Float" x="127" y="406" width="5" height="10" uuid="f07d481b-97fc-4cb4-b4bb-1262fce7578f">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -825,7 +789,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="15" y="445" width="109" height="10" uuid="cb3ea818-6e66-4f91-bcf9-99aae3c2bb2c">
+				<reportElement positionType="Float" x="15" y="418" width="109" height="10" uuid="cb3ea818-6e66-4f91-bcf9-99aae3c2bb2c">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -835,7 +799,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[- Prosedur/Tindakan Sekunder]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="127" y="445" width="5" height="10" uuid="1f5c5c41-0f1c-4e2e-88a9-3db599587ea8">
+				<reportElement positionType="Float" x="127" y="418" width="5" height="10" uuid="1f5c5c41-0f1c-4e2e-88a9-3db599587ea8">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -846,7 +810,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="134" y="406" width="9" height="10" uuid="ad256f93-f2c7-47c0-9c05-909f843da7b0">
+				<reportElement positionType="Float" x="134" y="379" width="9" height="10" uuid="ad256f93-f2c7-47c0-9c05-909f843da7b0">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -856,7 +820,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[4.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="133" y="445" width="9" height="10" uuid="c932ac52-d956-48db-8c3f-005c510c8915">
+				<reportElement positionType="Float" x="133" y="418" width="9" height="10" uuid="c932ac52-d956-48db-8c3f-005c510c8915">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -866,7 +830,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[1.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="133" y="457" width="9" height="10" uuid="0e8a7cc4-ccd3-4460-b4a7-42cb5a96788e">
+				<reportElement positionType="Float" x="133" y="430" width="9" height="10" uuid="0e8a7cc4-ccd3-4460-b4a7-42cb5a96788e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -876,7 +840,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[2.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="133" y="469" width="9" height="10" uuid="0488ed9f-5c0c-4ea6-8b72-bea33588ad99">
+				<reportElement positionType="Float" x="133" y="442" width="9" height="10" uuid="0488ed9f-5c0c-4ea6-8b72-bea33588ad99">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -886,7 +850,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[3.]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="134" y="358" width="336" height="10" backcolor="#CCCCCC" uuid="06149306-0fea-4268-9cc9-f986545cbf75">
+				<reportElement positionType="Float" mode="Transparent" x="134" y="331" width="336" height="10" backcolor="#CCCCCC" uuid="06149306-0fea-4268-9cc9-f986545cbf75">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement>
@@ -896,7 +860,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{diagnosa_utama}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="475" y="346" width="56" height="10" uuid="65824d14-a77f-47fb-9f6f-37e952ec83bb">
+				<reportElement positionType="Float" x="475" y="319" width="56" height="10" uuid="65824d14-a77f-47fb-9f6f-37e952ec83bb">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
@@ -906,7 +870,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[Kode ICD]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="475" y="358" width="5" height="10" uuid="38822f65-7a09-4656-942f-6f34b124d840">
+				<reportElement positionType="Float" x="475" y="331" width="5" height="10" uuid="38822f65-7a09-4656-942f-6f34b124d840">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -918,7 +882,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[(]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="526" y="358" width="5" height="10" uuid="a072eaf9-1a65-49ca-9f72-e82732b7b547">
+				<reportElement positionType="Float" x="526" y="331" width="5" height="10" uuid="a072eaf9-1a65-49ca-9f72-e82732b7b547">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -930,7 +894,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[)]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="481" y="358" width="44" height="10" backcolor="#CCCCCC" uuid="7a3ec87f-db2d-488f-81a1-84bf2a86147e">
+				<reportElement positionType="Float" mode="Transparent" x="481" y="331" width="44" height="10" backcolor="#CCCCCC" uuid="7a3ec87f-db2d-488f-81a1-84bf2a86147e">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
@@ -940,7 +904,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{kd_diagnosa_utama}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="144" y="370" width="326" height="10" backcolor="#CCCCCC" uuid="5e9b30a2-6a84-4f39-ab61-b6a40ec09460">
+				<reportElement positionType="Float" mode="Transparent" x="144" y="343" width="326" height="10" backcolor="#CCCCCC" uuid="5e9b30a2-6a84-4f39-ab61-b6a40ec09460">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement>
@@ -950,7 +914,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{diagnosa_sekunder}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="475" y="370" width="5" height="10" uuid="f023eeae-d997-493d-96fb-d6688a0de8d0">
+				<reportElement positionType="Float" x="475" y="343" width="5" height="10" uuid="f023eeae-d997-493d-96fb-d6688a0de8d0">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -962,7 +926,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[(]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="526" y="370" width="5" height="10" uuid="dc23798a-127d-46a2-a6c1-ee2f1801dde0">
+				<reportElement positionType="Float" x="526" y="343" width="5" height="10" uuid="dc23798a-127d-46a2-a6c1-ee2f1801dde0">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -974,7 +938,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[)]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="481" y="370" width="44" height="10" backcolor="#CCCCCC" uuid="bc0e5d60-1b84-48c3-90ef-93a7c3e76b73">
+				<reportElement positionType="Float" mode="Transparent" x="481" y="343" width="44" height="10" backcolor="#CCCCCC" uuid="bc0e5d60-1b84-48c3-90ef-93a7c3e76b73">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
@@ -984,7 +948,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{kd_diagnosa_sekunder}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="144" y="382" width="326" height="10" backcolor="#CCCCCC" uuid="a1397f37-338b-4483-baf0-222e70680997">
+				<reportElement positionType="Float" mode="Transparent" x="144" y="355" width="326" height="10" backcolor="#CCCCCC" uuid="a1397f37-338b-4483-baf0-222e70680997">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement>
@@ -994,7 +958,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{diagnosa_sekunder2}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="475" y="382" width="5" height="10" uuid="ca4d99d2-d890-4669-ae94-f1aa58a0c889">
+				<reportElement positionType="Float" x="475" y="355" width="5" height="10" uuid="ca4d99d2-d890-4669-ae94-f1aa58a0c889">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -1006,7 +970,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[(]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="526" y="382" width="5" height="10" uuid="c30dd6d0-6137-4521-8669-dda36df4785d">
+				<reportElement positionType="Float" x="526" y="355" width="5" height="10" uuid="c30dd6d0-6137-4521-8669-dda36df4785d">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -1018,7 +982,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[)]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="481" y="382" width="44" height="10" backcolor="#CCCCCC" uuid="905bfd6f-1d98-4a39-a172-0aeb5e74e348">
+				<reportElement positionType="Float" mode="Transparent" x="481" y="355" width="44" height="10" backcolor="#CCCCCC" uuid="905bfd6f-1d98-4a39-a172-0aeb5e74e348">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
@@ -1028,7 +992,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{kd_diagnosa_sekunder2}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="144" y="394" width="326" height="10" backcolor="#CCCCCC" uuid="96091d58-f47c-4670-a02f-f953cdbf2ba1">
+				<reportElement positionType="Float" mode="Transparent" x="144" y="367" width="326" height="10" backcolor="#CCCCCC" uuid="96091d58-f47c-4670-a02f-f953cdbf2ba1">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1038,7 +1002,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{diagnosa_sekunder3}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="475" y="394" width="5" height="10" uuid="38a3d36d-11bc-4f7d-b23f-aad0746aaeed">
+				<reportElement positionType="Float" x="475" y="367" width="5" height="10" uuid="38a3d36d-11bc-4f7d-b23f-aad0746aaeed">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -1050,7 +1014,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[(]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="526" y="394" width="5" height="10" uuid="6af7e428-bfeb-4bda-bc06-f0dfe12f4e67">
+				<reportElement positionType="Float" x="526" y="367" width="5" height="10" uuid="6af7e428-bfeb-4bda-bc06-f0dfe12f4e67">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -1062,7 +1026,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[)]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="481" y="394" width="44" height="10" backcolor="#CCCCCC" uuid="7903d137-823d-4e3e-9025-cfd726817fb0">
+				<reportElement positionType="Float" mode="Transparent" x="481" y="367" width="44" height="10" backcolor="#CCCCCC" uuid="7903d137-823d-4e3e-9025-cfd726817fb0">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
@@ -1072,7 +1036,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{kd_diagnosa_sekunder3}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="144" y="406" width="326" height="10" backcolor="#CCCCCC" uuid="7de22dd7-98e6-46dd-8520-bddd13d4573e">
+				<reportElement positionType="Float" mode="Transparent" x="144" y="379" width="326" height="10" backcolor="#CCCCCC" uuid="7de22dd7-98e6-46dd-8520-bddd13d4573e">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1082,7 +1046,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{diagnosa_sekunder4}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="475" y="406" width="5" height="10" uuid="c2c853c0-c53a-44e7-afb7-7c676846d468">
+				<reportElement positionType="Float" x="475" y="379" width="5" height="10" uuid="c2c853c0-c53a-44e7-afb7-7c676846d468">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -1094,7 +1058,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[(]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="526" y="406" width="5" height="10" uuid="a0861c6d-1223-49c7-84cb-9c86e4b49489">
+				<reportElement positionType="Float" x="526" y="379" width="5" height="10" uuid="a0861c6d-1223-49c7-84cb-9c86e4b49489">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -1106,7 +1070,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[)]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="481" y="406" width="44" height="10" backcolor="#CCCCCC" uuid="bca8aa81-737d-44e0-bd05-4ea590b62daf">
+				<reportElement positionType="Float" mode="Transparent" x="481" y="379" width="44" height="10" backcolor="#CCCCCC" uuid="bca8aa81-737d-44e0-bd05-4ea590b62daf">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
@@ -1116,7 +1080,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{kd_diagnosa_sekunder4}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="133" y="433" width="336" height="10" backcolor="#CCCCCC" uuid="e5b82601-b344-43da-b298-495dbaa75787">
+				<reportElement positionType="Float" mode="Transparent" x="133" y="406" width="336" height="10" backcolor="#CCCCCC" uuid="e5b82601-b344-43da-b298-495dbaa75787">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1126,7 +1090,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{prosedur_utama}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="474" y="433" width="5" height="10" uuid="f6f0117b-ff3a-4f8c-9e85-61a31ee52499">
+				<reportElement positionType="Float" x="474" y="406" width="5" height="10" uuid="f6f0117b-ff3a-4f8c-9e85-61a31ee52499">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -1138,7 +1102,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[(]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="525" y="433" width="5" height="10" uuid="6ac7bc8e-99bf-40b9-b15a-835ee7cd603a">
+				<reportElement positionType="Float" x="525" y="406" width="5" height="10" uuid="6ac7bc8e-99bf-40b9-b15a-835ee7cd603a">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -1150,7 +1114,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[)]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="480" y="433" width="44" height="10" backcolor="#CCCCCC" uuid="b83ece08-a875-4a55-88d0-29838e54b3e0">
+				<reportElement positionType="Float" mode="Transparent" x="480" y="406" width="44" height="10" backcolor="#CCCCCC" uuid="b83ece08-a875-4a55-88d0-29838e54b3e0">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
@@ -1160,7 +1124,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{kd_prosedur_utama}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="143" y="445" width="326" height="10" backcolor="#CCCCCC" uuid="fc425e5e-767f-4ba2-b68e-ce384f6fc196">
+				<reportElement positionType="Float" mode="Transparent" x="143" y="418" width="326" height="10" backcolor="#CCCCCC" uuid="fc425e5e-767f-4ba2-b68e-ce384f6fc196">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1170,7 +1134,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{prosedur_sekunder}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="474" y="445" width="5" height="10" uuid="133d1044-d651-4641-82c9-aa6ba7becf6e">
+				<reportElement positionType="Float" x="474" y="418" width="5" height="10" uuid="133d1044-d651-4641-82c9-aa6ba7becf6e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -1182,7 +1146,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[(]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="525" y="445" width="5" height="10" uuid="bdd7450f-a70d-4a87-a2c6-ff65aea48436">
+				<reportElement positionType="Float" x="525" y="418" width="5" height="10" uuid="bdd7450f-a70d-4a87-a2c6-ff65aea48436">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -1194,7 +1158,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[)]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="480" y="445" width="44" height="10" backcolor="#CCCCCC" uuid="1f207c13-b8df-4aab-9e8e-9e1061d36a25">
+				<reportElement positionType="Float" mode="Transparent" x="480" y="418" width="44" height="10" backcolor="#CCCCCC" uuid="1f207c13-b8df-4aab-9e8e-9e1061d36a25">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
@@ -1204,7 +1168,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{kd_prosedur_sekunder}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="143" y="457" width="326" height="10" backcolor="#CCCCCC" uuid="7929931c-d797-4653-8f90-aead1d624ceb">
+				<reportElement positionType="Float" mode="Transparent" x="143" y="430" width="326" height="10" backcolor="#CCCCCC" uuid="7929931c-d797-4653-8f90-aead1d624ceb">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1214,7 +1178,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{prosedur_sekunder2}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="474" y="457" width="5" height="10" uuid="156f8f5b-fab4-477b-bba3-8c3af0b5e1ef">
+				<reportElement positionType="Float" x="474" y="430" width="5" height="10" uuid="156f8f5b-fab4-477b-bba3-8c3af0b5e1ef">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -1226,7 +1190,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[(]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="526" y="457" width="5" height="10" uuid="6cf2f658-43aa-4938-ad8d-4ba30ee387d3">
+				<reportElement positionType="Float" x="526" y="430" width="5" height="10" uuid="6cf2f658-43aa-4938-ad8d-4ba30ee387d3">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -1238,7 +1202,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[)]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="480" y="457" width="44" height="10" backcolor="#CCCCCC" uuid="a528b777-a326-480e-b0f5-dedbc6beeece">
+				<reportElement positionType="Float" mode="Transparent" x="480" y="430" width="44" height="10" backcolor="#CCCCCC" uuid="a528b777-a326-480e-b0f5-dedbc6beeece">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
@@ -1248,7 +1212,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{kd_prosedur_sekunder2}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="143" y="469" width="326" height="10" backcolor="#CCCCCC" uuid="b340b619-b51c-43ea-896a-07841b77ab41">
+				<reportElement positionType="Float" mode="Transparent" x="143" y="442" width="326" height="10" backcolor="#CCCCCC" uuid="b340b619-b51c-43ea-896a-07841b77ab41">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1258,7 +1222,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{prosedur_sekunder3}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="474" y="469" width="5" height="10" uuid="26ebd4ea-df65-4d76-b9ae-3023bdb2b141">
+				<reportElement positionType="Float" x="474" y="442" width="5" height="10" uuid="26ebd4ea-df65-4d76-b9ae-3023bdb2b141">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -1270,7 +1234,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[(]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="526" y="469" width="5" height="10" uuid="98ee7501-6a82-4469-9ec0-5381375c78a2">
+				<reportElement positionType="Float" x="526" y="442" width="5" height="10" uuid="98ee7501-6a82-4469-9ec0-5381375c78a2">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -1282,7 +1246,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[)]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="480" y="469" width="44" height="10" backcolor="#CCCCCC" uuid="98a167c3-3135-40a6-958e-7ef732c3af39">
+				<reportElement positionType="Float" mode="Transparent" x="480" y="442" width="44" height="10" backcolor="#CCCCCC" uuid="98a167c3-3135-40a6-958e-7ef732c3af39">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
@@ -1292,7 +1256,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{kd_prosedur_sekunder3}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="74" y="569" width="216" height="10" backcolor="#CCCCCC" uuid="51217d14-1991-4630-a2b8-93eae8bf2052">
+				<reportElement positionType="Float" mode="Transparent" x="74" y="542" width="216" height="10" backcolor="#CCCCCC" uuid="51217d14-1991-4630-a2b8-93eae8bf2052">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1302,7 +1266,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{keadaan}+($F{ket_keadaan}.equals("")?"":", "+$F{ket_keadaan})]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="6" y="569" width="62" height="10" uuid="0141c4cc-1938-4fec-9867-82ba5cae343e">
+				<reportElement positionType="Float" x="6" y="542" width="62" height="10" uuid="0141c4cc-1938-4fec-9867-82ba5cae343e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1311,18 +1275,8 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				</textElement>
 				<text><![CDATA[Keadaan Pulang]]></text>
 			</staticText>
-			<textField>
-				<reportElement mode="Transparent" x="16" y="591" width="514" height="20" backcolor="#CCCCCC" uuid="9f72a80f-6098-45c1-b6c3-f7ba8e7debab">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Tahoma" size="8" isItalic="false" isUnderline="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{obat_pulang}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="6" y="580" width="239" height="10" uuid="cf9d4e4a-55b8-47d8-b9ea-a03e097acb46">
+				<reportElement positionType="Float" x="6" y="553" width="239" height="10" uuid="cf9d4e4a-55b8-47d8-b9ea-a03e097acb46">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1332,7 +1286,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[Obat-obatan waktu pulang :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="6" y="186" width="422" height="10" uuid="7d10e137-6ab0-4367-9e3e-2d2bcb188073">
+				<reportElement positionType="Float" x="6" y="186" width="422" height="10" uuid="7d10e137-6ab0-4367-9e3e-2d2bcb188073">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1341,26 +1295,8 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				</textElement>
 				<text><![CDATA[Pemeriksaan Fisik :]]></text>
 			</staticText>
-			<textField>
-				<reportElement mode="Transparent" x="16" y="197" width="510" height="20" backcolor="#CCCCCC" uuid="8d9e09ad-085d-41c1-987c-468883bcd4c9">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Tahoma" size="8" isItalic="false" isUnderline="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{pemeriksaan_fisik}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement mode="Transparent" x="16" y="296" width="510" height="42" backcolor="#CCCCCC" uuid="68ef80b2-2eb6-4e99-abf3-07146ffb7112"/>
-				<textElement>
-					<font fontName="Tahoma" size="8" isItalic="false" isUnderline="false"/>
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{obat_di_rs}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="6" y="285" width="239" height="10" uuid="6f839a3c-60fd-4f6f-948d-def73f5b6c69">
+				<reportElement positionType="Float" x="6" y="285" width="239" height="10" uuid="6f839a3c-60fd-4f6f-948d-def73f5b6c69">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1370,7 +1306,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[Obat-obatan Selama Perawatan :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="6" y="535" width="239" height="10" uuid="e7c4c239-e3a1-4893-9bad-4dc3effc163b">
+				<reportElement positionType="Float" x="6" y="508" width="239" height="10" uuid="e7c4c239-e3a1-4893-9bad-4dc3effc163b">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1380,7 +1316,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[Instruksi/Anjuran Dan Edukasi (Follow Up) :]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Transparent" x="16" y="546" width="514" height="20" backcolor="#CCCCCC" uuid="52f85866-0463-4451-b5c0-7d7891d9f297">
+				<reportElement positionType="Float" mode="Transparent" x="16" y="519" width="514" height="20" backcolor="#CCCCCC" uuid="52f85866-0463-4451-b5c0-7d7891d9f297">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1390,7 +1326,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{edukasi}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="358" y="569" width="173" height="10" backcolor="#CCCCCC" uuid="f25076ad-802b-4ad0-a3ad-b1b706609b06">
+				<reportElement positionType="Float" mode="Transparent" x="358" y="542" width="173" height="10" backcolor="#CCCCCC" uuid="f25076ad-802b-4ad0-a3ad-b1b706609b06">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1400,7 +1336,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{cara_keluar}+($F{ket_keluar}.equals("")?"":", "+$F{ket_keluar})]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="291" y="569" width="60" height="10" uuid="256420ee-1b33-4764-a544-b81c764e81a1">
+				<reportElement positionType="Float" x="291" y="542" width="60" height="10" uuid="256420ee-1b33-4764-a544-b81c764e81a1">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Left">
@@ -1410,7 +1346,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[Cara Keluar]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="68" y="569" width="5" height="10" uuid="7927d23a-09fe-4fb8-80dc-aacfb43596b1">
+				<reportElement positionType="Float" x="68" y="542" width="5" height="10" uuid="7927d23a-09fe-4fb8-80dc-aacfb43596b1">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1420,7 +1356,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="352" y="569" width="5" height="10" uuid="4297345e-f5cc-4bcd-bd2b-715de5d64d63">
+				<reportElement positionType="Float" x="352" y="542" width="5" height="10" uuid="4297345e-f5cc-4bcd-bd2b-715de5d64d63">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1430,7 +1366,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="186" y="684" width="164" height="22" uuid="fae1507e-cf7f-423f-9d85-4c84604706d3">
+				<reportElement positionType="Float" x="186" y="651" width="164" height="22" uuid="fae1507e-cf7f-423f-9d85-4c84604706d3">
 					<printWhenExpression><![CDATA[(!$P{namadokter2}.toLowerCase().equals("") ? 
   Boolean.TRUE:Boolean.FALSE)]]></printWhenExpression>
 				</reportElement>
@@ -1441,7 +1377,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$P{namadokter2}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="186" y="621" width="164" height="11" uuid="d284ebcf-9d5f-4513-919b-ee8e3c96a6d9">
+				<reportElement positionType="Float" x="186" y="588" width="164" height="11" uuid="d284ebcf-9d5f-4513-919b-ee8e3c96a6d9">
 					<printWhenExpression><![CDATA[(!$P{namadokter2}.toLowerCase().equals("") ? 
   Boolean.TRUE:Boolean.FALSE)]]></printWhenExpression>
 				</reportElement>
@@ -1468,7 +1404,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$P{jamkeluar}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="134" y="419" width="9" height="10" uuid="39bd49f9-554d-4c86-b0d9-d19ee8600709">
+				<reportElement positionType="Float" x="134" y="392" width="9" height="10" uuid="39bd49f9-554d-4c86-b0d9-d19ee8600709">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1478,7 +1414,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[5.]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="144" y="419" width="326" height="10" backcolor="#CCCCCC" uuid="ea03a2f3-3b38-440f-a707-2a1880795e03">
+				<reportElement positionType="Float" mode="Transparent" x="144" y="392" width="326" height="10" backcolor="#CCCCCC" uuid="ea03a2f3-3b38-440f-a707-2a1880795e03">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1488,7 +1424,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{diagnosa_sekunder5}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="475" y="419" width="5" height="10" uuid="3f26a465-5c1c-45b9-b96f-d9a48d1387b3">
+				<reportElement positionType="Float" x="475" y="392" width="5" height="10" uuid="3f26a465-5c1c-45b9-b96f-d9a48d1387b3">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -1500,7 +1436,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[(]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="526" y="419" width="5" height="10" uuid="2d3c5979-e5db-489d-8a6d-60a4e18e540b">
+				<reportElement positionType="Float" x="526" y="392" width="5" height="10" uuid="2d3c5979-e5db-489d-8a6d-60a4e18e540b">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -1512,7 +1448,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[)]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="481" y="419" width="44" height="10" backcolor="#CCCCCC" uuid="c58b0ebc-1e8c-4860-944c-0e7794c87f49">
+				<reportElement positionType="Float" mode="Transparent" x="481" y="392" width="44" height="10" backcolor="#CCCCCC" uuid="c58b0ebc-1e8c-4860-944c-0e7794c87f49">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
@@ -1522,7 +1458,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{kd_diagnosa_sekunder4}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="133" y="481" width="9" height="10" uuid="65b87a94-0c4b-4592-bd24-81e4b8f15feb">
+				<reportElement positionType="Float" x="133" y="454" width="9" height="10" uuid="65b87a94-0c4b-4592-bd24-81e4b8f15feb">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1532,7 +1468,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[4.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="133" y="493" width="9" height="10" uuid="5fc04b7e-f636-445e-8173-fddf6914c54e">
+				<reportElement positionType="Float" x="133" y="466" width="9" height="10" uuid="5fc04b7e-f636-445e-8173-fddf6914c54e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1542,7 +1478,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[5.]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="143" y="481" width="326" height="10" backcolor="#CCCCCC" uuid="f15d6649-3731-4744-8790-4d00ca233bad">
+				<reportElement positionType="Float" mode="Transparent" x="143" y="454" width="326" height="10" backcolor="#CCCCCC" uuid="f15d6649-3731-4744-8790-4d00ca233bad">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1552,7 +1488,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{prosedur_sekunder4}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="474" y="481" width="5" height="10" uuid="630acb5d-2f80-4d65-8fa8-787af63929b3">
+				<reportElement positionType="Float" x="474" y="454" width="5" height="10" uuid="630acb5d-2f80-4d65-8fa8-787af63929b3">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -1564,7 +1500,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[(]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="526" y="481" width="5" height="10" uuid="98e702c1-c1d5-4597-9a1f-a5a7c3e5e88b">
+				<reportElement positionType="Float" x="526" y="454" width="5" height="10" uuid="98e702c1-c1d5-4597-9a1f-a5a7c3e5e88b">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -1576,7 +1512,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[)]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="480" y="481" width="44" height="10" backcolor="#CCCCCC" uuid="0ab6771d-cad3-47e3-917a-2e435433274b">
+				<reportElement positionType="Float" mode="Transparent" x="480" y="454" width="44" height="10" backcolor="#CCCCCC" uuid="0ab6771d-cad3-47e3-917a-2e435433274b">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
@@ -1586,7 +1522,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{kd_prosedur_sekunder2}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="143" y="493" width="326" height="10" backcolor="#CCCCCC" uuid="0dfc33b0-baf9-4d3d-ba2e-df15ae85a7d1">
+				<reportElement positionType="Float" mode="Transparent" x="143" y="466" width="326" height="10" backcolor="#CCCCCC" uuid="0dfc33b0-baf9-4d3d-ba2e-df15ae85a7d1">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1596,7 +1532,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{prosedur_sekunder5}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="474" y="493" width="5" height="10" uuid="cbb467e2-e562-4a16-8c64-b5d4db3cb74c">
+				<reportElement positionType="Float" x="474" y="466" width="5" height="10" uuid="cbb467e2-e562-4a16-8c64-b5d4db3cb74c">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -1608,7 +1544,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[(]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="526" y="493" width="5" height="10" uuid="d40d7d31-9b8f-4bb5-91af-06c3b6efa85f">
+				<reportElement positionType="Float" x="526" y="466" width="5" height="10" uuid="d40d7d31-9b8f-4bb5-91af-06c3b6efa85f">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -1620,7 +1556,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[)]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true">
-				<reportElement mode="Transparent" x="480" y="493" width="44" height="10" backcolor="#CCCCCC" uuid="3f579190-78e1-43be-bc33-786fc997d1f6">
+				<reportElement positionType="Float" mode="Transparent" x="480" y="466" width="44" height="10" backcolor="#CCCCCC" uuid="3f579190-78e1-43be-bc33-786fc997d1f6">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center">
@@ -1630,7 +1566,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{kd_prosedur_sekunder3}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="7" y="515" width="62" height="10" uuid="2bbb1fc5-389a-41a3-894f-7c135a9cb672">
+				<reportElement positionType="Float" x="7" y="488" width="62" height="10" uuid="2bbb1fc5-389a-41a3-894f-7c135a9cb672">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1640,7 +1576,7 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<text><![CDATA[Konsul Dokter :]]></text>
 			</staticText>
 			<textField>
-				<reportElement mode="Transparent" x="69" y="515" width="260" height="20" backcolor="#CCCCCC" uuid="a46d384c-ef1b-4a25-98f6-ae536773f9b1">
+				<reportElement positionType="Float" mode="Transparent" x="69" y="488" width="260" height="20" backcolor="#CCCCCC" uuid="a46d384c-ef1b-4a25-98f6-ae536773f9b1">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1650,13 +1586,13 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				<textFieldExpression><![CDATA[$F{konsul_dokter}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="367" y="635" width="157" height="49" isRemoveLineWhenBlank="true" uuid="b93cbbd5-3f7c-4e5d-a84e-322d271c49d8"/>
+				<reportElement positionType="Float" x="367" y="602" width="157" height="49" isRemoveLineWhenBlank="true" uuid="b93cbbd5-3f7c-4e5d-a84e-322d271c49d8"/>
 				<jr:QRCode xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" errorCorrectionLevel="H">
 					<jr:codeExpression><![CDATA[$P{finger}]]></jr:codeExpression>
 				</jr:QRCode>
 			</componentElement>
 			<componentElement>
-				<reportElement x="190" y="635" width="157" height="49" isRemoveLineWhenBlank="true" uuid="70021e68-e512-4649-ab77-8c099f139493">
+				<reportElement positionType="Float" x="190" y="602" width="157" height="49" isRemoveLineWhenBlank="true" uuid="70021e68-e512-4649-ab77-8c099f139493">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<printWhenExpression><![CDATA[(!$P{namadokter2}.toLowerCase().equals("") ? 
   Boolean.TRUE:Boolean.FALSE)]]></printWhenExpression>
@@ -1665,8 +1601,75 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 					<jr:codeExpression><![CDATA[$P{finger2}]]></jr:codeExpression>
 				</jr:QRCode>
 			</componentElement>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" mode="Transparent" x="16" y="197" width="510" height="20" backcolor="#CCCCCC" uuid="22ce8f4f-fcfe-4043-bfba-35acb7849949">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Tahoma" size="8" isItalic="false" isUnderline="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pemeriksaan_fisik}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" mode="Transparent" x="16" y="564" width="514" height="20" backcolor="#CCCCCC" uuid="01ed6bc9-0556-4f6b-b1fd-77407c64ac5a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Tahoma" size="8" isItalic="false" isUnderline="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{obat_pulang}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" mode="Transparent" x="16" y="296" width="510" height="20" backcolor="#CCCCCC" uuid="cb4d37ee-2424-4b4c-8647-f8a7923f9caa">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Tahoma" size="8" isItalic="false" isUnderline="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{obat_di_rs}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" mode="Transparent" x="16" y="263" width="510" height="20" backcolor="#CCCCCC" uuid="90066da5-3e24-4213-87fe-edc9e56e79aa">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Tahoma" size="8" isItalic="false" isUnderline="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hasil_laborat}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" mode="Transparent" x="16" y="230" width="510" height="20" backcolor="#CCCCCC" uuid="c61fa7b9-e701-46e9-846e-6122fb8128d9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Tahoma" size="8" isItalic="false" isUnderline="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pemeriksaan_penunjang}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" mode="Transparent" x="16" y="164" width="510" height="20" backcolor="#CCCCCC" uuid="e53ad1d6-4ada-46d5-a705-f0c6928b2a99">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Tahoma" size="8" isItalic="false" isUnderline="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{keluhan_utama}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="48">
 			<staticText>
-				<reportElement x="12" y="870" width="420" height="10" uuid="6dd9b10e-3a6e-48f1-9e1d-8610bb2022cf">
+				<reportElement positionType="FixRelativeToBottom" x="7" y="25" width="420" height="10" uuid="6dd9b10e-3a6e-48f1-9e1d-8610bb2022cf">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement>
@@ -1675,11 +1678,14 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				</textElement>
 				<text><![CDATA[Dokumen ini telah ditandatangani secara elektronik menggunakan sertifikat elektronik yang diterbitkan PERURI]]></text>
 			</staticText>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="20" width="534" height="1" uuid="b3a4f55b-ef2f-4f60-bbb5-92b2f31a7ad7"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
 		</band>
-	</detail>
-	<columnFooter>
-		<band splitType="Stretch"/>
-	</columnFooter>
+	</pageFooter>
 	<summary>
 		<band splitType="Stretch"/>
 	</summary>
