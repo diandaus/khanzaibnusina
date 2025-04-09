@@ -1,20 +1,12 @@
 package bridging;
 
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import javax.net.ssl.*;
-import java.io.IOException;
 import java.security.*;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;

@@ -754,10 +754,10 @@
 		<band splitType="Stretch"/>
 	</columnFooter>
 	<summary>
-		<band height="231" splitType="Stretch">
+		<band height="147" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<staticText>
-				<reportElement x="356" y="96" width="215" height="14" uuid="c1fbf8b7-e738-49a7-95b4-a424b7f1e65c"/>
+				<reportElement x="336" y="14" width="215" height="14" uuid="c1fbf8b7-e738-49a7-95b4-a424b7f1e65c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="Tahoma" size="10"/>
 					<paragraph lineSpacing="Single"/>
@@ -765,7 +765,7 @@
 				<text><![CDATA[Dokter Bedah]]></text>
 			</staticText>
 			<textField pattern="dd MMMM, yyyy">
-				<reportElement x="356" y="85" width="215" height="11" uuid="9f783fb7-7368-4d30-8670-cf350efa3902"/>
+				<reportElement x="336" y="3" width="215" height="11" uuid="9f783fb7-7368-4d30-8670-cf350efa3902"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font fontName="Tahoma" size="9"/>
 					<paragraph lineSpacing="Single"/>
@@ -773,7 +773,7 @@
 				<textFieldExpression><![CDATA[$P{kotars}+", "+new SimpleDateFormat("dd MMMM yyyy", new java.util.Locale("id")).format(new Date())]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement x="356" y="109" width="216" height="72" isRemoveLineWhenBlank="true" uuid="2e125df9-83d7-4563-b5cf-20b2194a8e5c">
+				<reportElement x="336" y="27" width="216" height="72" isRemoveLineWhenBlank="true" uuid="2e125df9-83d7-4563-b5cf-20b2194a8e5c">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 				<jr:QRCode xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" errorCorrectionLevel="H">
@@ -781,7 +781,7 @@
 				</jr:QRCode>
 			</componentElement>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToBandHeight" x="356" y="182" width="215" height="15" uuid="6ea48481-f15a-4169-9e1b-675850c6d206"/>
+				<reportElement stretchType="RelativeToBandHeight" x="336" y="100" width="215" height="15" uuid="6ea48481-f15a-4169-9e1b-675850c6d206"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Tahoma" size="10"/>
 					<paragraph lineSpacing="Single"/>
@@ -789,13 +789,13 @@
 				<textFieldExpression><![CDATA[$F{dokterbedah}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="230" width="553" height="1" uuid="b35d09e2-735e-423d-bb20-89032a3d3310"/>
+				<reportElement positionType="FixRelativeToBottom" x="-1" y="145" width="553" height="1" uuid="b35d09e2-735e-423d-bb20-89032a3d3310"/>
 				<graphicElement>
 					<pen lineWidth="1.0"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement positionType="FixRelativeToBottom" x="-1" y="0" width="1" height="231" uuid="6dd99e86-2f0c-4195-9bbe-d796439d5a5c">
+				<reportElement positionType="FixRelativeToBottom" x="-1" y="0" width="1" height="145" uuid="6dd99e86-2f0c-4195-9bbe-d796439d5a5c">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<graphicElement>
@@ -803,7 +803,7 @@
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement positionType="FixRelativeToBottom" x="552" y="0" width="1" height="231" uuid="508f344a-6103-4529-a89d-40f04154497f">
+				<reportElement positionType="FixRelativeToBottom" x="552" y="0" width="1" height="145" uuid="508f344a-6103-4529-a89d-40f04154497f">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<graphicElement>

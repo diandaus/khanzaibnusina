@@ -24,6 +24,7 @@
 	<parameter name="namadokter2" class="java.lang.String"/>
 	<parameter name="namadokter3" class="java.lang.String"/>
 	<parameter name="jamkeluar" class="java.lang.String"/>
+	<parameter name="qrLowerLeftX" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[select reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,resume_pasien_ranap.kd_dokter,dokter.nm_dokter,reg_periksa.kd_dokter as kodepengirim,pengirim.nm_dokter as pengirim,
                     reg_periksa.tgl_registrasi,reg_periksa.jam_reg,resume_pasien_ranap.diagnosa_awal,resume_pasien_ranap.alasan,resume_pasien_ranap.keluhan_utama,resume_pasien_ranap.pemeriksaan_fisik,
@@ -1673,6 +1674,12 @@ where resume_pasien_ranap.no_rawat= $P{norawat}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{konsul_dokter}]]></textFieldExpression>
 			</textField>
+			<componentElement>
+				<reportElement positionType="Float" x="$P{qrLowerLeftX}" y="635" width="157" height="49" isRemoveLineWhenBlank="true" uuid="b93cbbd5-3f7c-4e5d-a84e-322d271c49d8"/>
+				<jr:QRCode xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" errorCorrectionLevel="H">
+					<jr:codeExpression><![CDATA[$P{finger}]]></jr:codeExpression>
+				</jr:QRCode>
+			</componentElement>
 		</band>
 	</detail>
 	<columnFooter>
