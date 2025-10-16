@@ -465,22 +465,31 @@ public String signingSession(String orderId) throws Exception {
         return new ApiPeruri().getRestTemplate();
     }
     
+// Method dengan posisi default (backward compatibility)
 public Map<String, Object> sendDocument(String jwtToken, String email, String fileName, String base64Document) throws Exception {
+    // Default: QR di halaman 1, posisi kanan bawah
+    return sendDocument(jwtToken, email, fileName, base64Document, "1", "537", "8", "572", "42");
+}
+
+// Method dengan posisi dinamis
+public Map<String, Object> sendDocument(String jwtToken, String email, String fileName, String base64Document,
+                                        String page, String lowerLeftX, String lowerLeftY,
+                                        String upperRightX, String upperRightY) throws Exception {
     String url = BASE_URL + "digitalSignatureFullJwtSandbox/1.0/sendDocument/v1";
-    
+
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
     headers.set("x-Gateway-APIKey", API_KEY);
     headers.set("Authorization", "Bearer " + jwtToken);
 
-    // Setup request body
+    // Setup request body dengan parameter dinamis
     Map<String, Object> signer = new HashMap<>();
     signer.put("isVisualSign", "YES");
-    signer.put("lowerLeftX", "537");
-    signer.put("lowerLeftY", "8");
-    signer.put("upperRightX", "572");
-    signer.put("upperRightY", "42");
-    signer.put("page", "1");
+    signer.put("lowerLeftX", lowerLeftX);
+    signer.put("lowerLeftY", lowerLeftY);
+    signer.put("upperRightX", upperRightX);
+    signer.put("upperRightY", upperRightY);
+    signer.put("page", page);
     signer.put("certificateLevel", "NOT_CERTIFIED");
     signer.put("varLocation", "Sigli");
     signer.put("varReason", "Signed");
@@ -508,8 +517,8 @@ public Map<String, Object> sendDocument(String jwtToken, String email, String fi
 
     try {
         ResponseEntity<String> response = restTemplate.exchange(
-            url, 
-            HttpMethod.POST, 
+            url,
+            HttpMethod.POST,
             requestEntity,
             String.class
         );
@@ -563,7 +572,7 @@ public String checkDocumentStatus(String orderId) throws Exception {
 }
 
 public String downloadDocument(String orderId) throws Exception {
-    String url = BASE_URL + "digitalSignatureFullJwtSandbox/1.0/downloadDocument/v1";
+    String url = BASE_URL + "digitalSignatureSession/1.0/downloadDocument/v1";
     
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);

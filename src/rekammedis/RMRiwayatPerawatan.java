@@ -72,6 +72,7 @@ public final class RMRiwayatPerawatan extends javax.swing.JDialog {
     private Connection koneksi=koneksiDB.condb();
     private int i=0,urut=0,w=0,s=0,urutdpjp=0;
     private double biayaperawatan=0;
+    private boolean peruri=false;
     private String kddpjp="",dpjp="",dokterrujukan="",polirujukan="",keputusan="",ke1="",ke2="",ke3="",ke4="",ke5="",ke6="",file="";
     private StringBuilder htmlContent;
     private HttpClient http = new HttpClient();
@@ -2489,27 +2490,27 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                      "</tr>" +
                       "</table><br>" +
                      "<table width='100%' border='0' align='center' cellpadding='3px' cellspacing='0' class='tbl_form'>" +
-                     "<tr class='isi'>" + 
+                     "<tr class='isi'>" +
                      "<td valign='top' width='20%'>No.RM</td>"+
                      "<td valign='top' width='1%' align='center'>:</td>"+
                      "<td valign='top' width='79%'>"+NoRM.getText().trim()+"</td>"+
                      "</tr>"+
-                     "<tr class='isi'>"+ 
+                     "<tr class='isi'>"+
                        "<td valign='top' width='20%'>Nama Pasien</td>"+
                        "<td valign='top' width='1%' align='center'>:</td>"+
                        "<td valign='top' width='79%'>"+NmPasien.getText()+"</td>"+
                      "</tr>"+
-                     "<tr class='isi'>"+ 
+                     "<tr class='isi'>"+
                        "<td valign='top' width='20%'>Alamat</td>"+
                        "<td valign='top' width='1%' align='center'>:</td>"+
                        "<td valign='top' width='79%'>"+Alamat.getText()+"</td>"+
                      "</tr>"+
-                     "<tr class='isi'>"+ 
+                     "<tr class='isi'>"+
                        "<td valign='top' width='20%'>Jenis Kelamin</td>"+
                        "<td valign='top' width='1%' align='center'>:</td>"+
                        "<td valign='top' width='79%'>"+Jk.getText().replaceAll("L","Laki-Laki").replaceAll("P","Perempuan")+"</td>"+
                      "</tr>"+
-                     "<tr class='isi'>"+ 
+                     "<tr class='isi'>"+
                        "<td valign='top' width='20%'>Tempat & Tanggal Lahir</td>"+
                        "<td valign='top' width='1%' align='center'>:</td>"+
                        "<td valign='top' width='79%'>"+TempatLahir.getText()+" "+TanggalLahir.getText()+"</td>"+
@@ -2526,8 +2527,32 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
              byte[] pdfBytes = Files.readAllBytes(Paths.get(outputFile));
              String base64Document = Base64.getEncoder().encodeToString(pdfBytes);
 
-             // Kirim dokumen
-             Map<String, Object> response = apiPeruri.sendDocument(jwtToken, email, fileName, base64Document);
+             // Deteksi posisi QR code dari tag "#A#" di PDF (opsional)
+             // Jika tag tidak ditemukan, akan gunakan posisi default
+             Map<String, String> qrPosition = null;
+             try {
+                 qrPosition = bridging.QRCodePositionHelper.detectQRPosition(outputFile, "#A#");
+                 System.out.println("QR Position detected - Page: " + qrPosition.get("page") +
+                                    ", X: " + qrPosition.get("lowerLeftX") +
+                                    ", Y: " + qrPosition.get("lowerLeftY"));
+             } catch (Exception e) {
+                 System.out.println("Menggunakan posisi default untuk QR code: " + e.getMessage());
+                 // Gunakan posisi default (halaman terakhir, kanan bawah)
+                 qrPosition = bridging.QRCodePositionHelper.getDefaultPosition(1);
+             }
+
+             // Kirim dokumen dengan posisi QR dinamis
+             Map<String, Object> response = apiPeruri.sendDocument(
+                 jwtToken,
+                 email,
+                 fileName,
+                 base64Document,
+                 qrPosition.get("page"),
+                 qrPosition.get("lowerLeftX"),
+                 qrPosition.get("lowerLeftY"),
+                 qrPosition.get("upperRightX"),
+                 qrPosition.get("upperRightY")
+             );
 
              if (response != null && "0".equals(response.get("resultCode"))) {
                  Map<String, Object> data = (Map<String, Object>) response.get("data");
@@ -5091,9 +5116,9 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                             }
                         }
                     }
-                    
-                    if(R4.isSelected()==true){
-                        if(rs.getString("status_lanjut").equals("Ralan")){
+
+                     if(R4.isSelected()==true){
+                          if(rs.getString("status_lanjut").equals("Ralan")){
                             get = new GetMethod("http://"+koneksiDB.HOSTHYBRIDWEB()+":"+koneksiDB.PORTWEB()+"/"+koneksiDB.HYBRIDWEB()+"/penggajian/generateqrcode.php?kodedokter="+rs.getString("kd_dokter").replace(" ","_"));
                             http.executeMethod(get);
 
@@ -5102,7 +5127,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                    "<td valign='top' width='2%'></td>"+        
                                    "<td valign='middle' width='18%'>Tanda Tangan/Verifikasi</td>"+
                                    "<td valign='middle' width='1%' align='center'>:</td>"+
-                                   "<td valign='middle' width='79%' align='center'>Dokter Poli<br><img width='90' height='90' src='http://"+koneksiDB.HOSTHYBRIDWEB()+":"+koneksiDB.PORTWEB()+"/"+koneksiDB.HYBRIDWEB()+"/penggajian/temp/"+rs.getString("kd_dokter")+".png'/><br>"+rs.getString("nm_dokter")+"</td>"+
+                                   "<td valign='middle' width='79%' align='center'>Dokter Poli<br><br><br>#A#<br><br><br>"+rs.getString("nm_dokter")+"</td>"+
                                 "</tr>"
                             );
                         }else if(rs.getString("status_lanjut").equals("Ranap")){

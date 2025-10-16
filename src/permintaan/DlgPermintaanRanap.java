@@ -1257,17 +1257,22 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 param.put("finger","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+Dokter.getText()+"\nID "+(finger.equals("")?KdDokter.getText():finger)+"\n"+DTPTgl.getSelectedItem()); 
                 param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
                 Valid.MyReportqry("rptSuratPermintaanRawatInap.jasper","report","::[ Surat Permintaan Rawat Inap ]::",
-                        " select permintaan_ranap.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.jk,reg_periksa.umurdaftar,reg_periksa.sttsumur,"+
-                        "pasien.no_tlp,penjab.png_jawab,poliklinik.nm_poli,dokter.nm_dokter,permintaan_ranap.tanggal,permintaan_ranap.kd_kamar,kamar.kd_bangsal,"+
-                        "bangsal.nm_bangsal,kamar.trf_kamar,permintaan_ranap.diagnosa,permintaan_ranap.catatan,reg_periksa.kd_dokter from permintaan_ranap "+
-                        "inner join reg_periksa on permintaan_ranap.no_rawat=reg_periksa.no_rawat "+
-                        "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                        "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "+
-                        "inner join dokter on reg_periksa.kd_dokter=dokter.kd_dokter "+
-                        "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli "+
-                        "inner join kamar on permintaan_ranap.kd_kamar=kamar.kd_kamar "+
-                        "inner join bangsal on kamar.kd_bangsal=bangsal.kd_bangsal "+
-                        "where reg_periksa.no_rawat='"+NoRw.getText()+"' ",param);
+                "SELECT permintaan_ranap.no_rawat, reg_periksa.no_rkm_medis, pasien.nm_pasien, pasien.jk, "+
+                "reg_periksa.umurdaftar, reg_periksa.sttsumur, pasien.no_tlp, penjab.png_jawab, poliklinik.nm_poli, "+
+                "dokter.nm_dokter, IFNULL(dokter_dpjp.nm_dokter, '-') AS dokter_dpjp, permintaan_ranap.tanggal, "+
+                "permintaan_ranap.kd_kamar, kamar.kd_bangsal, bangsal.nm_bangsal, kamar.trf_kamar, "+
+                "permintaan_ranap.diagnosa, permintaan_ranap.catatan "+
+                "FROM permintaan_ranap "+
+                "INNER JOIN reg_periksa ON permintaan_ranap.no_rawat=reg_periksa.no_rawat "+
+                "INNER JOIN pasien ON reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
+                "INNER JOIN penjab ON reg_periksa.kd_pj=penjab.kd_pj "+
+                "INNER JOIN dokter ON reg_periksa.kd_dokter=dokter.kd_dokter "+
+                "INNER JOIN poliklinik ON reg_periksa.kd_poli=poliklinik.kd_poli "+
+                "INNER JOIN kamar ON permintaan_ranap.kd_kamar=kamar.kd_kamar "+
+                "INNER JOIN bangsal ON kamar.kd_bangsal=bangsal.kd_bangsal "+
+                "LEFT JOIN dpjp_ranap ON permintaan_ranap.no_rawat=dpjp_ranap.no_rawat "+
+                "LEFT JOIN dokter AS dokter_dpjp ON dpjp_ranap.kd_dokter=dokter_dpjp.kd_dokter "+
+                "WHERE reg_periksa.no_rawat='"+NoRw.getText()+"' ",param);
                 this.setCursor(Cursor.getDefaultCursor());
             }else{
                 JOptionPane.showMessageDialog(null,"Maaf, silahkan pilih data...!!!!");

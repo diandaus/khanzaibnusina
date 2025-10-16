@@ -19,6 +19,13 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/home/pc/khanzaibnusina/setting/database.xml</file>
+            <file>file:/home/pc/khanzaibnusina/src/bridging/ApiPeruri.java</file>
+            <file>file:/home/pc/khanzaibnusina/src/rekammedis/RMRiwayatPerawatan.java</file>
+            <file>file:/home/pc/khanzaibnusina/src/permintaan/DlgPermintaanRanap.java</file>
+            <file>file:/home/pc/khanzaibnusina/nbproject/project.properties</file>
+            <file>file:/home/pc/khanzaibnusina/src/simrskhanza/DlgKamarInap.java</file>
+        </group>
     </open-files>
 </project-private>
