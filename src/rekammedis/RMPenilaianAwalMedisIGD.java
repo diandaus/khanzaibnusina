@@ -6,6 +6,7 @@
 package rekammedis;
 
 import bridging.ApiPeruri;
+import bridging.JwtPeruri;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import freehand.DlgMarkingImageAssMedisIGD;
@@ -47,7 +48,6 @@ import javax.swing.text.Document;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariDokter;
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -277,9 +277,9 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
         LoadHTML = new widget.editorpane();
         jPopupMenu1 = new javax.swing.JPopupMenu();
         MnPenilaianMedis = new javax.swing.JMenuItem();
-        MnSendDokument = new javax.swing.JMenuItem();
-        MnDowloadDokumen = new javax.swing.JMenuItem();
-        MnTTEDokumen = new javax.swing.JMenuItem();
+        MnSendDokumen = new javax.swing.JMenuItem();
+        MnDownloadDokumen = new javax.swing.JMenuItem();
+        MnSendOtpDanValidasi = new javax.swing.JMenuItem();
         internalFrame1 = new widget.InternalFrame();
         panelGlass8 = new widget.panelisi();
         BtnSimpan = new widget.Button();
@@ -435,47 +435,47 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
         });
         jPopupMenu1.add(MnPenilaianMedis);
 
-        MnSendDokument.setBackground(new java.awt.Color(255, 255, 254));
-        MnSendDokument.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        MnSendDokument.setForeground(new java.awt.Color(50, 50, 50));
-        MnSendDokument.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
-        MnSendDokument.setText("Send Dokumen");
-        MnSendDokument.setName("MnSendDokument"); // NOI18N
-        MnSendDokument.setPreferredSize(new java.awt.Dimension(220, 26));
-        MnSendDokument.addActionListener(new java.awt.event.ActionListener() {
+        MnSendDokumen.setBackground(new java.awt.Color(255, 255, 254));
+        MnSendDokumen.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        MnSendDokumen.setForeground(new java.awt.Color(50, 50, 50));
+        MnSendDokumen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        MnSendDokumen.setText("Tanda Tangan");
+        MnSendDokumen.setName("MnSendDokumen"); // NOI18N
+        MnSendDokumen.setPreferredSize(new java.awt.Dimension(220, 26));
+        MnSendDokumen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MnSendDokumentActionPerformed(evt);
+                MnSendDokumenActionPerformed(evt);
             }
         });
-        jPopupMenu1.add(MnSendDokument);
+        jPopupMenu1.add(MnSendDokumen);
 
-        MnDowloadDokumen.setBackground(new java.awt.Color(255, 255, 254));
-        MnDowloadDokumen.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        MnDowloadDokumen.setForeground(new java.awt.Color(50, 50, 50));
-        MnDowloadDokumen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
-        MnDowloadDokumen.setText("Download Dokumen TTE");
-        MnDowloadDokumen.setName("MnDowloadDokumen"); // NOI18N
-        MnDowloadDokumen.setPreferredSize(new java.awt.Dimension(220, 26));
-        MnDowloadDokumen.addActionListener(new java.awt.event.ActionListener() {
+        MnDownloadDokumen.setBackground(new java.awt.Color(255, 255, 254));
+        MnDownloadDokumen.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        MnDownloadDokumen.setForeground(new java.awt.Color(50, 50, 50));
+        MnDownloadDokumen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        MnDownloadDokumen.setText("Donwload Dokumen");
+        MnDownloadDokumen.setName("MnDownloadDokumen"); // NOI18N
+        MnDownloadDokumen.setPreferredSize(new java.awt.Dimension(220, 26));
+        MnDownloadDokumen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MnDowloadDokumenActionPerformed(evt);
+                MnDownloadDokumenActionPerformed(evt);
             }
         });
-        jPopupMenu1.add(MnDowloadDokumen);
+        jPopupMenu1.add(MnDownloadDokumen);
 
-        MnTTEDokumen.setBackground(new java.awt.Color(255, 255, 254));
-        MnTTEDokumen.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        MnTTEDokumen.setForeground(new java.awt.Color(50, 50, 50));
-        MnTTEDokumen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
-        MnTTEDokumen.setText("TTE Dokumen");
-        MnTTEDokumen.setName("MnTTEDokumen"); // NOI18N
-        MnTTEDokumen.setPreferredSize(new java.awt.Dimension(220, 26));
-        MnTTEDokumen.addActionListener(new java.awt.event.ActionListener() {
+        MnSendOtpDanValidasi.setBackground(new java.awt.Color(255, 255, 254));
+        MnSendOtpDanValidasi.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        MnSendOtpDanValidasi.setForeground(new java.awt.Color(50, 50, 50));
+        MnSendOtpDanValidasi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        MnSendOtpDanValidasi.setText("Kirim OTP");
+        MnSendOtpDanValidasi.setName("MnSendOtpDanValidasi"); // NOI18N
+        MnSendOtpDanValidasi.setPreferredSize(new java.awt.Dimension(220, 26));
+        MnSendOtpDanValidasi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MnTTEDokumenActionPerformed(evt);
+                MnSendOtpDanValidasiActionPerformed(evt);
             }
         });
-        jPopupMenu1.add(MnTTEDokumen);
+        jPopupMenu1.add(MnSendOtpDanValidasi);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -622,11 +622,6 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
         TabRawat.setForeground(new java.awt.Color(50, 50, 50));
         TabRawat.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
         TabRawat.setName("TabRawat"); // NOI18N
-        TabRawat.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                TabRawatMouseClicked(evt);
-            }
-        });
 
         internalFrame2.setBorder(null);
         internalFrame2.setName("internalFrame2"); // NOI18N
@@ -1064,7 +1059,7 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
         FormInput.add(jLabel39);
         jLabel39.setBounds(265, 260, 70, 23);
 
-        Keadaan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Sehat", "Sakit Ringan", "Sakit Sedang", "Sakit Berat" }));
+        Keadaan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Sehat", "Sakit Ringan", "Sakit Sedang", "Sakit Berat", "Lemas" }));
         Keadaan.setName("Keadaan"); // NOI18N
         Keadaan.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1236,7 +1231,7 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
         PanelWall.setWarna(new java.awt.Color(110, 110, 110));
         PanelWall.setLayout(null);
         FormInput.add(PanelWall);
-        PanelWall.setBounds(45, 480, 809, 280);
+        PanelWall.setBounds(45, 470, 809, 290);
 
         scrollPane8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         scrollPane8.setName("scrollPane8"); // NOI18N
@@ -1366,7 +1361,7 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
         label11.setBounds(380, 40, 52, 23);
 
         TglAsuhan.setForeground(new java.awt.Color(50, 70, 50));
-        TglAsuhan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "02-01-2025 13:25:04" }));
+        TglAsuhan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15-10-2025 17:38:56" }));
         TglAsuhan.setDisplayFormat("dd-MM-yyyy HH:mm:ss");
         TglAsuhan.setName("TglAsuhan"); // NOI18N
         TglAsuhan.setOpaque(false);
@@ -1464,13 +1459,13 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
             }
         });
         FormInput.add(BtnEdit2);
-        BtnEdit2.setBounds(270, 450, 160, 30);
+        BtnEdit2.setBounds(330, 440, 160, 30);
 
         scrollInput.setViewportView(FormInput);
 
         internalFrame2.add(scrollInput, java.awt.BorderLayout.CENTER);
 
-        TabRawat.addTab("Input Pengkajian", internalFrame2);
+        TabRawat.addTab("Input Penilaian", internalFrame2);
 
         internalFrame3.setBorder(null);
         internalFrame3.setName("internalFrame3"); // NOI18N
@@ -1507,7 +1502,7 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
         panelGlass9.add(jLabel19);
 
         DTPCari1.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "02-01-2025" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15-10-2025" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -1521,7 +1516,7 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
         panelGlass9.add(jLabel21);
 
         DTPCari2.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "02-01-2025" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15-10-2025" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -1572,7 +1567,7 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
 
         internalFrame3.add(panelGlass9, java.awt.BorderLayout.PAGE_END);
 
-        TabRawat.addTab("Data Pengkajian", internalFrame3);
+        TabRawat.addTab("Data Penilaian", internalFrame3);
 
         internalFrame1.add(TabRawat, java.awt.BorderLayout.CENTER);
 
@@ -1612,6 +1607,14 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
                     Thoraks.getSelectedItem().toString(),Abdomen.getSelectedItem().toString(),Genital.getSelectedItem().toString(),Ekstremitas.getSelectedItem().toString(),KetFisik.getText(),KetLokalis.getText(),EKG.getText(),
                     Radiologi.getText(),Laborat.getText(),Diagnosis.getText(),Tatalaksana.getText()
                 })==true){
+                    tabMode.addRow(new String[]{
+                        TNoRw.getText(),TNoRM.getText(),TPasien.getText(),TglLahir.getText(),Jk.getText(),KdDokter.getText(),NmDokter.getText(),Valid.SetTgl(TglAsuhan.getSelectedItem()+"")+" "+TglAsuhan.getSelectedItem().toString().substring(11,19),
+                        Anamnesis.getSelectedItem().toString(),Hubungan.getText(),KeluhanUtama.getText(),RPS.getText(),RPD.getText(),RPK.getText(),RPO.getText(),Alergi.getText(),Keadaan.getSelectedItem().toString(),GCS.getText(),Kesadaran.getSelectedItem().toString(),
+                        TD.getText(),Nadi.getText(),RR.getText(),Suhu.getText(),SPO.getText(),BB.getText(),TB.getText(),Kepala.getSelectedItem().toString(),Mata.getSelectedItem().toString(),Gigi.getSelectedItem().toString(),Leher.getSelectedItem().toString(),
+                        Thoraks.getSelectedItem().toString(),Abdomen.getSelectedItem().toString(),Genital.getSelectedItem().toString(),Ekstremitas.getSelectedItem().toString(),KetFisik.getText(),KetLokalis.getText(),EKG.getText(),Radiologi.getText(),Laborat.getText(),
+                        Diagnosis.getText(),Tatalaksana.getText()
+                    });
+                    LCount.setText(""+tabMode.getRowCount());
                     emptTeks();
             }
         }
@@ -1721,47 +1724,47 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
                 htmlContent = new StringBuilder();
                 htmlContent.append(                             
                     "<tr class='isi'>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='105px'><b>No.Rawat</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='70px'><b>No.RM</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='150px'><b>Nama Pasien</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='65px'><b>Tgl.Lahir</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='55px'><b>J.K.</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='80px'><b>NIP</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='150px'><b>Nama Dokter</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='115px'><b>Tanggal</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='80px'><b>Anamnesis</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='100px'><b>Hubungan</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='300px'><b>Keluhan Utama</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='150px'><b>Riwayat Penyakit Sekarang</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='150px'><b>Riwayat Penyakit Dahulu</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='150px'><b>Riwayat Penyakit Keluarga</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='150px'><b>Riwayat Penggunakan Obat</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='120px'><b>Riwayat Alergi</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='90px'><b>Keadaan Umum</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='50px'><b>GCS</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='80px'><b>Kesadaran</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='60px'><b>TD(mmHg)</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='75px'><b>Nadi(x/menit)</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='67px'><b>RR(x/menit)</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='40px'><b>Suhu</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='40px'><b>SpO2</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='40px'><b>BB(Kg)</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='40px'><b>TB(cm)</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='80px'><b>Kepala</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='80px'><b>Mata</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='80px'><b>Gigi & Mulut</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='80px'><b>Leher</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='80px'><b>Thoraks</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='80px'><b>Abdomen</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='80px'><b>Genital & Anus</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='80px'><b>Ekstremitas</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='300px'><b>Ket.Pemeriksaan Fisik</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='200px'><b>Ket.Status Lokalis</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='170px'><b>EKG</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='170px'><b>Radiologi</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='170px'><b>Laborat</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='150px'><b>Diagnosis/Asesmen</b></td>"+
-                        "<td valign='middle' bgcolor='#FFFAF8' align='center' width='300px'><b>Tatalaksana</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='105px'><b>No.Rawat</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='70px'><b>No.RM</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='150px'><b>Nama Pasien</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='65px'><b>Tgl.Lahir</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='55px'><b>J.K.</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='80px'><b>NIP</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='150px'><b>Nama Dokter</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='115px'><b>Tanggal</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='80px'><b>Anamnesis</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='100px'><b>Hubungan</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='300px'><b>Keluhan Utama</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='150px'><b>Riwayat Penyakit Sekarang</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='150px'><b>Riwayat Penyakit Dahulu</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='150px'><b>Riwayat Penyakit Keluarga</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='150px'><b>Riwayat Penggunakan Obat</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='120px'><b>Riwayat Alergi</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='90px'><b>Keadaan Umum</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='50px'><b>GCS</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='80px'><b>Kesadaran</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='60px'><b>TD(mmHg)</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='75px'><b>Nadi(x/menit)</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='67px'><b>RR(x/menit)</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='40px'><b>Suhu</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='40px'><b>SpO2</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='40px'><b>BB(Kg)</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='40px'><b>TB(cm)</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='80px'><b>Kepala</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='80px'><b>Mata</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='80px'><b>Gigi & Mulut</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='80px'><b>Leher</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='80px'><b>Thoraks</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='80px'><b>Abdomen</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='80px'><b>Genital & Anus</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='80px'><b>Ekstremitas</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='300px'><b>Ket.Pemeriksaan Fisik</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='200px'><b>Ket.Status Lokalis</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='170px'><b>EKG</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='170px'><b>Radiologi</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='170px'><b>Laborat</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='150px'><b>Diagnosis/Asesmen</b></td>"+
+                        "<td valign='middle' bgcolor='#FFFAFA' align='center' width='300px'><b>Tatalaksana</b></td>"+
                     "</tr>"
                 );
                 for (i = 0; i < tabMode.getRowCount(); i++) {
@@ -2003,12 +2006,6 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
         Valid.pindah(evt,Kesadaran,TB);
     }//GEN-LAST:event_GCSKeyPressed
 
-    private void TabRawatMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TabRawatMouseClicked
-        if(TabRawat.getSelectedIndex()==1){
-            tampil();
-        }
-    }//GEN-LAST:event_TabRawatMouseClicked
-
     private void RPSKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_RPSKeyPressed
         Valid.pindah2(evt,KeluhanUtama,RPK);
     }//GEN-LAST:event_RPSKeyPressed
@@ -2087,13 +2084,14 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
             param.put("kontakrs",akses.getkontakrs());
             param.put("emailrs",akses.getemailrs());          
             param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            //param.put("lokalis",Sequel.cariGambar("select lokalis from gambar")); 
-            param.put("url",Sequel.cariIsi("select url_image from asesmen_medis_igd_image_marking where no_rawat=?",TNoRw.getText()));                   
-            param.put("lokalis","http://"+koneksiDB.HOSTHYBRIDWEB()+":"+koneksiDB.PORTWEB()+"/"+koneksiDB.HYBRIDWEB()+"/imagefreehand/");
+            try {
+                param.put("lokalis",getClass().getResource("/picture/semua.png").openStream());
+            } catch (Exception e) {
+            } 
             finger=Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",tbObat.getValueAt(tbObat.getSelectedRow(),5).toString());
             param.put("finger","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+tbObat.getValueAt(tbObat.getSelectedRow(),6).toString()+"\nID "+(finger.equals("")?tbObat.getValueAt(tbObat.getSelectedRow(),5).toString():finger)+"\n"+Valid.SetTgl3(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString())); 
             
-            Valid.MyReportqry("rptCetakPenilaianAwalMedisIGD.jasper","report","::[ Laporan Penilaian Awal Medis IGD ]::",
+            Valid.MyReportqry("rptCetakPenilaianAwalMedisIGDTTE.jasper","report","::[ Laporan Penilaian Awal Medis IGD ]::",
                 "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,if(pasien.jk='L','Laki-Laki','Perempuan') as jk,pasien.tgl_lahir,penilaian_medis_igd.tanggal,"+
                 "penilaian_medis_igd.kd_dokter,penilaian_medis_igd.anamnesis,penilaian_medis_igd.hubungan,penilaian_medis_igd.keluhan_utama,penilaian_medis_igd.rps,penilaian_medis_igd.rpk,penilaian_medis_igd.rpd,penilaian_medis_igd.rpo,penilaian_medis_igd.alergi,"+
                 "penilaian_medis_igd.keadaan,penilaian_medis_igd.gcs,penilaian_medis_igd.kesadaran,penilaian_medis_igd.td,penilaian_medis_igd.nadi,penilaian_medis_igd.rr,penilaian_medis_igd.suhu,penilaian_medis_igd.spo,penilaian_medis_igd.bb,penilaian_medis_igd.tb,"+
@@ -2116,6 +2114,251 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
     private void LaboratKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_LaboratKeyPressed
         Valid.pindah2(evt,Radiologi,Diagnosis);
     }//GEN-LAST:event_LaboratKeyPressed
+
+    private void MnSendDokumenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnSendDokumenActionPerformed
+    if(tbObat.getSelectedRow()>-1){
+        try {
+            // Get JWT token from utility
+            String jwtToken = JwtPeruri.getValidJwtToken();
+            if(jwtToken == null) {
+                JOptionPane.showMessageDialog(null, "Gagal mendapatkan token JWT");
+                return;
+            }
+
+            ApiPeruri apiPeruri = new ApiPeruri();
+            apiPeruri.setJwtToken(jwtToken);
+
+            // Ambil data dokter
+            String[] dokterInfo = Sequel.cariIsi(
+                "SELECT pegawai.email, dokter.nm_dokter FROM dokter " +
+                "INNER JOIN pegawai ON dokter.kd_dokter=pegawai.nik " +
+                "WHERE dokter.kd_dokter=?",
+                tbObat.getValueAt(tbObat.getSelectedRow(),5).toString()
+            ).split(",");
+
+            String email = dokterInfo[0];
+            String namaDokter = dokterInfo.length > 1 ? dokterInfo[1] : "";
+
+            if(email.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Maaf Dokter " + namaDokter + " Belum Terdaftar Akun TTE Peruri");
+                return;
+            }
+
+            // Set parameter untuk report
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars",akses.getnamars());
+            param.put("alamatrs",akses.getalamatrs());
+            param.put("kotars",akses.getkabupatenrs());
+            param.put("propinsirs",akses.getpropinsirs());
+            param.put("kontakrs",akses.getkontakrs());
+            param.put("emailrs",akses.getemailrs());
+            param.put("logo",Sequel.cariGambar("select setting.logo from setting"));
+            param.put("url",Sequel.cariIsi("select url_image from asesmen_medis_igd_image_marking where no_rawat=?",tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()));
+            try {
+                param.put("lokalis",getClass().getResource("/picture/semua.png").openStream());
+            } catch (Exception e) {
+                System.out.println("Error loading lokalis image: " + e.getMessage());
+            }
+
+            // Set tanda tangan
+            finger=Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",tbObat.getValueAt(tbObat.getSelectedRow(),5).toString());
+            param.put("finger","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+
+                    "\nDitandatangani secara elektronik oleh "+tbObat.getValueAt(tbObat.getSelectedRow(),6).toString()+
+                    "\nID "+(finger.equals("")?tbObat.getValueAt(tbObat.getSelectedRow(),5).toString():finger)+
+                    "\n"+Valid.SetTgl3(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString()));
+
+            // Generate temporary file untuk output PDF
+            String outputFile = "temporary/" +
+                              tbObat.getValueAt(tbObat.getSelectedRow(),0).toString().replaceAll("/","_") +
+                              "_igd.pdf";
+
+            String fileName = "Penilaian_IGD_" +
+                            tbObat.getValueAt(tbObat.getSelectedRow(),0).toString().replaceAll("/","_") +
+                            ".pdf";
+
+            // Generate PDF menggunakan JasperReport
+            JasperPrint jasperPrint = JasperFillManager.fillReport(
+                "report/rptCetakPenilaianAwalMedisIGDTTE.jasper",
+                param,
+                koneksi
+            );
+            JasperExportManager.exportReportToPdfFile(jasperPrint, outputFile);
+
+            // Konversi ke Base64 dan kirim ke Peruri
+            byte[] pdfBytes = Files.readAllBytes(Paths.get(outputFile));
+            String base64Document = Base64.getEncoder().encodeToString(pdfBytes);
+
+            // Deteksi posisi QR code dari tag "#TTD#" di PDF (opsional)
+            // Jika tag tidak ditemukan, akan gunakan posisi default
+            Map<String, String> qrPosition = null;
+            try {
+                qrPosition = bridging.QRCodePositionHelper.detectQRPosition(outputFile, "#A#");
+                System.out.println("QR Position detected - Page: " + qrPosition.get("page") +
+                                   ", X: " + qrPosition.get("lowerLeftX") +
+                                   ", Y: " + qrPosition.get("lowerLeftY"));
+            } catch (Exception e) {
+                System.out.println("Menggunakan posisi default untuk QR code: " + e.getMessage());
+                qrPosition = bridging.QRCodePositionHelper.getDefaultPosition(1);
+            }
+
+            // Kirim dokumen dengan posisi QR dinamis
+            Map<String, Object> response = apiPeruri.sendDocument(
+                jwtToken,
+                email,
+                fileName,
+                base64Document,
+                qrPosition.get("page"),
+                qrPosition.get("lowerLeftX"),
+                qrPosition.get("lowerLeftY"),
+                qrPosition.get("upperRightX"),
+                qrPosition.get("upperRightY")
+            );
+
+            if (response != null && "0".equals(response.get("resultCode"))) {
+                Map<String, Object> data = (Map<String, Object>) response.get("data");
+                String orderId = (String) data.get("orderId");
+
+                // Simpan tracking
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String now = dateFormat.format(new Date());
+
+                boolean sukses = Sequel.queryu2tf(
+                    "INSERT INTO tracking_dokumen_ttd (no_rawat,nama_dokumen,tgl_kirim,order_id,status_ttd,keterangan,user_pengirim,email_ttd) VALUES (?,?,?,?,?,?,?,?)",
+                    8,
+                    new String[]{
+                        tbObat.getValueAt(tbObat.getSelectedRow(),0).toString(),
+                        fileName,
+                        now,
+                        orderId,
+                        "Belum",
+                        "Dokumen telah dikirim ke Peruri",
+                        akses.getkode(),
+                        email
+                    }
+                );
+
+                if(sukses) {
+                    // Signing session
+                    String signingResponse = apiPeruri.signingSession(orderId);
+                    ObjectMapper mapper = new ObjectMapper();
+                    JsonNode signingNode = mapper.readTree(signingResponse);
+
+                    if(signingNode.has("resultCode") && "0".equals(signingNode.get("resultCode").asText())) {
+                        // Update status tracking
+                        Sequel.queryu2(
+                            "UPDATE tracking_dokumen_ttd SET status_ttd='Sudah', " +
+                            "keterangan='Dokumen telah ditandatangani' " +
+                            "WHERE order_id=?",
+                            1,
+                            new String[]{orderId}
+                        );
+
+                        JOptionPane.showMessageDialog(null,
+                            "Dokumen berhasil dikirim dan ditandatangani\n" +
+                            "Order ID: " + orderId);
+                    } else {
+                        throw new RuntimeException("Gagal signing: " + signingNode.get("resultDesc").asText());
+                    }
+                }
+            }
+
+            // Hapus file temporary
+            Files.deleteIfExists(Paths.get(outputFile));
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Terjadi kesalahan: " + e.getMessage());
+        }
+    }     // TODO add your handling code here:
+    }//GEN-LAST:event_MnSendDokumenActionPerformed
+
+    private void MnDownloadDokumenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnDownloadDokumenActionPerformed
+  if(tbObat.getSelectedRow() <= -1) {
+            JOptionPane.showMessageDialog(null, "Silakan pilih data yang akan diunduh");
+            return;
+        }
+
+        try {
+            // Ambil order_id dari tracking dokumen
+            String orderId = Sequel.cariIsi(
+                "SELECT order_id FROM tracking_dokumen_ttd " +
+                "WHERE no_rawat=? AND status_ttd='Sudah' " +
+                "ORDER BY tgl_kirim DESC LIMIT 1",
+                tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
+            );
+
+            if(orderId.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Dokumen belum ditandatangani atau Order ID tidak ditemukan");
+                return;
+            }
+
+            // Generate JWT token baru
+            String jwtToken = JwtPeruri.getValidJwtToken();
+            if(jwtToken == null) {
+                JOptionPane.showMessageDialog(null, "Gagal mendapatkan token JWT");
+                return;
+            }
+
+            ApiPeruri apiPeruri = new ApiPeruri();
+            apiPeruri.setJwtToken(jwtToken);
+
+            // Download dokumen
+            String response = apiPeruri.downloadDocument(orderId);
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode rootNode = mapper.readTree(response);
+
+            if(rootNode.has("resultCode") && "0".equals(rootNode.get("resultCode").asText())) {
+                JsonNode dataNode = rootNode.get("data");
+                if(dataNode != null && dataNode.has("base64Document")) {
+                    String base64Document = dataNode.get("base64Document").asText();
+
+                    // Buat direktori dokumen pengguna
+                    String userDocumentsPath = System.getProperty("user.home") + "/Documents/signed_documents";
+                    File dir = new File(userDocumentsPath);
+                    if (!dir.exists()) {
+                        dir.mkdirs(); // Membuat direktori jika belum ada
+                    }
+
+                    // Generate nama file
+                    String fileName = "Awal_Medis_IGD_" +
+                        tbObat.getValueAt(tbObat.getSelectedRow(),0).toString().replaceAll("/","_") +
+                        "_signed.pdf";
+                    String filePath = userDocumentsPath + "/" + fileName;
+
+                    // Decode base64 dan simpan sebagai file PDF
+                    byte[] pdfBytes = Base64.getDecoder().decode(base64Document);
+                    Files.write(Paths.get(filePath), pdfBytes);
+
+                    // Buka file PDF
+                    try {
+                        File pdfFile = new File(filePath);
+                        if(pdfFile.exists()) {
+                            if(Desktop.isDesktopSupported()) {
+                                Desktop.getDesktop().open(pdfFile);
+                            } else {
+                                JOptionPane.showMessageDialog(null,
+                                    "Dokumen berhasil diunduh ke: " + filePath + "\n" +
+                                    "Silakan buka file secara manual.");
+                            }
+                        }
+                    } catch(Exception e) {
+                        JOptionPane.showMessageDialog(null,
+                            "Dokumen berhasil diunduh ke: " + filePath + "\n" +
+                            "Terjadi kesalahan saat membuka file: " + e.getMessage());
+                    }
+                }
+            } else {
+                String resultDesc = rootNode.has("resultDesc") ?
+                    rootNode.get("resultDesc").asText() : "Unknown error";
+                JOptionPane.showMessageDialog(null, "Gagal mengunduh dokumen: " + resultDesc);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Terjadi kesalahan: " + e.getMessage());
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_MnDownloadDokumenActionPerformed
 
     private void BtnEdit2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEdit2ActionPerformed
         DlgMarkingImageAssMedisIGD form=new DlgMarkingImageAssMedisIGD(null,false);
@@ -2146,390 +2389,127 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_BtnEdit2KeyPressed
 
-    private void MnSendDokumentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnSendDokumentActionPerformed
-     if(tbObat.getSelectedRow()>-1){
-        try {
-            // Ambil email dokter
-            String email = Sequel.cariIsi(
-                "SELECT pegawai.email FROM dokter INNER JOIN pegawai ON dokter.kd_dokter=pegawai.nik " +
-                "WHERE dokter.kd_dokter=?",
-                tbObat.getValueAt(tbObat.getSelectedRow(),5).toString()
-            );
-            
-            if(email.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Email dokter belum diset di data pegawai");
-                return;
-            }
-
-            // Set parameter untuk report
-            Map<String, Object> param = new HashMap<>();
-            param.put("namars",akses.getnamars());
-            param.put("alamatrs",akses.getalamatrs());
-            param.put("kotars",akses.getkabupatenrs());
-            param.put("propinsirs",akses.getpropinsirs());
-            param.put("kontakrs",akses.getkontakrs());
-            param.put("emailrs",akses.getemailrs());          
-            param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            param.put("url",Sequel.cariIsi("select url_image from asesmen_medis_igd_image_marking where no_rawat=?",tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()));                   
-            param.put("lokalis","http://"+koneksiDB.HOSTHYBRIDWEB()+":"+koneksiDB.PORTWEB()+"/"+koneksiDB.HYBRIDWEB()+"/imagefreehand/");
-            
-            // Set tanda tangan
-            finger=Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",tbObat.getValueAt(tbObat.getSelectedRow(),5).toString());
-            param.put("finger","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+
-                    "\nDitandatangani secara elektronik oleh "+tbObat.getValueAt(tbObat.getSelectedRow(),6).toString()+
-                    "\nID "+(finger.equals("")?tbObat.getValueAt(tbObat.getSelectedRow(),5).toString():finger)+
-                    "\n"+Valid.SetTgl3(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString())); 
-
-            // Generate temporary file untuk output PDF
-            String outputFile = "temporary/" + 
-                              tbObat.getValueAt(tbObat.getSelectedRow(),0).toString().replaceAll("/","") + 
-                              "_igd.pdf";
-            
-            String fileName = "Penilaian_IGD_" + 
-                            tbObat.getValueAt(tbObat.getSelectedRow(),0).toString().replaceAll("/","") + 
-                            ".pdf";
-
-            // Generate PDF menggunakan JasperReport
-            String reportQuery = "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,"+
-                "if(pasien.jk='L','Laki-Laki','Perempuan') as jk,pasien.tgl_lahir,penilaian_medis_igd.tanggal,"+
-                "penilaian_medis_igd.kd_dokter,penilaian_medis_igd.anamnesis,penilaian_medis_igd.hubungan,"+
-                "penilaian_medis_igd.keluhan_utama,penilaian_medis_igd.rps,penilaian_medis_igd.rpk,"+
-                "penilaian_medis_igd.rpd,penilaian_medis_igd.rpo,penilaian_medis_igd.alergi,"+
-                "penilaian_medis_igd.keadaan,penilaian_medis_igd.gcs,penilaian_medis_igd.kesadaran,"+
-                "penilaian_medis_igd.td,penilaian_medis_igd.nadi,penilaian_medis_igd.rr,"+
-                "penilaian_medis_igd.suhu,penilaian_medis_igd.spo,penilaian_medis_igd.bb,penilaian_medis_igd.tb,"+
-                "penilaian_medis_igd.kepala,penilaian_medis_igd.mata,penilaian_medis_igd.gigi,"+
-                "penilaian_medis_igd.leher,penilaian_medis_igd.thoraks,penilaian_medis_igd.abdomen,"+
-                "penilaian_medis_igd.ekstremitas,penilaian_medis_igd.genital,penilaian_medis_igd.ket_fisik,"+
-                "penilaian_medis_igd.ket_lokalis,penilaian_medis_igd.ekg,penilaian_medis_igd.rad,"+
-                "penilaian_medis_igd.lab,penilaian_medis_igd.diagnosis,penilaian_medis_igd.tata,dokter.nm_dokter "+
-                "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                "inner join penilaian_medis_igd on reg_periksa.no_rawat=penilaian_medis_igd.no_rawat "+
-                "inner join dokter on penilaian_medis_igd.kd_dokter=dokter.kd_dokter where "+
-                "penilaian_medis_igd.no_rawat='"+tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()+"'";
-
-            JasperPrint jasperPrint = JasperFillManager.fillReport(
-                "report/rptCetakPenilaianAwalMedisIGD.jasper",
-                param,
-                koneksi
-            );
-            JasperExportManager.exportReportToPdfFile(jasperPrint, outputFile);
-
-            // Konversi ke Base64 dan kirim ke Peruri
-            byte[] pdfBytes = Files.readAllBytes(Paths.get(outputFile));
-            String base64Document = Base64.getEncoder().encodeToString(pdfBytes);
-
-            ApiPeruri apiPeruri = new ApiPeruri();
-            String jwtToken = apiPeruri.generateJwtToken();
-
-            if(jwtToken != null) {
-                Map<String, Object> response = apiPeruri.sendDocument(jwtToken, email, fileName, base64Document);
-                
-                if(response != null && "0".equals(response.get("resultCode"))) {
-                    Map<String, Object> data = (Map<String, Object>) response.get("data");
-                    String orderId = (String) data.get("orderId");
-                    
-                    boolean sukses = Sequel.queryu2tf(
-                        "INSERT INTO tracking_dokumen_ttd (no_rawat,nama_dokumen,tgl_kirim,order_id,status_ttd,keterangan,user_pengirim,email_ttd) " +
-                        "VALUES (?,?,NOW(),?,?,?,?,?)",
-                        7,
-                        new String[]{
-                            tbObat.getValueAt(tbObat.getSelectedRow(),0).toString(),
-                            fileName,
-                            orderId,
-                            "Belum",
-                            "Dokumen telah dikirim ke Peruri",
-                            akses.getkode(),
-                            email
-                        }
-                    );
-                    
-                    if(sukses) {
-                        JOptionPane.showMessageDialog(null, 
-                            "Dokumen berhasil dikirim untuk ditandatangani\n" +
-                            "Order ID: " + orderId + "\n" +
-                            "Status: Menunggu tanda tangan"
-                        );
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Gagal menyimpan tracking dokumen");
-                    }
-                } else {
-                    String resultDesc = (String) response.get("resultDesc");
-                    JOptionPane.showMessageDialog(null, "Gagal mengirim dokumen: " + resultDesc);
-                }
-            }
-
-            // Hapus file temporary
-            Files.deleteIfExists(Paths.get(outputFile));
-
-        } catch (Exception e) {
-            System.out.println("Notif : "+e);
-            JOptionPane.showMessageDialog(null, "Terjadi kesalahan: " + e.getMessage());
-        }
-    }
-
-// TODO add your handling code here:
-    }//GEN-LAST:event_MnSendDokumentActionPerformed
-
-    private void MnDowloadDokumenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnDowloadDokumenActionPerformed
-        if(tbObat.getSelectedRow()>-1){
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        try {
-            // Cek apakah dokumen sudah ditandatangani
-            String orderId = Sequel.cariIsi(
-                "SELECT order_id FROM tracking_dokumen_ttd WHERE " +
-                "no_rawat='" + tbObat.getValueAt(tbObat.getSelectedRow(),0).toString() + "' AND " +
-                "status_ttd='Sudah' ORDER BY tgl_kirim DESC LIMIT 1"
-            );
-
-            if(orderId.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Dokumen belum ditandatangani atau belum dikirim ke Peruri");
-                return;
-            }
-
-           // Generate JWT token
-            ApiPeruri apiPeruri = new ApiPeruri();
-            String jwtToken = apiPeruri.generateJwtToken();
-            
-            if(jwtToken == null) {
-                JOptionPane.showMessageDialog(null, "Gagal mendapatkan token JWT");
-                return;
-            }
-
-            // Set JWT token ke ApiPeruri instance
-            apiPeruri.setJwtToken(jwtToken);
-
-            // Download dokumen
-            String response = apiPeruri.downloadDocument(orderId);
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode rootNode = mapper.readTree(response);
-            
-            if(rootNode.has("resultCode") && "0".equals(rootNode.get("resultCode").asText())) {
-                JsonNode dataNode = rootNode.get("data");
-                if(dataNode != null && dataNode.has("base64Document")) {
-                    String base64Document = dataNode.get("base64Document").asText();
-                    
-                    // Buat direktori dokumen pengguna
-                    String userDocumentsPath = System.getProperty("user.home") + "/Documents/signed_documents";
-                    File dir = new File(userDocumentsPath);
-                    if (!dir.exists()) {
-                        dir.mkdirs();
-                    }
-                    
-                    // Generate nama file
-                    String fileName = "Awal_Medis_IGD_" + 
-                                          tbObat.getValueAt(tbObat.getSelectedRow(),0).toString().replaceAll("/","") + 
-                                          "_signed.pdf";
-                    String filePath = userDocumentsPath + "/" + fileName;
-                    
-                    // Decode base64 dan simpan sebagai file PDF
-                    byte[] pdfBytes = Base64.getDecoder().decode(base64Document);
-                    Files.write(Paths.get(filePath), pdfBytes);
-                    
-                    // Update status tracking
-                    boolean sukses = Sequel.queryu2tf(
-                        "UPDATE tracking_dokumen_ttd SET file_ttd=? " +
-                        "WHERE order_id=?",
-                        2,
-                        new String[]{
-                            filePath,
-                            orderId
-                        }
-                    );
-                    
-                    if(sukses) {
-                        // Buka file PDF
-                        try {
-                            File pdfFile = new File(filePath);
-                            if(pdfFile.exists()) {
-                                if(Desktop.isDesktopSupported()) {
-                                    Desktop.getDesktop().open(pdfFile);
-                                    JOptionPane.showMessageDialog(null, 
-                                        "Dokumen berhasil diunduh ke:\n" + filePath);
-                                } else {
-                                    JOptionPane.showMessageDialog(null, 
-                                        "Dokumen berhasil diunduh ke:\n" + filePath + "\n" +
-                                        "Silakan buka file secara manual.");
-                                }
-                            }
-                        } catch(Exception e) {
-                            System.out.println("Error membuka file: " + e.getMessage());
-                            JOptionPane.showMessageDialog(null, 
-                                "Dokumen berhasil diunduh ke:\n" + filePath + "\n" +
-                                "Terjadi kesalahan saat membuka file: " + e.getMessage());
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Gagal menyimpan lokasi file");
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Data dokumen tidak ditemukan dalam response");
-                }
-            } else {
-                String resultDesc = rootNode.has("resultDesc") ? 
-                    rootNode.get("resultDesc").asText() : "Unknown error";
-                JOptionPane.showMessageDialog(null, "Gagal mengunduh dokumen: " + resultDesc);
-            }
-            
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-            JOptionPane.showMessageDialog(null, "Terjadi kesalahan: " + e.getMessage());
-        }
-    }
-    this.setCursor(Cursor.getDefaultCursor());
-        // TODO add your handling code here:
-    }//GEN-LAST:event_MnDowloadDokumenActionPerformed
-
-    private void MnTTEDokumenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnTTEDokumenActionPerformed
-        if(tbObat.getSelectedRow()>-1){
+    private void MnSendOtpDanValidasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnSendOtpDanValidasiActionPerformed
+        if(tbObat.getSelectedRow() > -1) {
             try {
-                // Generate JWT token baru
-                ApiPeruri apiPeruri = new ApiPeruri();
-                String jwtToken = apiPeruri.generateJwtToken();
-
+                // Get JWT token
+                String jwtToken = JwtPeruri.getValidJwtToken();
                 if(jwtToken == null) {
-                    JOptionPane.showMessageDialog(null, "Gagal mendapatkan token JWT");
+                    JOptionPane.showMessageDialog(null, "Gagal mendapatkan token JWT. Silakan coba lagi.");
                     return;
                 }
 
-                // Set JWT token ke ApiPeruri instance
+                ApiPeruri apiPeruri = new ApiPeruri();
                 apiPeruri.setJwtToken(jwtToken);
 
-                // Cek apakah dokumen sudah dikirim ke Peruri
-                String orderId = Sequel.cariIsi(
-                    "SELECT order_id FROM tracking_dokumen_ttd WHERE " +
-                    "no_rawat='" + tbObat.getValueAt(tbObat.getSelectedRow(),5).toString() + "' AND " +
-                    "status_ttd='Belum' ORDER BY tgl_kirim DESC LIMIT 1"
+                // Ambil email dokter dari selected row
+                String hasilQuery = Sequel.cariIsi(
+                    "SELECT pegawai.email, dokter.nm_dokter FROM dokter " +
+                    "INNER JOIN pegawai ON dokter.kd_dokter=pegawai.nik " +
+                    "WHERE dokter.kd_dokter=?",
+                    tbObat.getValueAt(tbObat.getSelectedRow(), 5).toString()
                 );
 
-                String email = Sequel.cariIsi(
-                    "SELECT email_ttd FROM tracking_dokumen_ttd WHERE " +
-                    "no_rawat='" + tbObat.getValueAt(tbObat.getSelectedRow(),5).toString() + "' AND " +
-                    "status_ttd='Belum' ORDER BY tgl_kirim DESC LIMIT 1"
-                );
+            // Validasi hasil query
+            if(hasilQuery == null || hasilQuery.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Data dokter tidak ditemukan");
+                return;
+            }
 
-                if(orderId.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Dokumen belum dikirim ke Peruri atau sudah ditandatangani");
-                    return;
-                }
+            String[] dokterInfo = hasilQuery.split(",");
+            String email = dokterInfo.length > 0 ? dokterInfo[0].trim() : "";
+            String namaDokter = dokterInfo.length > 1 ? dokterInfo[1].trim() : "";
 
-                // Cek apakah ada session OTP yang masih aktif (24 jam)
-                String activeSession = Sequel.cariIsi(
-                    "SELECT token_session FROM tracking_tte_session WHERE " +
-                    "email='" + email + "' AND status='Aktif' AND " +
-                    "tgl_session >= DATE_SUB(NOW(), INTERVAL 24 HOUR) " +
-                    "ORDER BY tgl_session DESC LIMIT 1"
-                );
+            if(email.isEmpty()) {
+                JOptionPane.showMessageDialog(null,
+                    "Maaf Dokter " + namaDokter + " Belum Terdaftar Akun TTE Peruri");
+                return;
+            }
 
-                String tokenSession;
-                boolean needOTP = true;
+            // Kirim OTP
+            String response = apiPeruri.initiateSession(email);
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode rootNode = mapper.readTree(response);
 
-                if(!activeSession.isEmpty()) {
-                    // Gunakan session yang masih aktif
-                    tokenSession = activeSession;
-                    needOTP = false; // Tidak perlu input OTP lagi
-                } else {
-                    // Kirim OTP baru
-                    String response = apiPeruri.initiateSession(email);
-                    ObjectMapper mapper = new ObjectMapper();
-                    JsonNode rootNode = mapper.readTree(response);
+            if(!rootNode.has("resultCode") || !"0".equals(rootNode.get("resultCode").asText())) {
+                String resultDesc = rootNode.has("resultDesc") ?
+                    rootNode.get("resultDesc").asText() : "Gagal mengirim OTP";
+                JOptionPane.showMessageDialog(null, "Error: " + resultDesc);
+                return;
+            }
 
-                    if(rootNode.has("resultCode") && "0".equals(rootNode.get("resultCode").asText())) {
-                        JsonNode dataNode = rootNode.get("data");
-                        tokenSession = dataNode.get("tokenSession").asText();
+            JsonNode dataNode = rootNode.get("data");
+            String tokenSession = dataNode.get("tokenSession").asText();
 
-                        // Nonaktifkan semua session lama
-                        Sequel.queryu2(
-                            "UPDATE tracking_tte_session SET status='Expired' " +
-                            "WHERE email=? AND status='Aktif'",
-                            1,
-                            new String[]{email}
-                        );
+            // Nonaktifkan session lama dan simpan session baru
+            Sequel.queryu2(
+                "UPDATE tracking_tte_session SET status='Expired' " +
+                "WHERE email=? AND status='Aktif'",
+                1,
+                new String[]{email}
+            );
 
-                        // Simpan token session baru
-                        boolean sukses = Sequel.queryu2tf(
-                            "INSERT INTO tracking_tte_session (email,token_session,tgl_session,status) " +
-                            "VALUES (?,?,NOW(),?)",
-                            3,
-                            new String[]{
-                                email,
-                                tokenSession,
-                                "Aktif"
-                            }
-                        );
+            boolean sukses = Sequel.queryu2tf(
+                "INSERT INTO tracking_tte_session (email, token_session, tgl_session, status) " +
+                "VALUES (?, ?, NOW(), 'Aktif')",
+                3,
+                new String[]{email, tokenSession, "Aktif"}
+            );
 
-                        if(!sukses) {
-                            JOptionPane.showMessageDialog(null, "Gagal menyimpan token session");
-                            return;
-                        }
+            if(!sukses) {
+                JOptionPane.showMessageDialog(null, "Gagal menyimpan session. Silakan coba lagi.");
+                return;
+            }
 
-                        JOptionPane.showMessageDialog(null, "OTP baru telah dikirim ke email: " + email);
-                    } else {
-                        String resultDesc = rootNode.has("resultDesc") ?
-                        rootNode.get("resultDesc").asText() : "Unknown error";
-                        JOptionPane.showMessageDialog(null, "Gagal mengirim OTP: " + resultDesc);
-                        return;
-                    }
-                }
+            JOptionPane.showMessageDialog(null,
+                "OTP berhasil dikirim ke email:\n" + email + "\n\nSilakan cek inbox/spam email Anda.");
 
-                String otp = "";
-                if(needOTP) {
-                    // Tampilkan dialog input OTP hanya jika perlu
-                    otp = JOptionPane.showInputDialog(null,
-                        "Masukkan kode OTP yang dikirim ke email:\n" + email);
+            // Input OTP
+            String otp = JOptionPane.showInputDialog(null,
+                "Masukkan kode OTP (6 digit)\nyang dikirim ke email: " + email,
+                "Validasi OTP",
+                JOptionPane.QUESTION_MESSAGE);
 
-                    if(otp == null || otp.trim().isEmpty()) {
-                        return;
-                    }
+            if(otp == null || otp.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "OTP tidak boleh kosong");
+                return;
+            }
 
-                    // Validasi OTP
-                    String validationResponse = apiPeruri.validateSession(email, tokenSession, otp);
-                    ObjectMapper mapper = new ObjectMapper();
-                    JsonNode validationNode = mapper.readTree(validationResponse);
+            // Validasi format OTP
+            otp = otp.trim();
+            if(!otp.matches("\\d{6}")) {
+                JOptionPane.showMessageDialog(null, "Format OTP tidak valid. Harus 6 digit angka.");
+                return;
+            }
 
-                    if(!validationNode.has("resultCode") || !"0".equals(validationNode.get("resultCode").asText())) {
-                        String resultDesc = validationNode.has("resultDesc") ?
-                        validationNode.get("resultDesc").asText() : "Kode OTP tidak valid";
-                        JOptionPane.showMessageDialog(null, "Validasi OTP gagal: " + resultDesc);
-                        return;
-                    }
-                }
+            // Validasi OTP ke API
+            String validationResponse = apiPeruri.validateSession(email, tokenSession, otp);
+            JsonNode validationNode = mapper.readTree(validationResponse);
 
-               
-                    // Generate dan set JWT token baru untuk signing session
-                    jwtToken = apiPeruri.generateJwtToken();
-                    apiPeruri.setJwtToken(jwtToken);
+            if(!validationNode.has("resultCode") || !"0".equals(validationNode.get("resultCode").asText())) {
+                String resultDesc = validationNode.has("resultDesc") ?
+                    validationNode.get("resultDesc").asText() : "Kode OTP tidak valid";
+                JOptionPane.showMessageDialog(null, "Validasi Gagal: " + resultDesc);
+                return;
+            }
 
-                    // Signing session
-                    String signingResponse = apiPeruri.signingSession(orderId);
-                    ObjectMapper mapper = new ObjectMapper();
-                    JsonNode signingNode = mapper.readTree(signingResponse);
-
-                    if(signingNode.has("resultCode") && "0".equals(signingNode.get("resultCode").asText())) {
-                        // Update status tracking
-                        Sequel.queryu2(
-                            "UPDATE tracking_dokumen_ttd SET status_ttd='Sudah', " +
-                            "keterangan='Dokumen telah ditandatangani' " +
-                            "WHERE order_id=?",
-                            1,
-                            new String[]{orderId}
-                        );
-
-                        JOptionPane.showMessageDialog(null, "Dokumen berhasil ditandatangani");
-                    } else {
-                        String resultDesc = signingNode.has("resultDesc") ?
-                        signingNode.get("resultDesc").asText() : "Unknown error";
-                        JOptionPane.showMessageDialog(null, "Gagal signing session: " + resultDesc);
-                    }
-                
+            JOptionPane.showMessageDialog(null,
+                "OTP berhasil divalidasi!\nSession aktif untuk signing.",
+                "Sukses",
+                JOptionPane.INFORMATION_MESSAGE);
 
             } catch (Exception e) {
-                System.out.println("Error: " + e.getMessage());
-                JOptionPane.showMessageDialog(null, "Terjadi kesalahan: " + e.getMessage());
+                System.out.println("Error MnSendOtpDanValidasi: " + e.getMessage());
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null,
+                    "Terjadi kesalahan:\n" + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Silakan pilih data terlebih dahulu");
         }
-        this.setCursor(Cursor.getDefaultCursor());
-        // TODO add your handling code here:
-    }//GEN-LAST:event_MnTTEDokumenActionPerformed
+    }//GEN-LAST:event_MnSendOtpDanValidasiActionPerformed
 
     /**
     * @param args the command line arguments
@@ -2585,10 +2565,10 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
     private widget.ComboBox Leher;
     private widget.editorpane LoadHTML;
     private widget.ComboBox Mata;
-    private javax.swing.JMenuItem MnDowloadDokumen;
+    private javax.swing.JMenuItem MnDownloadDokumen;
     private javax.swing.JMenuItem MnPenilaianMedis;
-    private javax.swing.JMenuItem MnSendDokument;
-    private javax.swing.JMenuItem MnTTEDokumen;
+    private javax.swing.JMenuItem MnSendDokumen;
+    private javax.swing.JMenuItem MnSendOtpDanValidasi;
     private widget.TextBox Nadi;
     private widget.TextBox NmDokter;
     private usu.widget.glass.PanelGlass PanelWall;
@@ -2794,23 +2774,8 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
         Tatalaksana.setText("");
         TglAsuhan.setDate(new Date());
         TabRawat.setSelectedIndex(0);
+        Otomatis();
         Anamnesis.requestFocus();
-        if(Sequel.cariInteger("select count(no_rawat) from pemeriksaan_ralan where no_rawat='"+TNoRw.getText()+"' ")>0){ 
-            KeluhanUtama.setText(Sequel.cariIsi("select keluhan from pemeriksaan_ralan where no_rawat=?",TNoRw.getText()));
-            KetFisik.setText(Sequel.cariIsi("select pemeriksaan from pemeriksaan_ralan where no_rawat=?",TNoRw.getText())); 
-            Diagnosis.setText(Sequel.cariIsi("select penilaian from pemeriksaan_ralan where no_rawat=?",TNoRw.getText())); 
-            Tatalaksana.setText(Sequel.cariIsi("select rtl from pemeriksaan_ralan where no_rawat=?",TNoRw.getText())); 
-            Suhu.setText(Sequel.cariIsi("select suhu_tubuh from pemeriksaan_ralan where no_rawat=?",TNoRw.getText())); 
-            TD.setText(Sequel.cariIsi("select tensi from pemeriksaan_ralan where no_rawat=?",TNoRw.getText())); 
-            BB.setText(Sequel.cariIsi("select berat from pemeriksaan_ralan where no_rawat=?",TNoRw.getText())); 
-            TB.setText(Sequel.cariIsi("select tinggi from pemeriksaan_ralan where no_rawat=?",TNoRw.getText())); 
-            Nadi.setText(Sequel.cariIsi("select nadi from pemeriksaan_ralan where no_rawat=?",TNoRw.getText())); 
-            RR.setText(Sequel.cariIsi("select respirasi from pemeriksaan_ralan where no_rawat=?",TNoRw.getText())); 
-            GCS.setText(Sequel.cariIsi("select gcs from pemeriksaan_ralan where no_rawat=?",TNoRw.getText())); 
-        }else{
-            
-        }
-        
     } 
 
     private void getData() {
@@ -2860,7 +2825,7 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
     private void isRawat() {
         try {
             ps=koneksi.prepareStatement(
-                    "select reg_periksa.no_rkm_medis,pasien.nm_pasien, if(pasien.jk='L','Laki-Laki','Perempuan') as jk,DATE_FORMAT(pasien.tgl_lahir,'%d-%m-%Y')as tgl_lahir,reg_periksa.tgl_registrasi "+
+                    "select reg_periksa.no_rkm_medis,pasien.nm_pasien, if(pasien.jk='L','Laki-Laki','Perempuan') as jk,pasien.tgl_lahir,reg_periksa.tgl_registrasi "+
                     "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
                     "where reg_periksa.no_rawat=?");
             try {
@@ -2886,31 +2851,25 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
         } catch (Exception e) {
             System.out.println("Notif : "+e);
         }
-                           
     }
-    
-    
+ 
     public void setNoRm(String norwt,Date tgl2) {
         TNoRw.setText(norwt);
         TCari.setText(norwt);
         DTPCari2.setDate(tgl2);    
-        isRawat();         
-    }
-    
-  
+        isRawat(); 
         
-  
+    }
     
     public void isCek(){
         BtnSimpan.setEnabled(akses.getpenilaian_awal_medis_igd());
         BtnHapus.setEnabled(akses.getpenilaian_awal_medis_igd());
         BtnEdit.setEnabled(akses.getpenilaian_awal_medis_igd());
-        BtnEdit.setEnabled(akses.getpenilaian_awal_medis_igd());
         if(akses.getjml2()>=1){
             KdDokter.setEditable(false);
             BtnDokter.setEnabled(false);
             KdDokter.setText(akses.getkode());
-            Sequel.cariIsi("select dokter.nm_dokter from dokter where dokter.kd_dokter=?", NmDokter,KdDokter.getText());
+            NmDokter.setText(dokter.tampil3(KdDokter.getText()));
             if(NmDokter.getText().equals("")){
                 KdDokter.setText("");
                 JOptionPane.showMessageDialog(null,"User login bukan Dokter...!!");
@@ -2920,17 +2879,35 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
     
     public void setTampil(){
        TabRawat.setSelectedIndex(1);
-       tampil();
     }
 
     private void hapus() {
         if(Sequel.queryu2tf("delete from penilaian_medis_igd where no_rawat=?",1,new String[]{
             tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
         })==true){
-            tampil();
+            tabMode.removeRow(tbObat.getSelectedRow());
+            LCount.setText(""+tabMode.getRowCount());
             TabRawat.setSelectedIndex(1);
         }else{
             JOptionPane.showMessageDialog(null,"Gagal menghapus..!!");
+        }
+    }
+    
+    public void Otomatis(){
+        if(Sequel.cariInteger("select count(no_rawat) from data_triase_igdprimer where no_rawat='"+TNoRw.getText()+"' ")>0) {
+            KeluhanUtama.setText(Sequel.cariIsi("select keluhan_utama from data_triase_igdprimer where no_rawat=?",TNoRw.getText())); 
+            TD.setText(Sequel.cariIsi("select tekanan_darah from data_triase_igd where no_rawat=?",TNoRw.getText())); 
+            Nadi.setText(Sequel.cariIsi("select nadi from data_triase_igd where no_rawat=?",TNoRw.getText()));
+            RR.setText(Sequel.cariIsi("select pernapasan from data_triase_igd where no_rawat=?",TNoRw.getText()));
+            Suhu.setText(Sequel.cariIsi("select suhu from data_triase_igd where no_rawat=?",TNoRw.getText()));
+            SPO.setText(Sequel.cariIsi("select saturasi_o2 from data_triase_igd where no_rawat=?",TNoRw.getText()));            
+        }else if (Sequel.cariInteger("select count(no_rawat) from data_triase_igdsekunder where no_rawat='"+TNoRw.getText()+"' ")>0) {
+            KeluhanUtama.setText(Sequel.cariIsi("select anamnesa_singkat from data_triase_igdsekunder where no_rawat=?",TNoRw.getText())); 
+            TD.setText(Sequel.cariIsi("select tekanan_darah from data_triase_igd where no_rawat=?",TNoRw.getText())); 
+            Nadi.setText(Sequel.cariIsi("select nadi from data_triase_igd where no_rawat=?",TNoRw.getText()));
+            RR.setText(Sequel.cariIsi("select pernapasan from data_triase_igd where no_rawat=?",TNoRw.getText()));
+            Suhu.setText(Sequel.cariIsi("select suhu from data_triase_igd where no_rawat=?",TNoRw.getText()));
+            SPO.setText(Sequel.cariIsi("select saturasi_o2 from data_triase_igd where no_rawat=?",TNoRw.getText()));            
         }
     }
 
@@ -2942,7 +2919,47 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
                     Thoraks.getSelectedItem().toString(),Abdomen.getSelectedItem().toString(),Genital.getSelectedItem().toString(),Ekstremitas.getSelectedItem().toString(),KetFisik.getText(),KetLokalis.getText(),EKG.getText(),
                     Radiologi.getText(),Laborat.getText(),Diagnosis.getText(),Tatalaksana.getText(),tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
             })==true){
-               tampil();
+               tbObat.setValueAt(TNoRw.getText(),tbObat.getSelectedRow(),0);
+               tbObat.setValueAt(TNoRM.getText(),tbObat.getSelectedRow(),1);
+               tbObat.setValueAt(TPasien.getText(),tbObat.getSelectedRow(),2);
+               tbObat.setValueAt(TglLahir.getText(),tbObat.getSelectedRow(),3);
+               tbObat.setValueAt(Jk.getText().substring(0,1),tbObat.getSelectedRow(),4);
+               tbObat.setValueAt(KdDokter.getText(),tbObat.getSelectedRow(),5);
+               tbObat.setValueAt(NmDokter.getText(),tbObat.getSelectedRow(),6);
+               tbObat.setValueAt(Valid.SetTgl(TglAsuhan.getSelectedItem()+"")+" "+TglAsuhan.getSelectedItem().toString().substring(11,19),tbObat.getSelectedRow(),7);
+               tbObat.setValueAt(Anamnesis.getSelectedItem().toString(),tbObat.getSelectedRow(),8);
+               tbObat.setValueAt(Hubungan.getText(),tbObat.getSelectedRow(),9);
+               tbObat.setValueAt(KeluhanUtama.getText(),tbObat.getSelectedRow(),10);
+               tbObat.setValueAt(RPS.getText(),tbObat.getSelectedRow(),11);
+               tbObat.setValueAt(RPD.getText(),tbObat.getSelectedRow(),12);
+               tbObat.setValueAt(RPK.getText(),tbObat.getSelectedRow(),13);
+               tbObat.setValueAt(RPO.getText(),tbObat.getSelectedRow(),14);
+               tbObat.setValueAt(Alergi.getText(),tbObat.getSelectedRow(),15);
+               tbObat.setValueAt(Keadaan.getSelectedItem().toString(),tbObat.getSelectedRow(),16);
+               tbObat.setValueAt(GCS.getText(),tbObat.getSelectedRow(),17);
+               tbObat.setValueAt(Kesadaran.getSelectedItem().toString(),tbObat.getSelectedRow(),18);
+               tbObat.setValueAt(TD.getText(),tbObat.getSelectedRow(),19);
+               tbObat.setValueAt(Nadi.getText(),tbObat.getSelectedRow(),20);
+               tbObat.setValueAt(RR.getText(),tbObat.getSelectedRow(),21);
+               tbObat.setValueAt(Suhu.getText(),tbObat.getSelectedRow(),22);
+               tbObat.setValueAt(SPO.getText(),tbObat.getSelectedRow(),23);
+               tbObat.setValueAt(BB.getText(),tbObat.getSelectedRow(),24);
+               tbObat.setValueAt(TB.getText(),tbObat.getSelectedRow(),25);
+               tbObat.setValueAt(Kepala.getSelectedItem().toString(),tbObat.getSelectedRow(),26);
+               tbObat.setValueAt(Mata.getSelectedItem().toString(),tbObat.getSelectedRow(),27);
+               tbObat.setValueAt(Gigi.getSelectedItem().toString(),tbObat.getSelectedRow(),28);
+               tbObat.setValueAt(Leher.getSelectedItem().toString(),tbObat.getSelectedRow(),29);
+               tbObat.setValueAt(Thoraks.getSelectedItem().toString(),tbObat.getSelectedRow(),30);
+               tbObat.setValueAt(Abdomen.getSelectedItem().toString(),tbObat.getSelectedRow(),31);
+               tbObat.setValueAt(Genital.getSelectedItem().toString(),tbObat.getSelectedRow(),32);
+               tbObat.setValueAt(Ekstremitas.getSelectedItem().toString(),tbObat.getSelectedRow(),33);
+               tbObat.setValueAt(KetFisik.getText(),tbObat.getSelectedRow(),34);
+               tbObat.setValueAt(KetLokalis.getText(),tbObat.getSelectedRow(),35);
+               tbObat.setValueAt(EKG.getText(),tbObat.getSelectedRow(),36);
+               tbObat.setValueAt(Radiologi.getText(),tbObat.getSelectedRow(),37);
+               tbObat.setValueAt(Laborat.getText(),tbObat.getSelectedRow(),38);
+               tbObat.setValueAt(Diagnosis.getText(),tbObat.getSelectedRow(),39);
+               tbObat.setValueAt(Tatalaksana.getText(),tbObat.getSelectedRow(),40);
                emptTeks();
                TabRawat.setSelectedIndex(1);
         }
@@ -2958,3 +2975,4 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
     }
     
 }
+
