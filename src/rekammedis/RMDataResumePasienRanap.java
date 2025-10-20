@@ -2666,31 +2666,64 @@ public class RMDataResumePasienRanap extends javax.swing.JDialog {
             return;
         }
 
-        // Tampilkan dialog input OTP
-        String otp = JOptionPane.showInputDialog(null, 
-            "Masukkan kode OTP yang dikirim ke email:\n" + email);
-        
-        if(otp == null || otp.trim().isEmpty()) {
-            return;
-        }
-        
         // Generate JWT token untuk validasi
         ApiPeruri apiPeruri = new ApiPeruri();
         String jwtToken = apiPeruri.generateJwtToken();
         apiPeruri.setJwtToken(jwtToken);
-        
-        // Validasi OTP
-        String validationResponse = apiPeruri.validateSession(email, tokenSession, otp);
+
+        // Proses validasi OTP dengan retry
+        boolean otpValid = false;
+        int maxAttempts = 3;
+        int attempt = 0;
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode validationNode = mapper.readTree(validationResponse);
-        
-        if(!validationNode.has("resultCode") || !"0".equals(validationNode.get("resultCode").asText())) {
-            String resultDesc = validationNode.has("resultDesc") ? 
-                validationNode.get("resultDesc").asText() : "Kode OTP tidak valid";
-            JOptionPane.showMessageDialog(null, "Validasi OTP gagal: " + resultDesc);
-            return;
+
+        while (!otpValid && attempt < maxAttempts) {
+            String otp = JOptionPane.showInputDialog(null,
+                    "Masukkan kode OTP yang dikirim ke email:\n" + email
+                    + (attempt > 0 ? "\n\nPercobaan ke-" + (attempt + 1) + " dari " + maxAttempts : ""));
+
+            if (otp == null || otp.trim().isEmpty()) {
+                return;
+            }
+
+            try {
+                // Validasi OTP
+                String validationResponse = apiPeruri.validateSession(email, tokenSession, otp);
+                JsonNode validationNode = mapper.readTree(validationResponse);
+
+                if (!validationNode.has("resultCode") || !"0".equals(validationNode.get("resultCode").asText())) {
+                    String resultDesc = validationNode.has("resultDesc")
+                            ? validationNode.get("resultDesc").asText() : "Kode OTP tidak valid";
+
+                    attempt++;
+                    if (attempt < maxAttempts) {
+                        JOptionPane.showMessageDialog(null,
+                                "Validasi OTP gagal: " + resultDesc + "\n\nSilakan coba lagi.",
+                                "Error Validasi OTP",
+                                JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null,
+                                "Validasi OTP gagal setelah " + maxAttempts + " percobaan: " + resultDesc,
+                                "Error Validasi OTP",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                } else {
+                    otpValid = true;
+                }
+            } catch (Exception e) {
+                attempt++;
+                if (attempt < maxAttempts) {
+                    JOptionPane.showMessageDialog(null,
+                            "Terjadi kesalahan: " + e.getMessage() + "\n\nSilakan coba lagi.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                } else {
+                    throw e;
+                }
+            }
         }
-        
+
         JOptionPane.showMessageDialog(null, "OTP berhasil divalidasi\nSilahkan lanjutkan proses tanda tangan");
         
     } catch (Exception e) {
@@ -2947,32 +2980,73 @@ public class RMDataResumePasienRanap extends javax.swing.JDialog {
                         if(rootNode.has("resultCode") && "0".equals(rootNode.get("resultCode").asText())) {
                             JsonNode dataNode = rootNode.get("data");
                             tokenSession = dataNode.get("tokenSession").asText();
-
-                            // Update session di database
-                            Sequel.queryu2("UPDATE tracking_tte_session SET status='Expired' WHERE email=? AND status='Aktif'", 
-                                1, new String[]{email});
-                            Sequel.queryu2tf("INSERT INTO tracking_tte_session (email,token_session,tgl_session,status) VALUES (?,?,NOW(),?)", 
-                                3, new String[]{email, tokenSession, "Aktif"});
-
                             JOptionPane.showMessageDialog(null, "OTP telah dikirim ke email: " + email);
                         } else {
                             throw new RuntimeException("Gagal mengirim OTP: " + rootNode.get("resultDesc").asText());
                         }
                     }
 
-                    // Proses OTP jika diperlukan
+                    // Validasi OTP dengan retry (jika perlu)
                     if(needOTP) {
-                        String otp = JOptionPane.showInputDialog(null, "Masukkan kode OTP yang dikirim ke email:\n" + email);
-                        if(otp == null || otp.trim().isEmpty()) {
-                            return;
+                        boolean otpValid = false;
+                        int maxAttempts = 3;
+                        int attempt = 0;
+
+                        while (!otpValid && attempt < maxAttempts) {
+                            String otp = JOptionPane.showInputDialog(null,
+                                "Masukkan kode OTP yang dikirim ke email:\n" + email
+                                + (attempt > 0 ? "\n\nPercobaan ke-" + (attempt + 1) + " dari " + maxAttempts : ""));
+
+                            if (otp == null || otp.trim().isEmpty()) {
+                                JOptionPane.showMessageDialog(null, "Proses tanda tangan dibatalkan");
+                                return;
+                            }
+
+                            // Validasi OTP
+                            String validationResponse = apiPeruri.validateSession(email, tokenSession, otp);
+                            ObjectMapper mapper = new ObjectMapper();
+                            JsonNode validationNode = mapper.readTree(validationResponse);
+
+                            if (validationNode.has("resultCode") && "0".equals(validationNode.get("resultCode").asText())) {
+                                otpValid = true;
+                            } else {
+                                attempt++;
+                                if (attempt < maxAttempts) {
+                                    String resultDesc = validationNode.has("resultDesc") ?
+                                        validationNode.get("resultDesc").asText() : "Kode OTP tidak valid";
+                                    JOptionPane.showMessageDialog(null,
+                                        "Validasi OTP gagal: " + resultDesc + "\n\nSilakan coba lagi.",
+                                        "Error",
+                                        JOptionPane.ERROR_MESSAGE);
+                                } else {
+                                    JOptionPane.showMessageDialog(null,
+                                        "Validasi OTP gagal setelah " + maxAttempts + " percobaan.\n" +
+                                        "Silakan kirim ulang OTP.",
+                                        "Error",
+                                        JOptionPane.ERROR_MESSAGE);
+                                    return;
+                                }
+                            }
                         }
 
-                        String validationResponse = apiPeruri.validateSession(email, tokenSession, otp);
-                        ObjectMapper mapper = new ObjectMapper();
-                        JsonNode validationNode = mapper.readTree(validationResponse);
+                        // HAPUS semua session lama untuk email ini (SETELAH OTP berhasil divalidasi)
+                        Sequel.queryu2(
+                            "DELETE FROM tracking_tte_session WHERE email=?",
+                            1,
+                            new String[]{email}
+                        );
 
-                        if(!validationNode.has("resultCode") || !"0".equals(validationNode.get("resultCode").asText())) {
-                            throw new RuntimeException("Validasi OTP gagal: " + validationNode.get("resultDesc").asText());
+                        // Simpan session baru
+                        boolean suksesSession = Sequel.queryu2tf(
+                            "INSERT INTO tracking_tte_session (email,token_session,tgl_session,status) " +
+                            "VALUES (?,?,NOW(),?)",
+                            3,
+                            new String[]{email, tokenSession, "Aktif"}
+                        );
+
+                        if (!suksesSession) {
+                            JOptionPane.showMessageDialog(null, "Gagal menyimpan token session");
+                            return;
                         }
                     }
 

@@ -344,9 +344,7 @@ public class DlgCariPeriksaLab extends javax.swing.JDialog {
         Kd2 = new widget.TextBox();
         jPopupMenu1 = new javax.swing.JPopupMenu();
         MnPDFLabTTE = new javax.swing.JMenu();
-        MnKirimDanTandaTangan = new javax.swing.JMenuItem();
         MnSendDokument = new javax.swing.JMenuItem();
-        MnTTEDokumen = new javax.swing.JMenuItem();
         MnSendOTP = new javax.swing.JMenuItem();
         MnDowloadDokumen = new javax.swing.JMenuItem();
         MnCetakLab = new javax.swing.JMenu();
@@ -440,25 +438,11 @@ public class DlgCariPeriksaLab extends javax.swing.JDialog {
         MnPDFLabTTE.setName("MnPDFLabTTE"); // NOI18N
         MnPDFLabTTE.setPreferredSize(new java.awt.Dimension(190, 26));
 
-        MnKirimDanTandaTangan.setBackground(new java.awt.Color(255, 255, 254));
-        MnKirimDanTandaTangan.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        MnKirimDanTandaTangan.setForeground(new java.awt.Color(50, 50, 50));
-        MnKirimDanTandaTangan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
-        MnKirimDanTandaTangan.setText("Tanda Tangan");
-        MnKirimDanTandaTangan.setName("MnKirimDanTandaTangan"); // NOI18N
-        MnKirimDanTandaTangan.setPreferredSize(new java.awt.Dimension(220, 26));
-        MnKirimDanTandaTangan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MnKirimDanTandaTanganActionPerformed(evt);
-            }
-        });
-        MnPDFLabTTE.add(MnKirimDanTandaTangan);
-
         MnSendDokument.setBackground(new java.awt.Color(255, 255, 254));
         MnSendDokument.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
         MnSendDokument.setForeground(new java.awt.Color(50, 50, 50));
         MnSendDokument.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
-        MnSendDokument.setText("Send Dokumen");
+        MnSendDokument.setText("Tanda Tangan");
         MnSendDokument.setName("MnSendDokument"); // NOI18N
         MnSendDokument.setPreferredSize(new java.awt.Dimension(220, 26));
         MnSendDokument.addActionListener(new java.awt.event.ActionListener() {
@@ -467,20 +451,6 @@ public class DlgCariPeriksaLab extends javax.swing.JDialog {
             }
         });
         MnPDFLabTTE.add(MnSendDokument);
-
-        MnTTEDokumen.setBackground(new java.awt.Color(255, 255, 254));
-        MnTTEDokumen.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        MnTTEDokumen.setForeground(new java.awt.Color(50, 50, 50));
-        MnTTEDokumen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
-        MnTTEDokumen.setText("Tanda Tangan");
-        MnTTEDokumen.setName("MnTTEDokumen"); // NOI18N
-        MnTTEDokumen.setPreferredSize(new java.awt.Dimension(220, 26));
-        MnTTEDokumen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MnTTEDokumenActionPerformed(evt);
-            }
-        });
-        MnPDFLabTTE.add(MnTTEDokumen);
 
         MnSendOTP.setBackground(new java.awt.Color(255, 255, 254));
         MnSendOTP.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
@@ -6067,8 +6037,8 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
         TCari.requestFocus();
     }else if(Kd2.getText().trim().equals("")){
-        JOptionPane.showMessageDialog(null,"Maaf, Gagal mengirim. Pilih dulu data yang mau dikirim.\nKlik No.Rawat pada table untuk memilih...!!!!");
-    }else if(!(Kd2.getText().trim().equals(""))){    
+        JOptionPane.showMessageDialog(null,"Maaf, Gagal mengirim. Pilih dulu data yang mau dikirim & ditandatangani.\nKlik No.Rawat pada table untuk memilih...!!!!");
+    }else if(!(Kd2.getText().trim().equals(""))){
         try {
             // Ambil email dokter
             String kodeDokter = Sequel.cariIsi(
@@ -6244,8 +6214,15 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                     byte[] pdfBytes = Files.readAllBytes(Paths.get(outputFile));
                     String base64Document = Base64.getEncoder().encodeToString(pdfBytes);
 
+                    // Get JWT token from utility (berlaku 24 jam)
+                    String jwtToken = JwtPeruri.getValidJwtToken();
+                    if(jwtToken == null) {
+                        JOptionPane.showMessageDialog(null, "Gagal mendapatkan token JWT");
+                        return;
+                    }
+
                     ApiPeruri apiPeruri = new ApiPeruri();
-                    String jwtToken = apiPeruri.generateJwtToken();
+                    apiPeruri.setJwtToken(jwtToken);
 
                     if(jwtToken != null) {
                         Map<String, Object> response = apiPeruri.sendDocument(jwtToken, email, fileName, base64Document);
@@ -6253,7 +6230,7 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                         if(response != null && "0".equals(response.get("resultCode"))) {
                             Map<String, Object> data = (Map<String, Object>) response.get("data");
                             String orderId = (String) data.get("orderId");
-                            
+
                             boolean sukses = Sequel.queryu2tf(
                                 "INSERT INTO tracking_dokumen_ttd (no_rawat,nama_dokumen,tgl_kirim,order_id,status_ttd,keterangan,user_pengirim,email_ttd) " +
                                 "VALUES (?,?,NOW(),?,?,?,?,?)",
@@ -6268,13 +6245,150 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                                     email
                                 }
                             );
-                            
+
                             if(sukses) {
-                                JOptionPane.showMessageDialog(null, 
-                                    "Dokumen berhasil dikirim untuk ditandatangani\n" +
-                                    "Order ID: " + orderId + "\n" +
-                                    "Status: Menunggu tanda tangan"
+                                JOptionPane.showMessageDialog(null,
+                                    "Dokumen berhasil dikirim!\n" +
+                                    "Order ID: " + orderId + "\n\n" +
+                                    "Selanjutnya akan melakukan proses tanda tangan..."
                                 );
+
+                                // ==================== PROSES TANDA TANGAN ====================
+                                // Cek apakah ada session OTP yang masih aktif (24 jam)
+                                String activeSession = Sequel.cariIsi(
+                                    "SELECT token_session FROM tracking_tte_session WHERE " +
+                                    "email='" + email + "' AND status='Aktif' AND " +
+                                    "tgl_session >= DATE_SUB(NOW(), INTERVAL 24 HOUR) " +
+                                    "ORDER BY tgl_session DESC LIMIT 1"
+                                );
+
+                                String tokenSession;
+                                boolean needOTP = true;
+                                ObjectMapper mapperOtp = new ObjectMapper();
+
+                                if(!activeSession.isEmpty()) {
+                                    // Gunakan session yang masih aktif
+                                    tokenSession = activeSession;
+                                    needOTP = false;
+                                    // Skip OTP validation - session masih aktif
+                                } else {
+                                    // Kirim OTP baru
+                                    String otpResponse = apiPeruri.initiateSession(email);
+                                    JsonNode otpRootNode = mapperOtp.readTree(otpResponse);
+
+                                    if(otpRootNode.has("resultCode") && "0".equals(otpRootNode.get("resultCode").asText())) {
+                                        JsonNode otpDataNode = otpRootNode.get("data");
+                                        tokenSession = otpDataNode.get("tokenSession").asText();
+
+                                        // Nonaktifkan semua session lama
+                                        Sequel.queryu2(
+                                            "UPDATE tracking_tte_session SET status='Expired' " +
+                                            "WHERE email=? AND status='Aktif'",
+                                            1,
+                                            new String[]{email}
+                                        );
+
+                                        // Simpan token session baru
+                                        boolean suksesSession = Sequel.queryu2tf(
+                                            "INSERT INTO tracking_tte_session (email,token_session,tgl_session,status) " +
+                                            "VALUES (?,?,NOW(),?)",
+                                            3,
+                                            new String[]{email, tokenSession, "Aktif"}
+                                        );
+
+                                        if(!suksesSession) {
+                                            JOptionPane.showMessageDialog(null, "Gagal menyimpan token session");
+                                            return;
+                                        }
+
+                                        JOptionPane.showMessageDialog(null, "OTP telah dikirim ke email:\n" + email + "\n\nSilakan cek inbox/spam");
+                                    } else {
+                                        String resultDesc = otpRootNode.has("resultDesc") ?
+                                            otpRootNode.get("resultDesc").asText() : "Unknown error";
+                                        JOptionPane.showMessageDialog(null, "Gagal mengirim OTP: " + resultDesc);
+                                        return;
+                                    }
+                                }
+
+                                // Proses validasi OTP dengan retry (jika perlu)
+                                if(needOTP) {
+                                    boolean otpValid = false;
+                                    int maxAttempts = 3;
+                                    int attempt = 0;
+
+                                    while (!otpValid && attempt < maxAttempts) {
+                                        String otp = JOptionPane.showInputDialog(null,
+                                            "Masukkan kode OTP yang dikirim ke email:\n" + email
+                                            + (attempt > 0 ? "\n\nPercobaan ke-" + (attempt + 1) + " dari " + maxAttempts : ""));
+
+                                        if (otp == null || otp.trim().isEmpty()) {
+                                            JOptionPane.showMessageDialog(null, "Proses tanda tangan dibatalkan");
+                                            return;
+                                        }
+
+                                        try {
+                                            // Validasi OTP
+                                            String validationResponse = apiPeruri.validateSession(email, tokenSession, otp);
+                                            JsonNode validationNode = mapperOtp.readTree(validationResponse);
+
+                                            if (!validationNode.has("resultCode") || !"0".equals(validationNode.get("resultCode").asText())) {
+                                                String resultDesc = validationNode.has("resultDesc")
+                                                        ? validationNode.get("resultDesc").asText() : "Kode OTP tidak valid";
+
+                                                attempt++;
+                                                if (attempt < maxAttempts) {
+                                                    JOptionPane.showMessageDialog(null,
+                                                            "Validasi OTP gagal: " + resultDesc + "\n\nSilakan coba lagi.",
+                                                            "Error Validasi OTP",
+                                                            JOptionPane.ERROR_MESSAGE);
+                                                } else {
+                                                    JOptionPane.showMessageDialog(null,
+                                                            "Validasi OTP gagal setelah " + maxAttempts + " percobaan: " + resultDesc,
+                                                            "Error Validasi OTP",
+                                                            JOptionPane.ERROR_MESSAGE);
+                                                    return;
+                                                }
+                                            } else {
+                                                otpValid = true;
+                                            }
+                                        } catch (Exception e) {
+                                            attempt++;
+                                            if (attempt < maxAttempts) {
+                                                JOptionPane.showMessageDialog(null,
+                                                        "Terjadi kesalahan: " + e.getMessage() + "\n\nSilakan coba lagi.",
+                                                        "Error",
+                                                        JOptionPane.ERROR_MESSAGE);
+                                            } else {
+                                                throw e;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                // Proses signing dokumen (menggunakan JWT token yang sama, berlaku 24 jam)
+                                String signingResponse = apiPeruri.signingSession(orderId);
+                                JsonNode signingNode = mapperOtp.readTree(signingResponse);
+
+                                if(signingNode.has("resultCode") && "0".equals(signingNode.get("resultCode").asText())) {
+                                    // Update status tracking
+                                    Sequel.queryu2(
+                                        "UPDATE tracking_dokumen_ttd SET status_ttd='Sudah', " +
+                                        "keterangan='Dokumen telah ditandatangani' " +
+                                        "WHERE order_id=?",
+                                        1,
+                                        new String[]{orderId}
+                                    );
+
+                                    JOptionPane.showMessageDialog(null,
+                                        "SUKSES!\n\n" +
+                                        "Dokumen berhasil dikirim dan ditandatangani\n" +
+                                        "Order ID: " + orderId);
+                                } else {
+                                    String resultDesc = signingNode.has("resultDesc") ?
+                                        signingNode.get("resultDesc").asText() : "Unknown error";
+                                    JOptionPane.showMessageDialog(null, "Gagal signing dokumen: " + resultDesc);
+                                }
+
                             } else {
                                 JOptionPane.showMessageDialog(null, "Gagal menyimpan tracking dokumen");
                             }
@@ -6341,31 +6455,64 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
             return;
         }
 
-        // Tampilkan dialog input OTP
-        String otp = JOptionPane.showInputDialog(null, 
-            "Masukkan kode OTP yang dikirim ke email:\n" + email);
-        
-        if(otp == null || otp.trim().isEmpty()) {
-            return;
-        }
-        
         // Generate JWT token untuk validasi
         ApiPeruri apiPeruri = new ApiPeruri();
         String jwtToken = apiPeruri.generateJwtToken();
         apiPeruri.setJwtToken(jwtToken);
-        
-        // Validasi OTP
-        String validationResponse = apiPeruri.validateSession(email, tokenSession, otp);
+
+        // Proses validasi OTP dengan retry
+        boolean otpValid = false;
+        int maxAttempts = 3;
+        int attempt = 0;
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode validationNode = mapper.readTree(validationResponse);
-        
-        if(!validationNode.has("resultCode") || !"0".equals(validationNode.get("resultCode").asText())) {
-            String resultDesc = validationNode.has("resultDesc") ? 
-                validationNode.get("resultDesc").asText() : "Kode OTP tidak valid";
-            JOptionPane.showMessageDialog(null, "Validasi OTP gagal: " + resultDesc);
-            return;
+
+        while (!otpValid && attempt < maxAttempts) {
+            String otp = JOptionPane.showInputDialog(null,
+                "Masukkan kode OTP yang dikirim ke email:\n" + email
+                + (attempt > 0 ? "\n\nPercobaan ke-" + (attempt + 1) + " dari " + maxAttempts : ""));
+
+            if (otp == null || otp.trim().isEmpty()) {
+                return;
+            }
+
+            try {
+                // Validasi OTP
+                String validationResponse = apiPeruri.validateSession(email, tokenSession, otp);
+                JsonNode validationNode = mapper.readTree(validationResponse);
+
+                if (!validationNode.has("resultCode") || !"0".equals(validationNode.get("resultCode").asText())) {
+                    String resultDesc = validationNode.has("resultDesc")
+                            ? validationNode.get("resultDesc").asText() : "Kode OTP tidak valid";
+
+                    attempt++;
+                    if (attempt < maxAttempts) {
+                        JOptionPane.showMessageDialog(null,
+                                "Validasi OTP gagal: " + resultDesc + "\n\nSilakan coba lagi.",
+                                "Error Validasi OTP",
+                                JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null,
+                                "Validasi OTP gagal setelah " + maxAttempts + " percobaan: " + resultDesc,
+                                "Error Validasi OTP",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                } else {
+                    otpValid = true;
+                }
+            } catch (Exception e) {
+                attempt++;
+                if (attempt < maxAttempts) {
+                    JOptionPane.showMessageDialog(null,
+                            "Terjadi kesalahan: " + e.getMessage() + "\n\nSilakan coba lagi.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                } else {
+                    throw e;
+                }
+            }
         }
-        
+
             JOptionPane.showMessageDialog(null, "OTP berhasil divalidasi\nSilahkan lanjutkan proses tanda tangan");
 
         } catch (Exception e) {
@@ -6376,163 +6523,6 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     }
         // TODO add your handling code here:
     }//GEN-LAST:event_MnSendOTPActionPerformed
-
-    private void MnTTEDokumenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnTTEDokumenActionPerformed
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-    if(tabMode.getRowCount()==0){
-        JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
-        TCari.requestFocus();
-    }else if(Kd2.getText().trim().equals("")){
-        JOptionPane.showMessageDialog(null,"Maaf, Gagal menandatangani. Pilih dulu data yang mau ditandatangani.\nKlik No.Rawat pada table untuk memilih...!!!!");
-    }else if(!(Kd2.getText().trim().equals(""))){    
-        try {
-            // Generate JWT token baru
-            ApiPeruri apiPeruri = new ApiPeruri();
-            String jwtToken = apiPeruri.generateJwtToken();
-            
-            if(jwtToken == null) {
-                JOptionPane.showMessageDialog(null, "Gagal mendapatkan token JWT");
-                return;
-            }
-
-            // Set JWT token ke ApiPeruri instance
-            apiPeruri.setJwtToken(jwtToken);
-            
-            // Cek apakah dokumen sudah dikirim ke Peruri
-            String orderId = Sequel.cariIsi(
-                "SELECT order_id FROM tracking_dokumen_ttd WHERE " +
-                "no_rawat='" + tbDokter.getValueAt(tbDokter.getSelectedRow(),0).toString() + "' AND " +
-                "status_ttd='Belum' ORDER BY tgl_kirim DESC LIMIT 1"
-            );
-            
-            String email = Sequel.cariIsi(
-                "SELECT email_ttd FROM tracking_dokumen_ttd WHERE " +
-                "no_rawat='" + tbDokter.getValueAt(tbDokter.getSelectedRow(),0).toString() + "' AND " +
-                "status_ttd='Belum' ORDER BY tgl_kirim DESC LIMIT 1"
-            );
-            
-            if(orderId.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Dokumen belum dikirim ke Peruri atau sudah ditandatangani");
-                return;
-            }
-
-            // Cek apakah ada session OTP yang masih aktif (24 jam)
-            String activeSession = Sequel.cariIsi(
-                "SELECT token_session FROM tracking_tte_session WHERE " +
-                "email='" + email + "' AND status='Aktif' AND " +
-                "tgl_session >= DATE_SUB(NOW(), INTERVAL 24 HOUR) " +
-                "ORDER BY tgl_session DESC LIMIT 1"
-            );
-
-            String tokenSession;
-            boolean needOTP = true;
-            
-            if(!activeSession.isEmpty()) {
-                // Gunakan session yang masih aktif
-                tokenSession = activeSession;
-                needOTP = false; // Tidak perlu input OTP lagi
-            } else {
-                // Kirim OTP baru
-                String response = apiPeruri.initiateSession(email);
-                ObjectMapper mapper = new ObjectMapper();
-                JsonNode rootNode = mapper.readTree(response);
-                
-                if(rootNode.has("resultCode") && "0".equals(rootNode.get("resultCode").asText())) {
-                    JsonNode dataNode = rootNode.get("data");
-                    tokenSession = dataNode.get("tokenSession").asText();
-                    
-                    // Nonaktifkan semua session lama
-                    Sequel.queryu2(
-                        "UPDATE tracking_tte_session SET status='Expired' " +
-                        "WHERE email=? AND status='Aktif'",
-                        1,
-                        new String[]{email}
-                    );
-                    
-                    // Simpan token session baru
-                    boolean sukses = Sequel.queryu2tf(
-                        "INSERT INTO tracking_tte_session (email,token_session,tgl_session,status) " +
-                        "VALUES (?,?,NOW(),?)",
-                        3,
-                        new String[]{
-                            email,
-                            tokenSession,
-                            "Aktif"
-                        }
-                    );
-                    
-                    if(!sukses) {
-                        JOptionPane.showMessageDialog(null, "Gagal menyimpan token session");
-                        return;
-                    }
-                    
-                    JOptionPane.showMessageDialog(null, "OTP baru telah dikirim ke email: " + email);
-                } else {
-                    String resultDesc = rootNode.has("resultDesc") ? 
-                        rootNode.get("resultDesc").asText() : "Unknown error";
-                    JOptionPane.showMessageDialog(null, "Gagal mengirim OTP: " + resultDesc);
-                    return;
-                }
-            }
-            
-            String otp = "";
-            if(needOTP) {
-                // Tampilkan dialog input OTP hanya jika perlu
-                otp = JOptionPane.showInputDialog(null, 
-                    "Masukkan kode OTP yang dikirim ke email:\n" + email);
-                
-                if(otp == null || otp.trim().isEmpty()) {
-                    return;
-                }
-                
-                // Validasi OTP
-                String validationResponse = apiPeruri.validateSession(email, tokenSession, otp);
-                ObjectMapper mapper = new ObjectMapper();
-                JsonNode validationNode = mapper.readTree(validationResponse);
-                
-                if(!validationNode.has("resultCode") || !"0".equals(validationNode.get("resultCode").asText())) {
-                    String resultDesc = validationNode.has("resultDesc") ? 
-                        validationNode.get("resultDesc").asText() : "Kode OTP tidak valid";
-                    JOptionPane.showMessageDialog(null, "Validasi OTP gagal: " + resultDesc);
-                    return;
-                }
-            }
-
-            
-                // Generate dan set JWT token baru untuk signing session
-                jwtToken = apiPeruri.generateJwtToken();
-                apiPeruri.setJwtToken(jwtToken);
-                
-                // Signing session
-                String signingResponse = apiPeruri.signingSession(orderId);
-                ObjectMapper mapper = new ObjectMapper();
-                JsonNode signingNode = mapper.readTree(signingResponse);
-                
-                if(signingNode.has("resultCode") && "0".equals(signingNode.get("resultCode").asText())) {
-                    // Update status tracking
-                    Sequel.queryu2(
-                        "UPDATE tracking_dokumen_ttd SET status_ttd='Sudah', " +
-                        "keterangan='Dokumen telah ditandatangani' " +
-                        "WHERE order_id=?",
-                        1,
-                        new String[]{orderId}
-                    );
-                    
-                    JOptionPane.showMessageDialog(null, "Dokumen berhasil ditandatangani");
-                } else {
-                    String resultDesc = signingNode.has("resultDesc") ? 
-                        signingNode.get("resultDesc").asText() : "Unknown error";
-                    JOptionPane.showMessageDialog(null, "Gagal signing session: " + resultDesc);
-                }
-            
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-            JOptionPane.showMessageDialog(null, "Terjadi kesalahan: " + e.getMessage());
-        }
-    }
-    this.setCursor(Cursor.getDefaultCursor());
-        // TODO add your handling code here:
-    }//GEN-LAST:event_MnTTEDokumenActionPerformed
 
     private void MnDowloadDokumenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnDowloadDokumenActionPerformed
          this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -6631,323 +6621,6 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         // TODO add your handling code here:
     }//GEN-LAST:event_MnDowloadDokumenActionPerformed
 
-    private void MnKirimDanTandaTanganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnKirimDanTandaTanganActionPerformed
-       this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-    if(tabMode.getRowCount()==0){
-        JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
-        TCari.requestFocus();
-    }else if(Kd2.getText().trim().equals("")){
-        JOptionPane.showMessageDialog(null,"Maaf, Gagal mengirim. Pilih dulu data yang mau dikirim.\nKlik No.Rawat pada table untuk memilih...!!!!");
-    }else if(!(Kd2.getText().trim().equals(""))){    
-        try {
-            // Get JWT token from utility
-            String jwtToken = JwtPeruri.getValidJwtToken();
-            if(jwtToken == null) {
-                JOptionPane.showMessageDialog(null, "Gagal mendapatkan token JWT");
-                return;
-            }
-
-            ApiPeruri apiPeruri = new ApiPeruri();
-            apiPeruri.setJwtToken(jwtToken);
-
-            // Ambil email dokter
-            String kodeDokter = Sequel.cariIsi(
-                "SELECT periksa_lab.kd_dokter FROM periksa_lab WHERE " +
-                "no_rawat='" + tbDokter.getValueAt(tbDokter.getSelectedRow(),0).toString() + "' AND " +
-                "tgl_periksa='" + tbDokter.getValueAt(tbDokter.getSelectedRow(),3).toString() + "' AND " +
-                "jam='" + tbDokter.getValueAt(tbDokter.getSelectedRow(),4).toString() + "'"
-            );
-            
-            String email = Sequel.cariIsi(
-                "SELECT pegawai.email FROM dokter " +
-                "INNER JOIN pegawai ON dokter.kd_dokter=pegawai.nik " +
-                "WHERE dokter.kd_dokter='" + kodeDokter + "'"
-            );
-            
-            if(email.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Email dokter belum diset di data pegawai");
-                return;
-            }
-
-            ps4=koneksi.prepareStatement(
-                "select periksa_lab.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.umur,petugas.nama,"+
-                "DATE_FORMAT(periksa_lab.tgl_periksa,'%d-%m-%Y') as tgl_periksa,periksa_lab.jam,periksa_lab.nip,"+
-                "periksa_lab.dokter_perujuk,periksa_lab.kd_dokter,concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab) as alamat,"+
-                "dokter.nm_dokter,DATE_FORMAT(pasien.tgl_lahir,'%d-%m-%Y') as lahir "+
-                "from periksa_lab inner join reg_periksa inner join pasien inner join petugas inner join dokter inner join kelurahan inner join kecamatan inner join kabupaten "+
-                "on periksa_lab.no_rawat=reg_periksa.no_rawat and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and periksa_lab.nip=petugas.nip "+
-                "and periksa_lab.kd_dokter=dokter.kd_dokter and pasien.kd_kel=kelurahan.kd_kel and pasien.kd_kec=kecamatan.kd_kec and pasien.kd_kab=kabupaten.kd_kab "+
-                "where periksa_lab.kategori='PK' and periksa_lab.tgl_periksa=? and periksa_lab.jam=? and periksa_lab.no_rawat=? "+
-                "group by concat(periksa_lab.no_rawat,periksa_lab.tgl_periksa,periksa_lab.jam)");
-            
-            try {
-                ps4.setString(1,tbDokter.getValueAt(tbDokter.getSelectedRow(),3).toString());
-                ps4.setString(2,tbDokter.getValueAt(tbDokter.getSelectedRow(),4).toString());
-                ps4.setString(3,tbDokter.getValueAt(tbDokter.getSelectedRow(),0).toString());
-                rs=ps4.executeQuery();
-                
-                if(rs.next()){
-                    // Cek kamar
-                    kamar=Sequel.cariIsi("select ifnull(kamar_inap.kd_kamar,'') from kamar_inap where kamar_inap.no_rawat=? order by kamar_inap.tgl_masuk desc limit 1",rs.getString("no_rawat"));
-                    if(!kamar.equals("")){
-                        namakamar=kamar+", "+Sequel.cariIsi("select bangsal.nm_bangsal from bangsal inner join kamar on bangsal.kd_bangsal=kamar.kd_bangsal where kamar.kd_kamar=?",kamar);            
-                        kamar="Kamar";
-                    }else if(kamar.equals("")){
-                        kamar="Poli";
-                        namakamar=Sequel.cariIsi("select poliklinik.nm_poli from poliklinik inner join reg_periksa on poliklinik.kd_poli=reg_periksa.kd_poli where reg_periksa.no_rawat=?",rs.getString("no_rawat"));
-                    }
-
-                    // Set parameter untuk report
-                    Map<String, Object> param = new HashMap<>();
-                    param.put("noperiksa",rs.getString("no_rawat"));
-                    param.put("norm",rs.getString("no_rkm_medis"));
-                    param.put("namapasien",rs.getString("nm_pasien"));
-                    param.put("jkel",rs.getString("jk"));
-                    param.put("umur",rs.getString("umur"));
-                    param.put("lahir",rs.getString("lahir"));
-                    param.put("pengirim",Sequel.cariIsi("select dokter.nm_dokter from dokter where dokter.kd_dokter=?",rs.getString("dokter_perujuk")));
-                    param.put("tanggal",rs.getString("tgl_periksa"));
-                    param.put("penjab",rs.getString("nm_dokter"));
-                    param.put("petugas",rs.getString("nama"));
-                    param.put("jam",rs.getString("jam"));
-                    param.put("alamat",rs.getString("alamat"));
-                    param.put("kamar",kamar);
-                    param.put("namakamar",namakamar);
-                    param.put("namars",akses.getnamars());
-                    param.put("alamatrs",akses.getalamatrs());
-                    param.put("kotars",akses.getkabupatenrs());
-                    param.put("propinsirs",akses.getpropinsirs());
-                    param.put("kontakrs",akses.getkontakrs());
-                    param.put("emailrs",akses.getemailrs());   
-                    param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-                    
-                    // Set tanda tangan
-                    finger=Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",rs.getString("kd_dokter"));
-                    param.put("finger","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+rs.getString("nm_dokter")+"\nID "+(finger.equals("")?rs.getString("kd_dokter"):finger)+"\n"+rs.getString("tgl_periksa"));  
-                    
-                    finger=Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",rs.getString("nip"));
-                    param.put("finger2","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+rs.getString("nama")+"\nID "+(finger.equals("")?rs.getString("nip"):finger)+"\n"+rs.getString("tgl_periksa"));  
-                    
-                    // Hapus temporary data
-                    Sequel.queryu("delete from temporary_lab");
-
-                    // Proses detail pemeriksaan
-                    ps2=koneksi.prepareStatement(
-                        "select jns_perawatan_lab.kd_jenis_prw,jns_perawatan_lab.nm_perawatan,periksa_lab.biaya from periksa_lab inner join jns_perawatan_lab "+
-                        "on periksa_lab.kd_jenis_prw=jns_perawatan_lab.kd_jenis_prw where periksa_lab.kategori='PK' and periksa_lab.no_rawat=? and periksa_lab.tgl_periksa=? "+
-                        "and periksa_lab.jam=?");
-                    try {
-                        ps2.setString(1,rs.getString("no_rawat"));
-                        ps2.setString(2,Valid.SetTgl(rs.getString("tgl_periksa")));
-                        ps2.setString(3,rs.getString("jam"));
-                        rs2=ps2.executeQuery();
-                        
-                        while(rs2.next()){
-                            Sequel.menyimpan("temporary_lab","'0','"+rs2.getString("nm_perawatan")+"','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''","Data User"); 
-                            ps3=koneksi.prepareStatement(
-                                "select template_laboratorium.Pemeriksaan, detail_periksa_lab.nilai,template_laboratorium.satuan,detail_periksa_lab.nilai_rujukan,detail_periksa_lab.biaya_item,"+
-                                "detail_periksa_lab.keterangan,detail_periksa_lab.kd_jenis_prw from detail_periksa_lab inner join template_laboratorium on detail_periksa_lab.id_template=template_laboratorium.id_template "+
-                                "where detail_periksa_lab.no_rawat=? and detail_periksa_lab.kd_jenis_prw=? and detail_periksa_lab.tgl_periksa=? and detail_periksa_lab.jam=? "+
-                                "order by template_laboratorium.urut");
-                            try {
-                                ps3.setString(1,rs.getString("no_rawat"));
-                                ps3.setString(2,rs2.getString("kd_jenis_prw"));
-                                ps3.setString(3,Valid.SetTgl(rs.getString("tgl_periksa")));
-                                ps3.setString(4,rs.getString("jam"));
-                                rs3=ps3.executeQuery();
-                                while(rs3.next()){
-                                    Sequel.menyimpan("temporary_lab","'0','  "+rs3.getString("Pemeriksaan")+"','"+rs3.getString("nilai").replaceAll("'","`")+"','"+rs3.getString("satuan")
-                                            +"','"+rs3.getString("nilai_rujukan")+"','"+rs3.getString("keterangan")+"','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',''","Data User"); 
-                                }
-                            } catch (Exception e) {
-                                System.out.println("Notif ps3 : "+e);
-                            } finally{
-                                if(rs3!=null){
-                                    rs3.close();
-                                }
-                                if(ps3!=null){
-                                    ps3.close();
-                                }
-                            }
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Notif ps2 : "+e);
-                    } finally{
-                        if(rs2!=null){
-                            rs2.close();
-                        }
-                        if(ps2!=null){
-                            ps2.close();
-                        }
-                    }
-                    
-                    // Cek permintaan pemeriksaan
-                    pspermintaan=koneksi.prepareStatement(
-                            "select noorder,DATE_FORMAT(tgl_permintaan,'%d-%m-%Y') as tgl_permintaan,jam_permintaan from permintaan_lab where "+
-                            "no_rawat=? and tgl_hasil=? and jam_hasil=?");
-                    try {
-                        pspermintaan.setString(1,rs.getString("no_rawat"));
-                        pspermintaan.setString(2,Valid.SetTgl(rs.getString("tgl_periksa")));
-                        pspermintaan.setString(3,rs.getString("jam"));
-                        rspermintaan=pspermintaan.executeQuery();
-                        if(rspermintaan.next()){
-                            param.put("nopermintaan",rspermintaan.getString("noorder"));   
-                            param.put("tanggalpermintaan",rspermintaan.getString("tgl_permintaan"));  
-                            param.put("jampermintaan",rspermintaan.getString("jam_permintaan"));
-                            Valid.MyReportPDF("rptPeriksaLab.jasper","report","::[ Pemeriksaan Laboratorium ]::",param);
-                        }else{
-                            Valid.MyReportPDF("rptPeriksaLab.jasper","report","::[ Pemeriksaan Laboratorium ]::",param);
-                        }
-                    } catch (Exception e) {
-                        System.out.println("Notif : "+e);
-                    } finally{
-                        if(rspermintaan!=null){
-                            rspermintaan.close();
-                        }
-                        if(pspermintaan!=null){
-                            pspermintaan.close();
-                        }
-                    }
-
-                    // Generate PDF
-                    String outputFile = "temporary/" + 
-                                      Valid.SetTgl(rs.getString("tgl_periksa")).replaceAll("-","") +
-                                      "_" + rs.getString("no_rawat").replaceAll("/","") + 
-                                      "_lab.pdf";
-                    
-                    String fileName = "Hasil_Lab_" + 
-                                    Valid.SetTgl(rs.getString("tgl_periksa")).replaceAll("-","") +
-                                    "_" + rs.getString("no_rawat").replaceAll("/","") + 
-                                    ".pdf";
-
-                    JasperPrint jasperPrint = JasperFillManager.fillReport("report/rptPeriksaLabPermintaanTTE.jasper", param, koneksi);
-                    JasperExportManager.exportReportToPdfFile(jasperPrint, outputFile);
-
-                    // Konversi ke Base64 dan kirim ke Peruri
-                    byte[] pdfBytes = Files.readAllBytes(Paths.get(outputFile));
-                    String base64Document = Base64.getEncoder().encodeToString(pdfBytes);
-
-                    Map<String, Object> response = apiPeruri.sendDocument(jwtToken, email, fileName, base64Document);
-                    
-                    if(response != null && "0".equals(response.get("resultCode"))) {
-                        Map<String, Object> data = (Map<String, Object>) response.get("data");
-                        String orderId = (String) data.get("orderId");
-                        
-                        boolean sukses = Sequel.queryu2tf(
-                            "INSERT INTO tracking_dokumen_ttd (no_rawat,nama_dokumen,tgl_kirim,order_id,status_ttd,keterangan,user_pengirim,email_ttd) " +
-                            "VALUES (?,?,NOW(),?,?,?,?,?)",
-                            7,
-                            new String[]{
-                                rs.getString("no_rawat"),
-                                fileName,
-                                orderId,
-                                "Belum",
-                                "Dokumen telah dikirim ke Peruri",
-                                akses.getkode(),
-                                email
-                            }
-                        );
-                        
-                        if(sukses) {
-                            // Cek session OTP aktif
-                            String activeSession = Sequel.cariIsi(
-                                "SELECT token_session FROM tracking_tte_session WHERE " +
-                                "email='" + email + "' AND status='Aktif' AND " +
-                                "tgl_session >= DATE_SUB(NOW(), INTERVAL 24 HOUR) " +
-                                "ORDER BY tgl_session DESC LIMIT 1"
-                            );
-
-                            String tokenSession;
-                            boolean needOTP = true;
-                            
-                            if(!activeSession.isEmpty()) {
-                                tokenSession = activeSession;
-                                needOTP = false;
-                            } else {
-                                // Kirim OTP baru
-                                String otpResponse = apiPeruri.initiateSession(email);
-                                ObjectMapper mapper = new ObjectMapper();
-                                JsonNode rootNode = mapper.readTree(otpResponse);
-                                
-                                if(rootNode.has("resultCode") && "0".equals(rootNode.get("resultCode").asText())) {
-                                    JsonNode dataNode = rootNode.get("data");
-                                    tokenSession = dataNode.get("tokenSession").asText();
-                                    
-                                    // Update session di database
-                                    Sequel.queryu2("UPDATE tracking_tte_session SET status='Expired' WHERE email=? AND status='Aktif'", 
-                                        1, new String[]{email});
-                                    Sequel.queryu2tf("INSERT INTO tracking_tte_session (email,token_session,tgl_session,status) VALUES (?,?,NOW(),?)", 
-                                        3, new String[]{email, tokenSession, "Aktif"});
-                                    
-                                    JOptionPane.showMessageDialog(null, "OTP telah dikirim ke email: " + email);
-                                } else {
-                                    throw new RuntimeException("Gagal mengirim OTP: " + rootNode.get("resultDesc").asText());
-                                }
-                            }
-
-                            // Proses OTP jika diperlukan
-                            if(needOTP) {
-                                String otp = JOptionPane.showInputDialog(null, "Masukkan kode OTP yang dikirim ke email:\n" + email);
-                                if(otp == null || otp.trim().isEmpty()) {
-                                    return;
-                                }
-                                
-                                String validationResponse = apiPeruri.validateSession(email, tokenSession, otp);
-                                ObjectMapper mapper = new ObjectMapper();
-                                JsonNode validationNode = mapper.readTree(validationResponse);
-                                
-                                if(!validationNode.has("resultCode") || !"0".equals(validationNode.get("resultCode").asText())) {
-                                    throw new RuntimeException("Validasi OTP gagal: " + validationNode.get("resultDesc").asText());
-                                }
-                            }
-
-                            // Signing session
-                            String signingResponse = apiPeruri.signingSession(orderId);
-                            ObjectMapper mapper = new ObjectMapper();
-                            JsonNode signingNode = mapper.readTree(signingResponse);
-                            
-                            if(signingNode.has("resultCode") && "0".equals(signingNode.get("resultCode").asText())) {
-                                // Update status tracking
-                                Sequel.queryu2(
-                                    "UPDATE tracking_dokumen_ttd SET status_ttd='Sudah', " +
-                                    "keterangan='Dokumen telah ditandatangani' " +
-                                    "WHERE order_id=?",
-                                    1,
-                                    new String[]{orderId}
-                                );
-                                
-                                JOptionPane.showMessageDialog(null, 
-                                    "Dokumen berhasil dikirim dan ditandatangani\n" +
-                                    "Order ID: " + orderId);
-                            } else {
-                                throw new RuntimeException("Gagal signing: " + signingNode.get("resultDesc").asText());
-                            }
-                        }
-                    }
-
-                    // Hapus file temporary
-                    Files.deleteIfExists(Paths.get(outputFile));
-                }
-            } catch (Exception e) {
-                System.out.println("Notif : "+e);
-                JOptionPane.showMessageDialog(null, "Terjadi kesalahan: " + e.getMessage());
-            } finally{
-                if(rs!=null){
-                    rs.close();
-                }
-                if(ps4!=null){
-                    ps4.close();
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-            JOptionPane.showMessageDialog(null, "Terjadi kesalahan: " + e.getMessage());
-        }
-    }
-    this.setCursor(Cursor.getDefaultCursor());
-        // TODO add your handling code here:
-    }//GEN-LAST:event_MnKirimDanTandaTanganActionPerformed
-
     /**
     * @param args the command line arguments
     */
@@ -7003,13 +6676,11 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JMenuItem MnCetakNota;
     private javax.swing.JMenuItem MnCetakSuratCovid;
     private javax.swing.JMenuItem MnDowloadDokumen;
-    private javax.swing.JMenuItem MnKirimDanTandaTangan;
     private javax.swing.JMenu MnPDFLab;
     private javax.swing.JMenu MnPDFLabTTE;
     private javax.swing.JMenuItem MnSaranKesan;
     private javax.swing.JMenuItem MnSendDokument;
     private javax.swing.JMenuItem MnSendOTP;
-    private javax.swing.JMenuItem MnTTEDokumen;
     private javax.swing.JMenuItem MnUbah;
     private javax.swing.JMenuItem MnUbah1;
     private widget.TextBox NoRawat;

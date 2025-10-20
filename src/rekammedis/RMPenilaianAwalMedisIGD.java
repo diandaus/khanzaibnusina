@@ -2441,55 +2441,100 @@ public final class RMPenilaianAwalMedisIGD extends javax.swing.JDialog {
             JsonNode dataNode = rootNode.get("data");
             String tokenSession = dataNode.get("tokenSession").asText();
 
-            // Nonaktifkan session lama dan simpan session baru
+            JOptionPane.showMessageDialog(null,
+                "OTP berhasil dikirim ke email:\n" + email + "\n\nSilakan cek inbox/spam email Anda.");
+
+            // Proses validasi OTP dengan retry
+            boolean otpValid = false;
+            int maxAttempts = 3;
+            int attempt = 0;
+
+            while (!otpValid && attempt < maxAttempts) {
+                String otp = JOptionPane.showInputDialog(null,
+                    "Masukkan kode OTP (6 digit)\nyang dikirim ke email: " + email
+                    + (attempt > 0 ? "\n\nPercobaan ke-" + (attempt + 1) + " dari " + maxAttempts : ""),
+                    "Validasi OTP",
+                    JOptionPane.QUESTION_MESSAGE);
+
+                if(otp == null || otp.trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "OTP tidak boleh kosong");
+                    return;
+                }
+
+                // Validasi format OTP
+                otp = otp.trim();
+                if(!otp.matches("\\d{6}")) {
+                    attempt++;
+                    if(attempt < maxAttempts) {
+                        JOptionPane.showMessageDialog(null,
+                            "Format OTP tidak valid. Harus 6 digit angka.\n\nSilakan coba lagi.",
+                            "Error Format OTP",
+                            JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null,
+                            "Format OTP tidak valid setelah " + maxAttempts + " percobaan.",
+                            "Error Format OTP",
+                            JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    continue;
+                }
+
+                try {
+                    // Validasi OTP ke API
+                    String validationResponse = apiPeruri.validateSession(email, tokenSession, otp);
+                    JsonNode validationNode = mapper.readTree(validationResponse);
+
+                    if(!validationNode.has("resultCode") || !"0".equals(validationNode.get("resultCode").asText())) {
+                        String resultDesc = validationNode.has("resultDesc") ?
+                            validationNode.get("resultDesc").asText() : "Kode OTP tidak valid";
+
+                        attempt++;
+                        if(attempt < maxAttempts) {
+                            JOptionPane.showMessageDialog(null,
+                                "Validasi Gagal: " + resultDesc + "\n\nSilakan coba lagi.",
+                                "Error Validasi OTP",
+                                JOptionPane.ERROR_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null,
+                                "Validasi OTP gagal setelah " + maxAttempts + " percobaan: " + resultDesc,
+                                "Error Validasi OTP",
+                                JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                    } else {
+                        otpValid = true;
+                    }
+                } catch (Exception e) {
+                    attempt++;
+                    if(attempt < maxAttempts) {
+                        JOptionPane.showMessageDialog(null,
+                            "Terjadi kesalahan: " + e.getMessage() + "\n\nSilakan coba lagi.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        throw e;
+                    }
+                }
+            }
+
+            // HAPUS semua session lama untuk email ini (SETELAH OTP berhasil divalidasi)
             Sequel.queryu2(
-                "UPDATE tracking_tte_session SET status='Expired' " +
-                "WHERE email=? AND status='Aktif'",
+                "DELETE FROM tracking_tte_session WHERE email=?",
                 1,
                 new String[]{email}
             );
 
-            boolean sukses = Sequel.queryu2tf(
+            // Simpan session baru
+            boolean suksesSession = Sequel.queryu2tf(
                 "INSERT INTO tracking_tte_session (email, token_session, tgl_session, status) " +
-                "VALUES (?, ?, NOW(), 'Aktif')",
+                "VALUES (?, ?, NOW(), ?)",
                 3,
                 new String[]{email, tokenSession, "Aktif"}
             );
 
-            if(!sukses) {
+            if(!suksesSession) {
                 JOptionPane.showMessageDialog(null, "Gagal menyimpan session. Silakan coba lagi.");
-                return;
-            }
-
-            JOptionPane.showMessageDialog(null,
-                "OTP berhasil dikirim ke email:\n" + email + "\n\nSilakan cek inbox/spam email Anda.");
-
-            // Input OTP
-            String otp = JOptionPane.showInputDialog(null,
-                "Masukkan kode OTP (6 digit)\nyang dikirim ke email: " + email,
-                "Validasi OTP",
-                JOptionPane.QUESTION_MESSAGE);
-
-            if(otp == null || otp.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "OTP tidak boleh kosong");
-                return;
-            }
-
-            // Validasi format OTP
-            otp = otp.trim();
-            if(!otp.matches("\\d{6}")) {
-                JOptionPane.showMessageDialog(null, "Format OTP tidak valid. Harus 6 digit angka.");
-                return;
-            }
-
-            // Validasi OTP ke API
-            String validationResponse = apiPeruri.validateSession(email, tokenSession, otp);
-            JsonNode validationNode = mapper.readTree(validationResponse);
-
-            if(!validationNode.has("resultCode") || !"0".equals(validationNode.get("resultCode").asText())) {
-                String resultDesc = validationNode.has("resultDesc") ?
-                    validationNode.get("resultDesc").asText() : "Kode OTP tidak valid";
-                JOptionPane.showMessageDialog(null, "Validasi Gagal: " + resultDesc);
                 return;
             }
 

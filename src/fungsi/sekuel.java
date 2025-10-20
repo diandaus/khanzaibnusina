@@ -642,6 +642,37 @@ public final class sekuel {
             }
         }
     }
+    
+    public boolean menyimpantf(String table,String isisimpan,String isiedit,String acuan_field){
+        bool=true;
+        try{            
+            ps=connect.prepareStatement("insert into "+table+" values("+isisimpan+")");
+            ps.executeUpdate();   
+            if(ps != null){
+                ps.close();
+            }  
+            SimpanTrack("insert into "+table+" values("+isisimpan+")");
+            bool=true;
+        }catch(Exception e){
+            if(e.toString().toLowerCase().contains("duplicate")){
+                try {
+                    ps=connect.prepareStatement("update "+table+" set "+isiedit+" where "+acuan_field);
+                    ps.executeUpdate();
+                    if(ps != null){
+                        ps.close();
+                    }  
+                    SimpanTrack("update "+table+" set "+isiedit+" where "+acuan_field);
+                    bool=true;
+                } catch (Exception ex) {
+                    bool=false;
+                    System.out.println("Notifikasi Edit : "+ex);
+                }
+            }else{
+               bool=false; 
+            }
+        }
+        return bool;
+    }
 
     public void menyimpan(String table,String value,String sama,JTextField AlmGb){
         try {
@@ -1980,7 +2011,7 @@ public final class sekuel {
             try {
                 ps=connect.prepareStatement("insert into trackersql values(now(),?,?)");
                 try{       
-                    ps.setString(1,sql);
+                    ps.setString(1,akses.getalamatip()+" "+sql);
                     ps.setString(2,akses.getkode());
                     ps.executeUpdate(); 
                  }catch(Exception e){
