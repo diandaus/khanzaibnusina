@@ -42,9 +42,9 @@ public final class DlgPelayananLab extends javax.swing.JDialog {
     private validasi Valid=new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
-    private int i=0,limabelas=0,tigapuluh=0,satujam=0,lebihsatujam=0,
-            limabelas2=0,tigapuluh2=0,satujam2=0,lebihsatujam2=0,
-            limabelas3=0,tigapuluh3=0,satujam3=0,lebihsatujam3=0;
+    private int i=0,limabelas=0,tigapuluh=0,satujam=0,lebihsatujam=0,lebihduajam=0,
+            limabelas2=0,tigapuluh2=0,satujam2=0,lebihsatujam2=0,lebihduajam2=0,
+            limabelas3=0,tigapuluh3=0,satujam3=0,lebihsatujam3=0,lebihduajam3=0;
     private double lamajam=0,lamajam2=0,lamajam3=0;
     /** Creates new form DlgLhtBiaya
      * @param parent
@@ -152,14 +152,6 @@ public final class DlgPelayananLab extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
         setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowActivated(java.awt.event.WindowEvent evt) {
-                formWindowActivated(evt);
-            }
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
-        });
 
         internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), "::[ Data Lama Pelayanan Laboratorium Patologi Klinis ]::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50))); // NOI18N
         internalFrame1.setName("internalFrame1"); // NOI18N
@@ -183,7 +175,7 @@ public final class DlgPelayananLab extends javax.swing.JDialog {
 
         internalFrame1.add(Scroll, java.awt.BorderLayout.CENTER);
 
-        panelGlass5.setBackground(new java.awt.Color(255,250,250));
+        panelGlass5.setBackground(new java.awt.Color(255, 250, 250));
         panelGlass5.setName("panelGlass5"); // NOI18N
         panelGlass5.setPreferredSize(new java.awt.Dimension(55, 55));
         panelGlass5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 9));
@@ -392,10 +384,6 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         }
 }//GEN-LAST:event_BtnCariKeyPressed
 
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        tampil();
-    }//GEN-LAST:event_formWindowOpened
-
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
             BtnCariActionPerformed(null);
@@ -418,11 +406,6 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             
         }
     }//GEN-LAST:event_BtnAllKeyPressed
-
-    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        tampil();
-
-    }//GEN-LAST:event_formWindowActivated
 
     /**
     * @param args the command line arguments
@@ -463,9 +446,9 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         try{   
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)); 
             Valid.tabelKosong(tabMode);   
-            limabelas=0;tigapuluh=0;satujam=0;lebihsatujam=0;
-            limabelas2=0;tigapuluh2=0;satujam2=0;lebihsatujam2=0;
-            limabelas3=0;tigapuluh3=0;satujam3=0;lebihsatujam3=0;
+            limabelas=0;tigapuluh=0;satujam=0;lebihsatujam=0;lebihduajam=0;
+            limabelas2=0;tigapuluh2=0;satujam2=0;lebihsatujam2=0;lebihduajam2=0;
+            limabelas3=0;tigapuluh3=0;satujam3=0;lebihsatujam3=0;lebihduajam3=0;
             ps=koneksi.prepareStatement(
                 "select reg_periksa.no_rkm_medis,pasien.nm_pasien,dokter.nm_dokter,permintaan_lab.noorder," +
                 "permintaan_lab.tgl_permintaan,permintaan_lab.jam_permintaan,permintaan_lab.tgl_sampel,"+
@@ -475,24 +458,16 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 "round((TIME_TO_SEC(concat(permintaan_lab.tgl_hasil,' ',permintaan_lab.jam_hasil))-TIME_TO_SEC(concat(permintaan_lab.tgl_permintaan,' ',permintaan_lab.jam_permintaan)))/60,2) as permintaanhasil " +
                 "from reg_periksa inner join dokter inner join pasien inner join permintaan_lab on reg_periksa.kd_dokter=dokter.kd_dokter " +
                 "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis and reg_periksa.no_rawat=permintaan_lab.no_rawat where "+
-                "permintaan_lab.tgl_sampel<>'0000-00-00' and permintaan_lab.tgl_hasil<>'0000-00-00' and permintaan_lab.tgl_permintaan between ? and ? and permintaan_lab.noorder like ? or " +
-                "permintaan_lab.tgl_sampel<>'0000-00-00' and permintaan_lab.tgl_hasil<>'0000-00-00' and permintaan_lab.tgl_permintaan between ? and ? and dokter.nm_dokter like ? or " +
-                "permintaan_lab.tgl_sampel<>'0000-00-00' and permintaan_lab.tgl_hasil<>'0000-00-00' and permintaan_lab.tgl_permintaan between ? and ? and reg_periksa.no_rkm_medis like ? or " +
-                "permintaan_lab.tgl_sampel<>'0000-00-00' and permintaan_lab.tgl_hasil<>'0000-00-00' and permintaan_lab.tgl_permintaan between ? and ? and pasien.nm_pasien like ?  "+
+                "permintaan_lab.tgl_sampel<>'0000-00-00' and permintaan_lab.tgl_hasil<>'0000-00-00' and permintaan_lab.tgl_permintaan between ? and ? and "+
+                "(permintaan_lab.noorder like ? or dokter.nm_dokter like ? or reg_periksa.no_rkm_medis like ? or pasien.nm_pasien like ?)  "+
                 "order by permintaan_lab.tgl_permintaan,permintaan_lab.jam_permintaan");
             try {
                 ps.setString(1,Valid.SetTgl(Tgl1.getSelectedItem()+""));
                 ps.setString(2,Valid.SetTgl(Tgl2.getSelectedItem()+""));
                 ps.setString(3,"%"+TCari.getText().trim()+"%");
-                ps.setString(4,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                ps.setString(5,Valid.SetTgl(Tgl2.getSelectedItem()+""));
+                ps.setString(4,"%"+TCari.getText().trim()+"%");
+                ps.setString(5,"%"+TCari.getText().trim()+"%");
                 ps.setString(6,"%"+TCari.getText().trim()+"%");
-                ps.setString(7,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                ps.setString(8,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                ps.setString(9,"%"+TCari.getText().trim()+"%");
-                ps.setString(10,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                ps.setString(11,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                ps.setString(12,"%"+TCari.getText().trim()+"%");
                 rs=ps.executeQuery();
                 i=1;lamajam=0;lamajam2=0;lamajam3=0;
                 while(rs.next()){
@@ -510,8 +485,10 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                         tigapuluh++;
                     }else if((rs.getDouble("permintaansampel")>30)&&(rs.getDouble("permintaansampel")<=60)){
                         satujam++;
-                    }else if(rs.getDouble("permintaansampel")>60){
+                    }else if((rs.getDouble("permintaansampel")>60)&&(rs.getDouble("permintaansampel")<=120)){
                         lebihsatujam++;
+                    }else if(rs.getDouble("permintaansampel")>120){
+                        lebihduajam++;
                     }
                     
                     lamajam2=lamajam2+rs.getDouble("sampelhasil");
@@ -521,8 +498,10 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                         tigapuluh2++;
                     }else if((rs.getDouble("sampelhasil")>30)&&(rs.getDouble("sampelhasil")<=60)){
                         satujam2++;
-                    }else if(rs.getDouble("sampelhasil")>60){
+                    }else if((rs.getDouble("sampelhasil")>60)&&(rs.getDouble("sampelhasil")<=120)){
                         lebihsatujam2++;
+                    }else if(rs.getDouble("sampelhasil")>120){
+                        lebihduajam2++;
                     }
                     
                     lamajam3=lamajam3+rs.getDouble("permintaanhasil");
@@ -532,8 +511,10 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                         tigapuluh3++;
                     }else if((rs.getDouble("permintaanhasil")>30)&&(rs.getDouble("permintaanhasil")<=60)){
                         satujam3++;
-                    }else if(rs.getDouble("permintaanhasil")>60){
+                    }else if((rs.getDouble("permintaanhasil")>60)&&(rs.getDouble("permintaanhasil")<=120)){
                         lebihsatujam3++;
+                    }else if(rs.getDouble("permintaanhasil")>120){
+                        lebihduajam3++;
                     }
                     
                 }    
@@ -551,7 +532,10 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                         "","",">30 - <=60 Menit",": ","","","","",""+satujam,""+satujam2,""+satujam3
                     });
                     tabMode.addRow(new Object[]{
-                        "","",">60 Menit",": ","","","","",""+lebihsatujam,""+lebihsatujam2,""+lebihsatujam3
+                        "","",">60 - <=120 Menit",": ","","","","",""+lebihsatujam,""+lebihsatujam2,""+lebihsatujam3
+                    });
+                    tabMode.addRow(new Object[]{
+                        "","",">120 Menit",": ","","","","",""+lebihduajam,""+lebihduajam2,""+lebihduajam3
                     });
                 }                    
             } catch (Exception e) {

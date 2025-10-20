@@ -23,7 +23,6 @@ import javax.swing.JOptionPane;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.JTable;
 import javax.swing.event.DocumentEvent;
 
 /**
@@ -663,7 +662,7 @@ public class DlgDiagnosaPenyakit extends javax.swing.JDialog {
         DTPCari2.setDate(tgl2);
         panelDiagnosa1.setRM(TNoRw.getText(),TNoRM.getText(),Valid.SetTgl(DTPCari1.getSelectedItem()+""),Valid.SetTgl(DTPCari2.getSelectedItem()+""),Status.getSelectedItem().toString(),TCari.getText().trim());
     }
-  
+    
     
     
     public void isCek(){

@@ -134,9 +134,7 @@
             ?>
         </table>
         <br>
-        <button id="btnpilihan" class="btn btn-warning">Pilih Jenis Validasi</button>
-        
-        <form id="formphoto" method="POST" action="pages/storeImage.php" onsubmit="return validasiIsi();" enctype=multipart/form-data>
+        <form method="POST" action="pages/storeImage.php" onsubmit="return validasiIsi();" enctype=multipart/form-data>
             <input type="hidden" name="noresep" value="<?=$noresep;?>">
             <div class="row">
                 <div class="col-md-6">
@@ -155,31 +153,6 @@
                 </div>
             </div>
         </form>
-        
-        <form id="formttd" method="POST" action="pages/upload.php">
-        <input type="hidden" name="noresep" value="<?=$noresep;?>">
-            <div class="row">
-                <div class="col-md-12 text-center">Tanda Tangan Digital</div>
-                <br>
-                <br>
-                
-                    <div class="col-md-12 text-center">
-					    <canvas id="signature-pad" class="signature-pad" width="455" height="200" style="border:1px solid #000000;"></canvas>
-				    </div>
-                    <div class="col-md-12 text-center">
-                        <textarea id="signature64" name="signed" style="display:none"></textarea>
-                        </div>
-                        <br>
-                    <div class="col-md-12 text-center">
-                        <button type="button" class="btn btn-danger" id="clear">Clear</button>
-                        <button class="btn btn-success" id="save-jpeg">Simpan</button>
-                        
-                    </div>
-                
-            </div>
-
-        </form>
-        
     </div>
     <script language="JavaScript">
         Webcam.set({
@@ -197,42 +170,7 @@
                 document.getElementById('results').innerHTML = '<img src="'+data_uri+'"/>';
             } );
         }
-       document.getElementById('clear').addEventListener('click', function () {
-        signaturePad.clear();
-        });
-
-        document.getElementById('save-jpeg').addEventListener('click', function () {
-            if (signaturePad.isEmpty()) {
-                alert("Tanda Tangan Anda Kosong! Silahkan tanda tangan terlebih dahulu.");
-            }else{
-                var data = signaturePad.toDataURL('image/jpeg');
-                console.log(data);
-                document.getElementById('signature64').innerHTML = '<img src="'+data+'"/>';
-                
-            }
-        });
-
-        const btn = document.getElementById('btnpilihan');
-
-        btn.addEventListener('click', () => {
-        const form = document.getElementById('formphoto');
-        const form2 = document.getElementById('formttd');
-
-        if (form.style.display === 'none') {
-        // 👇️ this SHOWS the form
-        form.style.display = 'block';
-        form2.style.display = 'none';
-        } else {
-        // 👇️ this HIDES the form
-        form.style.display = 'none';
-        form2.style.display = 'block';
-        }
-        });
-
-        
     </script>
-    <script src="js/signature_pad.min.js"></script>
-    <script src="js/signature-pad.js"></script>
 </body>
 </html>
 

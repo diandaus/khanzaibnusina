@@ -523,6 +523,7 @@ public final class SatuSehatKirimClinicalImpression extends javax.swing.JDialog 
                   "</table>"+
                 "</html>"
             );
+            htmlContent=null;
 
             File g = new File("file2.css");            
             BufferedWriter bg = new BufferedWriter(new FileWriter(g));
@@ -601,7 +602,7 @@ public final class SatuSehatKirimClinicalImpression extends javax.swing.JDialog 
                         json = "{" +
                                     "\"resourceType\": \"ClinicalImpression\"," +
                                     "\"status\": \"completed\"," +
-                                    "\"description\" : \""+tbObat.getValueAt(i,10).toString().replaceAll("(\r\n|\r|\n|\n\r)","<br>") +"\"," +
+                                    "\"description\" : \""+tbObat.getValueAt(i,10).toString().replaceAll("(\r\n|\r|\n|\n\r)","<br>").replaceAll("\t", " ") +"\"," +
                                     "\"subject\" : {"+
                                        "\"reference\" : \"Patient/"+idpasien+"\","+
                                        "\"display\" : \""+tbObat.getValueAt(i,4).toString()+"\""+
@@ -615,7 +616,7 @@ public final class SatuSehatKirimClinicalImpression extends javax.swing.JDialog 
                                     "\"assessor\" : {"+
                                       "\"reference\" : \"Practitioner/"+iddokter+"\""+
                                     "},"+
-                                    "\"summary\" : \""+tbObat.getValueAt(i,11).toString().replaceAll("(\r\n|\r|\n|\n\r)","<br>")+"\","+
+                                    "\"summary\" : \""+tbObat.getValueAt(i,11).toString().replaceAll("(\r\n|\r|\n|\n\r)","<br>").replaceAll("\t", " ")+"\","+
                                     "\"finding\": [" +
                                         "{" +
                                             "\"itemCodeableConcept\": {"+
@@ -656,6 +657,7 @@ public final class SatuSehatKirimClinicalImpression extends javax.swing.JDialog 
                                 tbObat.getValueAt(i,2).toString(),tbObat.getValueAt(i,14).toString(),tbObat.getValueAt(i,15).toString(),tbObat.getValueAt(i,7).toString(),response.asText()
                             })==true){
                                 tbObat.setValueAt(response.asText(),i,19);
+                                tbObat.setValueAt(false,i,0);
                             }
                         }
                     }catch(Exception e){
@@ -694,7 +696,7 @@ public final class SatuSehatKirimClinicalImpression extends javax.swing.JDialog 
                                     "\"resourceType\": \"ClinicalImpression\"," +
                                     "\"id\": \""+tbObat.getValueAt(i,19).toString()+"\"," +
                                     "\"status\": \"completed\"," +
-                                    "\"description\" : \""+tbObat.getValueAt(i,10).toString().replaceAll("(\r\n|\r|\n|\n\r)","<br>")+"\"," +
+                                    "\"description\" : \""+tbObat.getValueAt(i,10).toString().replaceAll("(\r\n|\r|\n|\n\r)","<br>").replaceAll("\t", " ")+"\"," +
                                     "\"subject\" : {"+
                                        "\"reference\" : \"Patient/"+idpasien+"\","+
                                        "\"display\" : \""+tbObat.getValueAt(i,4).toString()+"\""+
@@ -708,7 +710,7 @@ public final class SatuSehatKirimClinicalImpression extends javax.swing.JDialog 
                                     "\"assessor\" : {"+
                                       "\"reference\" : \"Practitioner/"+iddokter+"\""+
                                     "},"+
-                                    "\"summary\" : \""+tbObat.getValueAt(i,11).toString().replaceAll("(\r\n|\r|\n|\n\r)","<br>")+"\","+
+                                    "\"summary\" : \""+tbObat.getValueAt(i,11).toString().replaceAll("(\r\n|\r|\n|\n\r)","<br>").replaceAll("\t", " ")+"\","+
                                     "\"finding\": [" +
                                         "{" +
                                             "\"itemCodeableConcept\": {"+
@@ -742,6 +744,7 @@ public final class SatuSehatKirimClinicalImpression extends javax.swing.JDialog 
                         requestEntity = new HttpEntity(json,headers);
                         json=api.getRest().exchange(link+"/ClinicalImpression/"+tbObat.getValueAt(i,19).toString(), HttpMethod.PUT, requestEntity, String.class).getBody();
                         System.out.println("Result JSON : "+json);
+                        tbObat.setValueAt(false,i,0);
                     }catch(Exception e){
                         System.out.println("Notifikasi Bridging : "+e);
                     }
@@ -814,14 +817,13 @@ public final class SatuSehatKirimClinicalImpression extends javax.swing.JDialog 
         try{
             ps=koneksi.prepareStatement(
                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,"+
-                   "pasien.nm_pasien,pasien.no_ktp,reg_periksa.stts,concat(nota_jalan.tanggal,' ',nota_jalan.jam) "+
+                   "pasien.nm_pasien,pasien.no_ktp,reg_periksa.stts,concat(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg) "+
                    "as pulang,satu_sehat_encounter.id_encounter,pegawai.nama,pegawai.no_ktp as ktppraktisi,"+
                    "pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,pemeriksaan_ralan.penilaian,"+
                    "pemeriksaan_ralan.keluhan,pemeriksaan_ralan.pemeriksaan,satu_sehat_condition.kd_penyakit,"+
                    "penyakit.nm_penyakit,satu_sehat_condition.id_condition,"+
                    "ifnull(satu_sehat_clinicalimpression.id_clinicalimpression,'') as satu_sehat_clinicalimpression "+
                    "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                   "inner join nota_jalan on nota_jalan.no_rawat=reg_periksa.no_rawat "+
                    "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat "+
                    "inner join satu_sehat_condition on satu_sehat_condition.no_rawat=reg_periksa.no_rawat and satu_sehat_condition.status='Ralan' "+
                    "inner join penyakit on penyakit.kd_penyakit=satu_sehat_condition.kd_penyakit "+
@@ -831,11 +833,10 @@ public final class SatuSehatKirimClinicalImpression extends javax.swing.JDialog 
                    "and satu_sehat_clinicalimpression.tgl_perawatan=pemeriksaan_ralan.tgl_perawatan "+
                    "and satu_sehat_clinicalimpression.jam_rawat=pemeriksaan_ralan.jam_rawat "+
                    "and satu_sehat_clinicalimpression.status='Ralan' where pemeriksaan_ralan.penilaian<>'' "+
-                   "and nota_jalan.tanggal between ? and ? "+
+                   "and reg_periksa.tgl_registrasi between ? and ? "+
                    (TCari.getText().equals("")?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
                    "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "+
-                   "reg_periksa.stts like ?)")+" order by reg_periksa.tgl_registrasi,reg_periksa.jam_reg,"+
-                   "reg_periksa.no_rawat,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat");
+                   "reg_periksa.stts like ?)"));
             try {
                 ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
                 ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
@@ -870,13 +871,12 @@ public final class SatuSehatKirimClinicalImpression extends javax.swing.JDialog 
             
             ps=koneksi.prepareStatement(
                    "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.no_ktp,"+
-                   "reg_periksa.stts,concat(nota_inap.tanggal,' ',nota_inap.jam) as pulang,satu_sehat_encounter.id_encounter,"+
+                   "reg_periksa.stts,concat(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg) as pulang,satu_sehat_encounter.id_encounter,"+
                    "pegawai.nama,pegawai.no_ktp as ktppraktisi,pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,pemeriksaan_ranap.penilaian,"+
                    "pemeriksaan_ranap.keluhan,pemeriksaan_ranap.pemeriksaan,satu_sehat_condition.kd_penyakit,"+
                    "penyakit.nm_penyakit,satu_sehat_condition.id_condition,"+
                    "ifnull(satu_sehat_clinicalimpression.id_clinicalimpression,'') as satu_sehat_clinicalimpression "+
                    "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                   "inner join nota_inap on nota_inap.no_rawat=reg_periksa.no_rawat "+
                    "inner join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat "+
                    "inner join satu_sehat_condition on satu_sehat_condition.no_rawat=reg_periksa.no_rawat and satu_sehat_condition.status='Ranap' "+
                    "inner join penyakit on penyakit.kd_penyakit=satu_sehat_condition.kd_penyakit "+
@@ -884,10 +884,10 @@ public final class SatuSehatKirimClinicalImpression extends javax.swing.JDialog 
                    "inner join pegawai on pemeriksaan_ranap.nip=pegawai.nik "+
                    "left join satu_sehat_clinicalimpression on satu_sehat_clinicalimpression.no_rawat=pemeriksaan_ranap.no_rawat "+
                    "and satu_sehat_clinicalimpression.tgl_perawatan=pemeriksaan_ranap.tgl_perawatan and satu_sehat_clinicalimpression.jam_rawat=pemeriksaan_ranap.jam_rawat "+
-                   "and satu_sehat_clinicalimpression.status='Ranap' where pemeriksaan_ranap.penilaian<>'' and nota_inap.tanggal between ? and ? "+
+                   "and satu_sehat_clinicalimpression.status='Ranap' where pemeriksaan_ranap.penilaian<>'' and reg_periksa.tgl_registrasi between ? and ? "+
                    (TCari.getText().equals("")?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
                    "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.no_ktp like ? or pegawai.nama like ? or "+
-                   "reg_periksa.stts like ?)")+" order by reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat");
+                   "reg_periksa.stts like ?)"));
             try {
                 ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
                 ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
@@ -927,6 +927,7 @@ public final class SatuSehatKirimClinicalImpression extends javax.swing.JDialog 
 
     public void isCek(){
         BtnKirim.setEnabled(akses.getsatu_sehat_kirim_clinicalimpression());
+        BtnUpdate.setEnabled(akses.getsatu_sehat_kirim_clinicalimpression());
         BtnPrint.setEnabled(akses.getsatu_sehat_kirim_clinicalimpression());
     }
     

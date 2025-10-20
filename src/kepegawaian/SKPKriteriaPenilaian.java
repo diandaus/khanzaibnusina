@@ -112,7 +112,6 @@ public final class SKPKriteriaPenilaian extends javax.swing.JDialog {
                 }
             });
         } 
-        Kode.requestFocus();
         
         kategori.addWindowListener(new WindowListener() {
             @Override
@@ -201,7 +200,7 @@ public final class SKPKriteriaPenilaian extends javax.swing.JDialog {
             }
         });
 
-        internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), "::[ Kriteria Penilaian Sasaran Keselamatan Pasien ]::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50))); // NOI18N
+        internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), "::[ Kriteria Pengkajian Sasaran Keselamatan Pasien ]::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50))); // NOI18N
         internalFrame1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         internalFrame1.setName("internalFrame1"); // NOI18N
         internalFrame1.setLayout(new java.awt.BorderLayout(1, 1));
@@ -510,7 +509,7 @@ public final class SKPKriteriaPenilaian extends javax.swing.JDialog {
             if(Sequel.menyimpantf("skp_kriteria_penilaian","?,?,?","Kode",3,new String[]{
                     Kode.getText(),Kriteria.getText(),KdKategori.getText()
                 })==true){
-                tabMode.addRow(new String[]{
+                tabMode.addRow(new Object[]{
                     Kode.getText(),Kriteria.getText(),KdKategori.getText(),NmKategori.getText(),Sasaran.getText()
                 });
                 LCount.setText(""+tabMode.getRowCount());
@@ -612,7 +611,7 @@ public final class SKPKriteriaPenilaian extends javax.swing.JDialog {
             param.put("kontakrs",akses.getkontakrs());
             param.put("emailrs",akses.getemailrs());   
             param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            Valid.MyReport("rptSKPKriteriaPenilaian.jasper",param,"::[ Kriteria Penilaian Pasien ]::");
+            Valid.MyReport("rptSKPKriteriaPenilaian.jasper",param,"::[ Kriteria Pengkajian Pasien ]::");
         }
         this.setCursor(Cursor.getDefaultCursor());
 }//GEN-LAST:event_BtnPrintActionPerformed

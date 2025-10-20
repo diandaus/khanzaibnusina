@@ -52,18 +52,9 @@ public final class DlgStatusDataRM extends javax.swing.JDialog {
     private DlgCariPoli poli=new DlgCariPoli(null,false);
     private DlgCariCaraBayar penjab=new DlgCariCaraBayar(null,false);
     private int i=0,adasoapiralan=0,tidakadasoapiralan=0,adasoapiranap=0,tidakadasoapiranap=0,adaresumeralan=0,tidakadaresumeralan=0,
-            adaresumeranap=0,tidakadaresumeranap=0,adatriaseigd=0,tidakadatriaseigd=0,adaaskepigd=0,tidakadaaskepigd=0,ada_penilaian_medis_igd=0,tidak_ada_penilaian_medis_igd=0,adaicd10=0,tidakadaicd10=0,
-            adaicd9=0,tidakadaicd9=0,ada_penilaian_awal_keperawatan_ralan=0,tidak_ada_penilaian_awal_keperawatan_ralan=0,ada_penilaian_medis_ralan_penyakit_dalam=0,tidak_ada_penilaian_medis_ralan_penyakit_dalam=0,ada_penilaian_medis_ralan_mata=0,tidak_ada_penilaian_medis_ralan_mata=0,ada_penilaian_awal_keperawatan_gigi=0,tidak_ada_penilaian_awal_keperawatan_gigi=0,ada_penilaian_awal_keperawatan_kebidanan=0,tidak_ada_penilaian_awal_keperawatan_kebidanan=0,ada_penilaian_medis_ralan_kandungan=0,tidak_ada_penilaian_medis_ralan_kandungan=0,
-            ada_penilaian_awal_keperawatan_ralan_bayi=0,tidak_ada_penilaian_awal_keperawatan_ralan_bayi=0,ada_penilaian_medis_ralan_anak=0,tidak_ada_penilaian_medis_ralan_anak=0,ada_penilaian_awal_keperawatan_ralan_psikiatri=0,tidak_ada_penilaian_awal_keperawatan_ralan_psikiatri=0,
-            ada_penilaian_fisioterapi=0,tidak_ada_penilaian_fisioterapi=0,ada_penilaian_medis_ralan_rehab_medik=0,tidak_ada_penilaian_medis_ralan_rehab_medik=0,
-            ada_penilaian_medis_ralan_psikiatrik=0,tidak_ada_penilaian_medis_ralan_psikiatrik=0,ada_penilaian_medis_ralan_bedah=0,tidak_ada_penilaian_medis_ralan_bedah=0,ada_penilaian_medis_ralan_neurologi=0,tidak_ada_penilaian_medis_ralan_neurologi=0,
-            ada_penilaian_medis_ralan_paru=0,tidak_ada_penilaian_medis_ralan_paru=0,ada_penilaian_mcu=0,tidak_ada_penilaian_mcu=0,
-            ada_penilaian_medis_ralan_kulitdankelamin=0,tidak_ada_penilaian_medis_ralan_kulitdankelamin=0,ada_penilaian_medis_ralan_orthopedi=0,tidak_ada_penilaian_medis_ralan_orthopedi=0,ada_penilaian_medis_hemodialisa=0,tidak_ada_penilaian_medis_hemodialisa=0,
-            ada_penilaian_medis_ralan_bedah_mulut=0,tidak_ada_penilaian_medis_ralan_bedah_mulut=0,ada_penilaian_awal_keperawatan_ralan_geriatri=0,tidak_ada_penilaian_awal_keperawatan_ralan_geriatri=0,ada_penilaian_medis_ralan_geriatri=0,tidak_ada_penilaian_medis_ralan_geriatri=0,
-            ada_penilaian_medis_ralan_tht=0,tidak_ada_penilaian_medis_ralan_tht=0,ada_bridging_sep=0,tidak_ada_bridging_sep=0;
-    private String soapiralan="",soapiranap="",resumeralan="",resumeranap="",pilihan="",triaseigd="",askepigd="",penilaian_medis_igd="",icd10="",icd9="",penilaian_awal_keperawatan_ralan="",penilaian_medis_ralan_penyakit_dalam="",penilaian_medis_ralan_mata="",penilaian_awal_keperawatan_gigi="",penilaian_awal_keperawatan_kebidanan="",penilaian_medis_ralan_kandungan="",
-            penilaian_awal_keperawatan_ralan_bayi="",penilaian_medis_ralan_anak="",penilaian_awal_keperawatan_ralan_psikiatri="",penilaian_fisioterapi="",penilaian_medis_ralan_rehab_medik="",penilaian_medis_ralan_psikiatrik="",penilaian_medis_ralan_bedah="",penilaian_medis_ralan_neurologi="",penilaian_medis_ralan_paru="",penilaian_mcu="",penilaian_medis_ralan_kulitdankelamin="",penilaian_medis_ralan_orthopedi="",penilaian_medis_hemodialisa="",penilaian_medis_ralan_bedah_mulut="",penilaian_awal_keperawatan_ralan_geriatri="",penilaian_medis_ralan_geriatri="",
-            penilaian_medis_ralan_tht="",bridging_sep="";
+            adaresumeranap=0,tidakadaresumeranap=0,adatriaseigd=0,tidakadatriaseigd=0,adaaskepigd=0,tidakadaaskepigd=0,adaicd10=0,tidakadaicd10=0,
+            adaicd9=0,tidakadaicd9=0;  
+    private String soapiralan="",soapiranap="",resumeralan="",resumeranap="",pilihan="",triaseigd="",askepigd="",icd10="",icd9="";
     private StringBuilder htmlContent;
     /** Creates new form DlgLhtBiaya
      * @param parent
@@ -75,9 +66,7 @@ public final class DlgStatusDataRM extends javax.swing.JDialog {
         setSize(885,674);
 
         tabMode=new DefaultTableModel(null,new Object[]{
-            "No.Rawat","Tanggal","Dokter Dituju","Nomer RM","Pasien","Poliklinik","Status","SOAPI Ralan","SOAPI Ranap","Resume Ralan","Resume Ranap","Triase IGD","Askep IGD","Asmed IGD","ICD 10","ICD 9","Askep Ralan","Asmed Ralan IPD","Asmed Mata","Askep Gigi","Askep Obgyn","Asmed Obgyn",
-            "Askep Bayi/Anak","Asmed Bayi/Anak","Askep Psikiatri","Fisioterapi","Asmed Rehab","Asmed Psikiatri","Asmed Bedah","Asmed Neurologi","Asmed Paru","MCU",
-            "Asmed Kulit Kelamin","Asmed Orthopedi","Asmed Hemodialisa","Asmed Bedah Mulut","Askep Geriatri","Asmed Geratri","Asmed THT","SEP"
+            "No.Rawat","Tanggal","Dokter Dituju","Nomer RM","Pasien","Poliklinik","Status","SOAPI Ralan","SOAPI Ranap","Resume Ralan","Resume Ranap","Triase IGD","Askep IGD","ICD 10","ICD 9"
         }){
              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
         };
@@ -86,7 +75,7 @@ public final class DlgStatusDataRM extends javax.swing.JDialog {
         tbBangsal.setPreferredScrollableViewportSize(new Dimension(800,800));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 40; i++) {
+        for (i = 0; i < 15; i++) {
             TableColumn column = tbBangsal.getColumnModel().getColumn(i);
             if(i==0){
                 column.setPreferredWidth(105);
@@ -118,56 +107,6 @@ public final class DlgStatusDataRM extends javax.swing.JDialog {
                 column.setPreferredWidth(54);
             }else if(i==14){
                 column.setPreferredWidth(54);
-            }else if(i==15){
-                column.setPreferredWidth(84);
-            }else if(i==16){
-                column.setPreferredWidth(84);
-            }else if(i==17){
-                column.setPreferredWidth(84);
-            }else if(i==18){
-                column.setPreferredWidth(84);
-            }else if(i==19){
-                column.setPreferredWidth(84);
-            }else if(i==20){
-                column.setPreferredWidth(84);
-            }else if(i==21){
-                column.setPreferredWidth(84);
-            }else if(i==22){
-                column.setPreferredWidth(84);
-            }else if(i==23){
-                column.setPreferredWidth(84);
-            }else if(i==24){
-                column.setPreferredWidth(84);
-            }else if(i==25){
-                column.setPreferredWidth(84);
-            }else if(i==26){
-                column.setPreferredWidth(84);
-            }else if(i==27){
-                column.setPreferredWidth(84);
-            }else if(i==28){
-                column.setPreferredWidth(84);
-            }else if(i==29){
-                column.setPreferredWidth(84);
-            }else if(i==30){
-                column.setPreferredWidth(84);
-            }else if(i==31){
-                column.setPreferredWidth(84);
-            }else if(i==32){
-                column.setPreferredWidth(84);
-            }else if(i==33){
-                column.setPreferredWidth(84);
-            }else if(i==34){
-                column.setPreferredWidth(84);
-            }else if(i==35){
-                column.setPreferredWidth(84);
-            }else if(i==36){
-                column.setPreferredWidth(84);
-            }else if(i==37){
-                column.setPreferredWidth(84);
-            }else if(i==38){
-                column.setPreferredWidth(84);
-            }else if(i==39){
-                column.setPreferredWidth(84);
             }
         }
         tbBangsal.setDefaultRenderer(Object.class, new WarnaTable());
@@ -257,6 +196,7 @@ public final class DlgStatusDataRM extends javax.swing.JDialog {
         
         ChkInput.setSelected(false);
         isForm();
+        MnInputDiagnosa.setEnabled(akses.getdiagnosa_pasien());
     }    
 
     /** This method is called from within the constructor to
@@ -271,6 +211,8 @@ public final class DlgStatusDataRM extends javax.swing.JDialog {
         TKd = new widget.TextBox();
         kdpoli = new widget.TextBox();
         kdpenjab = new widget.TextBox();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        MnInputDiagnosa = new javax.swing.JMenuItem();
         internalFrame1 = new widget.InternalFrame();
         Scroll = new widget.ScrollPane();
         tbBangsal = new widget.Table();
@@ -319,6 +261,22 @@ public final class DlgStatusDataRM extends javax.swing.JDialog {
             }
         });
 
+        jPopupMenu1.setName("jPopupMenu1"); // NOI18N
+
+        MnInputDiagnosa.setBackground(new java.awt.Color(255, 255, 254));
+        MnInputDiagnosa.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        MnInputDiagnosa.setForeground(new java.awt.Color(50, 50, 50));
+        MnInputDiagnosa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        MnInputDiagnosa.setText("Input Diagnosa Pasien");
+        MnInputDiagnosa.setName("MnInputDiagnosa"); // NOI18N
+        MnInputDiagnosa.setPreferredSize(new java.awt.Dimension(190, 26));
+        MnInputDiagnosa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MnInputDiagnosaActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(MnInputDiagnosa);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
         setResizable(false);
@@ -330,6 +288,7 @@ public final class DlgStatusDataRM extends javax.swing.JDialog {
         Scroll.setName("Scroll"); // NOI18N
         Scroll.setOpaque(true);
 
+        tbBangsal.setComponentPopupMenu(jPopupMenu1);
         tbBangsal.setName("tbBangsal"); // NOI18N
         tbBangsal.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -590,47 +549,22 @@ public final class DlgStatusDataRM extends javax.swing.JDialog {
                             htmlContent = new StringBuilder();
                             htmlContent.append(                             
                                 "<tr class='isi'>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='105px'>No.Rawat</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='65px'>Tanggal</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='150px'>Dokter Dituju</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='65px'>Nomer RM</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='150px'>Pasien</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='130px'>Poliklinik</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='43px'>Status</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='70px'>SOAPI Ralan</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='70px'>SOAPI Ranap</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='70px'>Resume Ralan</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='70px'>Resume Ranap</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='70px'>Triase IGD</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='70px'>Askep IGD</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed IGD</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>ICD 10</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>ICD 9</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Askep Ralan</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Ralan IPD</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Mata</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Askep Gigi</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Askep Obgyn</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Obgyn</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Askep Bayi/Anak</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Bayi/Anak</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Askep Psikiatri</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Fisioterapi</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Rehab</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Psikiatri</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Bedah</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Neurologi</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Paru</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>MCU</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Kulit&Kelamin</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Orthopedi</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Hemodialisa</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Bedah Mulut</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Askep Geriatri</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Geriatri</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed THT</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>SEP</td>"+
-                                        "</tr>"
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='105px'>No.Rawat</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='65px'>Tanggal</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='150px'>Dokter Dituju</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='65px'>Nomer RM</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='150px'>Pasien</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='130px'>Poliklinik</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='43px'>Status</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='70px'>SOAPI Ralan</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='70px'>SOAPI Ranap</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='70px'>Resume Ralan</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='70px'>Resume Ranap</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='70px'>Triase IGD</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='70px'>Askep IGD</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='54px'>ICD 10</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='54px'>ICD 9</td>"+
+                                "</tr>"
                             ); 
                             for(i=0;i<tabMode.getRowCount();i++){  
                                 htmlContent.append(                             
@@ -650,31 +584,6 @@ public final class DlgStatusDataRM extends javax.swing.JDialog {
                                         "<td valign='top' align='center'>"+tabMode.getValueAt(i,12)+"</td>"+
                                         "<td valign='top' align='center'>"+tabMode.getValueAt(i,13)+"</td>"+
                                         "<td valign='top' align='center'>"+tabMode.getValueAt(i,14)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,15)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,16)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,17)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,18)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,19)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,20)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,21)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,22)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,23)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,24)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,25)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,26)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,27)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,28)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,29)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,30)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,31)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,32)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,33)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,34)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,35)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,36)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,37)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,38)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,39)+"</td>"+
                                     "</tr>"
                                 ); 
                             }            
@@ -708,46 +617,21 @@ public final class DlgStatusDataRM extends javax.swing.JDialog {
                             htmlContent = new StringBuilder();
                             htmlContent.append(                             
                                 "<tr class='isi'>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='105px'>No.Rawat</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='65px'>Tanggal</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='150px'>Dokter Dituju</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='65px'>Nomer RM</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='150px'>Pasien</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='130px'>Poliklinik</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='43px'>Status</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='70px'>SOAPI Ralan</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='70px'>SOAPI Ranap</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='70px'>Resume Ralan</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='70px'>Resume Ranap</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='70px'>Triase IGD</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='70px'>Askep IGD</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='70px'>Asmed IGD</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>ICD 10</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>ICD 9</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Askep Ralan</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Ralan IPD</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Mata</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Askep Gigi</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Askep Obgyn</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Obgyn</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Askep Bayi/Anak</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Bayi/Anak</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Askep Psikiatri</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Fisioterapi</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Rehab</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Psikiatri</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Bedah</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Neurologi</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Paru</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>MCU</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Kulit&Kelamin</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Orthopedi</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Hemodialisa</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Bedah Mulut</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Askep Geriatri</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed Geriatri</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>Asmed THT</td>"+
-                                    "<td valign='middle' bgcolor='#FFFAF8' align='center' width='54px'>SEP</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='105px'>No.Rawat</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='65px'>Tanggal</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='150px'>Dokter Dituju</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='65px'>Nomer RM</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='150px'>Pasien</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='130px'>Poliklinik</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='43px'>Status</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='70px'>SOAPI Ralan</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='70px'>SOAPI Ranap</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='70px'>Resume Ralan</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='70px'>Resume Ranap</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='70px'>Triase IGD</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='70px'>Askep IGD</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='54px'>ICD 10</td>"+
+                                    "<td valign='middle' bgcolor='#FFFAFA' align='center' width='54px'>ICD 9</td>"+
                                 "</tr>"
                             ); 
                             for(i=0;i<tabMode.getRowCount();i++){  
@@ -768,31 +652,6 @@ public final class DlgStatusDataRM extends javax.swing.JDialog {
                                         "<td valign='top' align='center'>"+tabMode.getValueAt(i,12)+"</td>"+
                                         "<td valign='top' align='center'>"+tabMode.getValueAt(i,13)+"</td>"+
                                         "<td valign='top' align='center'>"+tabMode.getValueAt(i,14)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,15)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,16)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,17)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,18)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,19)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,20)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,21)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,22)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,23)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,24)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,25)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,26)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,27)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,28)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,29)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,30)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,31)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,32)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,33)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,34)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,35)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,36)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,37)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,38)+"</td>"+
-                                        "<td valign='top' align='center'>"+tabMode.getValueAt(i,39)+"</td>"+
                                     "</tr>"
                                 ); 
                             }            
@@ -825,16 +684,13 @@ public final class DlgStatusDataRM extends javax.swing.JDialog {
                     case "Laporan 3 (CSV)":
                             htmlContent = new StringBuilder();
                             htmlContent.append(                             
-                                "\"No.Rawat\";\"Tanggal\";\"Dokter Dituju\";\"Nomer RM\";\"Pasien\";\"Poliklinik\";\"Status\";\"SOAPI Ralan\";\"SOAPI Ranap\";\"Resume Ralan\";\"Resume Ranap\";\"Triase IGD\";\"Askep IGD\";\"Asmed IGD\";\"ICD 10\";\"ICD 9\";\"Askep Ralan\";\"Asmed Ralan IPD\";\"Asmed Mata\";\"Askep Gigi\";\"Askep Obgyn\";"
-                                  + "\"Asmed Obgyn\";\"Askep Bayi/Anak\";\"Asmed Bayi/Anak\";\"Askep Psikiatri\";\"Fisioterapi\";\"Asmed Rehab\";\"Asmed Psikiatri\";\"Asmed Bedah\";\"Asmed Neurologi\";\"Asmed Paru\";\"MCU\";"
-                                        + "\"Asmed Kuli&Kelamin\";\"Asmed Orthopedi\";\"Asmed Hemodialisa\";\"Asmed Bedah Mulut\";\"Askep Geriatri\";\"Asmed Geriatri\";\"Asmed THT\";\"SEP\"\n"
+                                "\"No.Rawat\";\"Tanggal\";\"Dokter Dituju\";\"Nomer RM\";\"Pasien\";\"Poliklinik\";\"Status\";\"SOAPI Ralan\";\"SOAPI Ranap\";\"Resume Ralan\";\"Resume Ranap\";\"Triase IGD\";\"Askep IGD\";\"ICD 10\";\"ICD 9\"\n"
                             ); 
                             for(i=0;i<tabMode.getRowCount();i++){  
                                 htmlContent.append(                             
                                     "\""+tabMode.getValueAt(i,0)+"\";\""+tabMode.getValueAt(i,1)+"\";\""+tabMode.getValueAt(i,2)+"\";\""+tabMode.getValueAt(i,3)+"\";\""+tabMode.getValueAt(i,4)+"\";"+
                                     "\""+tabMode.getValueAt(i,5)+"\";\""+tabMode.getValueAt(i,6)+"\";\""+tabMode.getValueAt(i,7)+"\";\""+tabMode.getValueAt(i,8)+"\";\""+tabMode.getValueAt(i,9)+"\";"+
-                                    "\""+tabMode.getValueAt(i,10)+"\";\""+tabMode.getValueAt(i,11)+"\";\""+tabMode.getValueAt(i,12)+"\";\""+tabMode.getValueAt(i,13)+"\";\""+tabMode.getValueAt(i,14)+"\";\""+tabMode.getValueAt(i,15)+"\";\""+tabMode.getValueAt(i,16)+"\";\""+tabMode.getValueAt(i,17)+"\";\""+tabMode.getValueAt(i,18)+"\";\""+tabMode.getValueAt(i,19)+"\";\""+tabMode.getValueAt(i,20)+"\";\""+tabMode.getValueAt(i,21)+"\";\""+tabMode.getValueAt(i,22)+"\";"
-                                      + "\""+tabMode.getValueAt(i,23)+"\";\""+tabMode.getValueAt(i,24)+"\";\""+tabMode.getValueAt(i,25)+"\";\""+tabMode.getValueAt(i,26)+"\";\""+tabMode.getValueAt(i,27)+"\";\""+tabMode.getValueAt(i,28)+"\";\""+tabMode.getValueAt(i,29)+"\";\""+tabMode.getValueAt(i,30)+"\";\""+tabMode.getValueAt(i,31)+"\";\""+tabMode.getValueAt(i,32)+"\";\""+tabMode.getValueAt(i,33)+"\";\""+tabMode.getValueAt(i,34)+"\";\""+tabMode.getValueAt(i,35)+"\";\""+tabMode.getValueAt(i,36)+"\";\""+tabMode.getValueAt(i,37)+"\";\""+tabMode.getValueAt(i,38)+"\";\""+tabMode.getValueAt(i,39)+"\"\n"
+                                    "\""+tabMode.getValueAt(i,10)+"\";\""+tabMode.getValueAt(i,11)+"\";\""+tabMode.getValueAt(i,12)+"\";\""+tabMode.getValueAt(i,13)+"\";\""+tabMode.getValueAt(i,14)+"\"\n"
                                 ); 
                             }            
 
@@ -938,12 +794,10 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
 
     private void kdpoliKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdpoliKeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
-            Sequel.cariIsi("select nm_poli from poliklinik where kd_poli=?", nmpoli,kdpoli.getText());
+            Sequel.cariIsi("select poliklinik.nm_poli from poliklinik where poliklinik.kd_poli=?", nmpoli,kdpoli.getText());
         }else if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            Sequel.cariIsi("select nm_poli from poliklinik where kd_poli=?", nmpoli,kdpoli.getText());
             BtnAll.requestFocus();
         }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
-            Sequel.cariIsi("select nm_poli from poliklinik where kd_poli=?", nmpoli,kdpoli.getText());
             Tgl2.requestFocus();
         }else if(evt.getKeyCode()==KeyEvent.VK_UP){
             BtnSeek2ActionPerformed(null);
@@ -964,12 +818,12 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
 
     private void kdpenjabKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdpenjabKeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
-            Sequel.cariIsi("select png_jawab from penjab where kd_pj=?", nmpenjab,kdpenjab.getText());
+            Sequel.cariIsi("select penjab.png_jawab from penjab where penjab.kd_pj=?", nmpenjab,kdpenjab.getText());
         }else if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            Sequel.cariIsi("select png_jawab from penjab where kd_pj=?", nmpenjab,kdpenjab.getText());
+            Sequel.cariIsi("select penjab.png_jawab from penjab where penjab.kd_pj=?", nmpenjab,kdpenjab.getText());
             BtnAll.requestFocus();
         }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
-            Sequel.cariIsi("select png_jawab from penjab where kd_pj=?", nmpenjab,kdpenjab.getText());
+            Sequel.cariIsi("select penjab.png_jawab from penjab where penjab.kd_pj=?", nmpenjab,kdpenjab.getText());
             Tgl2.requestFocus();
         }else if(evt.getKeyCode()==KeyEvent.VK_UP){
             BtnSeek2ActionPerformed(null);
@@ -987,6 +841,18 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     private void BtnSeek3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSeek3KeyPressed
         //Valid.pindah(evt,DTPCari2,TCari);
     }//GEN-LAST:event_BtnSeek3KeyPressed
+
+    private void MnInputDiagnosaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnInputDiagnosaActionPerformed
+        if(tbBangsal.getSelectedRow()!= -1){
+            DlgDiagnosaPenyakit penyakit=new DlgDiagnosaPenyakit(null,false);
+            penyakit.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+            penyakit.setLocationRelativeTo(internalFrame1);
+            penyakit.isCek();
+            penyakit.setNoRm(tbBangsal.getValueAt(tbBangsal.getSelectedRow(),0).toString(),Tgl1.getDate(),Tgl2.getDate(),tbBangsal.getValueAt(tbBangsal.getSelectedRow(),6).toString());
+            penyakit.panelDiagnosa1.tampil();
+            penyakit.setVisible(true);
+        }
+    }//GEN-LAST:event_MnInputDiagnosaActionPerformed
 
     /**
     * @param args the command line arguments
@@ -1013,6 +879,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     private widget.Button BtnSeek3;
     private widget.CekBox ChkInput;
     private widget.panelisi FormInput;
+    private javax.swing.JMenuItem MnInputDiagnosa;
     private javax.swing.JPanel PanelInput;
     private widget.ScrollPane Scroll;
     private widget.ComboBox Status;
@@ -1024,6 +891,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     private widget.Label jLabel18;
     private widget.Label jLabel6;
     private widget.Label jLabel7;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private widget.TextBox kdpenjab;
     private widget.TextBox kdpoli;
     private widget.Label label11;
@@ -1065,15 +933,7 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     
                 rs=ps.executeQuery();
                 adasoapiralan=0;tidakadasoapiralan=0;adasoapiranap=0;tidakadasoapiranap=0;adaresumeralan=0;tidakadaresumeralan=0;adaresumeranap=0;tidakadaresumeranap=0;
-                adatriaseigd=0;tidakadatriaseigd=0;adaaskepigd=0;tidakadaaskepigd=0;ada_penilaian_medis_igd=0;tidak_ada_penilaian_medis_igd=0;adaicd10=0;tidakadaicd10=0;adaicd9=0;tidakadaicd9=0;
-                ada_penilaian_awal_keperawatan_ralan=0;tidak_ada_penilaian_awal_keperawatan_ralan=0; 
-                ada_penilaian_medis_ralan_penyakit_dalam=0;tidak_ada_penilaian_medis_ralan_penyakit_dalam=0;ada_penilaian_medis_ralan_mata=0;tidak_ada_penilaian_medis_ralan_mata=0;
-                ada_penilaian_awal_keperawatan_gigi=0;tidak_ada_penilaian_awal_keperawatan_gigi=0;ada_penilaian_awal_keperawatan_kebidanan=0;tidak_ada_penilaian_awal_keperawatan_kebidanan=0;ada_penilaian_medis_ralan_kandungan=0;tidak_ada_penilaian_medis_ralan_kandungan=0;
-                ada_penilaian_awal_keperawatan_ralan_bayi=0;tidak_ada_penilaian_awal_keperawatan_ralan_bayi=0;ada_penilaian_medis_ralan_anak=0;tidak_ada_penilaian_medis_ralan_anak=0;ada_penilaian_awal_keperawatan_ralan_psikiatri=0;tidak_ada_penilaian_awal_keperawatan_ralan_psikiatri=0;ada_penilaian_fisioterapi=0;
-                tidak_ada_penilaian_fisioterapi=0;ada_penilaian_medis_ralan_rehab_medik=0;tidak_ada_penilaian_medis_ralan_rehab_medik=0;
-                ada_penilaian_medis_ralan_psikiatrik=0;tidak_ada_penilaian_medis_ralan_psikiatrik=0;ada_penilaian_medis_ralan_bedah=0;tidak_ada_penilaian_medis_ralan_bedah=0;ada_penilaian_medis_ralan_neurologi=0;tidak_ada_penilaian_medis_ralan_neurologi=0;ada_penilaian_medis_ralan_paru=0;tidak_ada_penilaian_medis_ralan_paru=0;ada_penilaian_mcu=0;tidak_ada_penilaian_mcu=0;
-                ada_penilaian_medis_ralan_kulitdankelamin=0;tidak_ada_penilaian_medis_ralan_kulitdankelamin=0;ada_penilaian_medis_ralan_orthopedi=0;tidak_ada_penilaian_medis_ralan_orthopedi=0;ada_penilaian_medis_hemodialisa=0;tidak_ada_penilaian_medis_hemodialisa=0;ada_penilaian_medis_ralan_bedah_mulut=0;tidak_ada_penilaian_medis_ralan_bedah_mulut=0;ada_penilaian_awal_keperawatan_ralan_geriatri=0;tidak_ada_penilaian_medis_ralan_geriatri=0;
-                ada_penilaian_medis_ralan_tht=0;tidak_ada_penilaian_medis_ralan_tht=0;ada_bridging_sep=0;tidak_ada_bridging_sep=0;
+                adatriaseigd=0;tidakadatriaseigd=0;adaaskepigd=0;tidakadaaskepigd=0;adaicd10=0;tidakadaicd10=0;adaicd9=0;tidakadaicd9=0; 
                 while(rs.next()){
                     soapiralan=Sequel.cariIsi("select if(count(pemeriksaan_ralan.no_rawat)>0,'Ada','Tidak Ada') from pemeriksaan_ralan where pemeriksaan_ralan.no_rawat=?",rs.getString("no_rawat"));
                     if(soapiralan.equals("Ada")){
@@ -1111,12 +971,6 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     }else{
                         tidakadaaskepigd++;
                     }
-                    penilaian_medis_igd=Sequel.cariIsi("select if(count(penilaian_medis_igd.no_rawat)>0,'Ada','Tidak Ada') from penilaian_medis_igd where penilaian_medis_igd.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_medis_igd.equals("Ada")){
-                        ada_penilaian_medis_igd++;
-                    }else{
-                        tidak_ada_penilaian_medis_igd++;
-                    }
                     icd10=Sequel.cariIsi("select if(count(diagnosa_pasien.no_rawat)>0,'Ada','Tidak Ada') from diagnosa_pasien where diagnosa_pasien.no_rawat=?",rs.getString("no_rawat"));
                     if(icd10.equals("Ada")){
                         adaicd10++;
@@ -1129,195 +983,17 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     }else{
                         tidakadaicd9++;
                     }
-                    
-                    penilaian_awal_keperawatan_ralan=Sequel.cariIsi("select if(count(penilaian_awal_keperawatan_ralan.no_rawat)>0,'Ada','Tidak Ada') from penilaian_awal_keperawatan_ralan where penilaian_awal_keperawatan_ralan.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_awal_keperawatan_ralan.equals("Ada")){
-                        ada_penilaian_awal_keperawatan_ralan++;
-                    }else{
-                        tidak_ada_penilaian_awal_keperawatan_ralan++;
-                    }
-                    
-                    penilaian_medis_ralan_penyakit_dalam=Sequel.cariIsi("select if(count(penilaian_medis_ralan_penyakit_dalam.no_rawat)>0,'Ada','Tidak Ada') from penilaian_medis_ralan_penyakit_dalam where penilaian_medis_ralan_penyakit_dalam.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_medis_ralan_penyakit_dalam.equals("Ada")){
-                        ada_penilaian_medis_ralan_penyakit_dalam++;
-                    }else{
-                        tidak_ada_penilaian_medis_ralan_penyakit_dalam++;
-                    }
-                    // tambah askep mata
-                    penilaian_medis_ralan_mata=Sequel.cariIsi("select if(count(penilaian_medis_ralan_mata.no_rawat)>0,'Ada','Tidak Ada') from penilaian_medis_ralan_mata where penilaian_medis_ralan_mata.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_medis_ralan_mata.equals("Ada")){
-                        ada_penilaian_medis_ralan_mata++;
-                    }else{
-                        tidak_ada_penilaian_medis_ralan_mata++;
-                    }
-                    
-                    penilaian_awal_keperawatan_gigi=Sequel.cariIsi("select if(count(penilaian_awal_keperawatan_gigi.no_rawat)>0,'Ada','Tidak Ada') from penilaian_awal_keperawatan_gigi where penilaian_awal_keperawatan_gigi.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_awal_keperawatan_gigi.equals("Ada")){
-                        ada_penilaian_awal_keperawatan_gigi++;
-                    }else{
-                        tidak_ada_penilaian_awal_keperawatan_gigi++;
-                    }
-                    
-                    penilaian_awal_keperawatan_kebidanan=Sequel.cariIsi("select if(count(penilaian_awal_keperawatan_kebidanan.no_rawat)>0,'Ada','Tidak Ada') from penilaian_awal_keperawatan_kebidanan where penilaian_awal_keperawatan_kebidanan.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_awal_keperawatan_kebidanan.equals("Ada")){
-                        ada_penilaian_awal_keperawatan_kebidanan++;
-                    }else{
-                        tidak_ada_penilaian_awal_keperawatan_kebidanan++;
-                    }
-                    
-                    penilaian_medis_ralan_kandungan=Sequel.cariIsi("select if(count(penilaian_medis_ralan_kandungan.no_rawat)>0,'Ada','Tidak Ada') from penilaian_medis_ralan_kandungan where penilaian_medis_ralan_kandungan.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_medis_ralan_kandungan.equals("Ada")){
-                        ada_penilaian_medis_ralan_kandungan++;
-                    }else{
-                        tidak_ada_penilaian_medis_ralan_kandungan++;
-                    }
-                    // Tambahan Pantau Status RM
-                    penilaian_awal_keperawatan_ralan_bayi=Sequel.cariIsi("select if(count(penilaian_awal_keperawatan_ralan_bayi.no_rawat)>0,'Ada','Tidak Ada') from penilaian_awal_keperawatan_ralan_bayi where penilaian_awal_keperawatan_ralan_bayi.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_awal_keperawatan_ralan_bayi.equals("Ada")){
-                        ada_penilaian_awal_keperawatan_ralan_bayi++;
-                    }else{
-                        tidak_ada_penilaian_awal_keperawatan_ralan_bayi++;
-                    }
-                    
-                    penilaian_medis_ralan_anak=Sequel.cariIsi("select if(count(penilaian_medis_ralan_anak.no_rawat)>0,'Ada','Tidak Ada') from penilaian_medis_ralan_anak where penilaian_medis_ralan_anak.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_medis_ralan_anak.equals("Ada")){
-                        ada_penilaian_medis_ralan_anak++;
-                    }else{
-                        tidak_ada_penilaian_medis_ralan_anak++;
-                    }
-                    
-                    penilaian_awal_keperawatan_ralan_psikiatri=Sequel.cariIsi("select if(count(penilaian_awal_keperawatan_ralan_psikiatri.no_rawat)>0,'Ada','Tidak Ada') from penilaian_awal_keperawatan_ralan_psikiatri where penilaian_awal_keperawatan_ralan_psikiatri.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_awal_keperawatan_ralan_psikiatri.equals("Ada")){
-                        ada_penilaian_awal_keperawatan_ralan_psikiatri++;
-                    }else{
-                        tidak_ada_penilaian_awal_keperawatan_ralan_psikiatri++;
-                    }
-                    
-                    penilaian_fisioterapi=Sequel.cariIsi("select if(count(penilaian_fisioterapi.no_rawat)>0,'Ada','Tidak Ada') from penilaian_fisioterapi where penilaian_fisioterapi.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_fisioterapi.equals("Ada")){
-                        ada_penilaian_fisioterapi++;
-                    }else{
-                        tidak_ada_penilaian_fisioterapi++;
-                    }
-                    
-                    penilaian_medis_ralan_rehab_medik=Sequel.cariIsi("select if(count(penilaian_medis_ralan_rehab_medik.no_rawat)>0,'Ada','Tidak Ada') from penilaian_medis_ralan_rehab_medik where penilaian_medis_ralan_rehab_medik.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_medis_ralan_rehab_medik.equals("Ada")){
-                        ada_penilaian_medis_ralan_rehab_medik++;
-                    }else{
-                        tidak_ada_penilaian_medis_ralan_rehab_medik++;
-                    }
-                    // tambahanan asmed psikiatri,bedah,neurologi,paru,mcu
-                    penilaian_medis_ralan_psikiatrik=Sequel.cariIsi("select if(count(penilaian_medis_ralan_psikiatrik.no_rawat)>0,'Ada','Tidak Ada') from penilaian_medis_ralan_psikiatrik where penilaian_medis_ralan_psikiatrik.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_medis_ralan_psikiatrik.equals("Ada")){
-                        ada_penilaian_medis_ralan_psikiatrik++;
-                    }else{
-                        tidak_ada_penilaian_medis_ralan_psikiatrik++;
-                    }
-                    
-                    penilaian_medis_ralan_bedah=Sequel.cariIsi("select if(count(penilaian_medis_ralan_bedah.no_rawat)>0,'Ada','Tidak Ada') from penilaian_medis_ralan_bedah where penilaian_medis_ralan_bedah.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_medis_ralan_bedah.equals("Ada")){
-                        ada_penilaian_medis_ralan_bedah++;
-                    }else{
-                        tidak_ada_penilaian_medis_ralan_bedah++;
-                    }
-                    
-                    penilaian_medis_ralan_neurologi=Sequel.cariIsi("select if(count(penilaian_medis_ralan_neurologi.no_rawat)>0,'Ada','Tidak Ada') from penilaian_medis_ralan_neurologi where penilaian_medis_ralan_neurologi.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_medis_ralan_neurologi.equals("Ada")){
-                        ada_penilaian_medis_ralan_neurologi++;
-                    }else{
-                        tidak_ada_penilaian_medis_ralan_neurologi++;
-                    }
-                    
-                    penilaian_medis_ralan_paru=Sequel.cariIsi("select if(count(penilaian_medis_ralan_paru.no_rawat)>0,'Ada','Tidak Ada') from penilaian_medis_ralan_paru where penilaian_medis_ralan_paru.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_medis_ralan_paru.equals("Ada")){
-                        ada_penilaian_medis_ralan_paru++;
-                    }else{
-                        tidak_ada_penilaian_medis_ralan_paru++;
-                    }
-                    
-                    penilaian_mcu=Sequel.cariIsi("select if(count(penilaian_mcu.no_rawat)>0,'Ada','Tidak Ada') from penilaian_mcu where penilaian_mcu.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_mcu.equals("Ada")){
-                        ada_penilaian_mcu++;
-                    }else{
-                        tidak_ada_penilaian_mcu++;
-                    }
-                    // tambahan kulit,ortopedi,hemo,bedah mulut,askep geriatri,medis geriatri
-                    penilaian_medis_ralan_kulitdankelamin=Sequel.cariIsi("select if(count(penilaian_medis_ralan_kulitdankelamin.no_rawat)>0,'Ada','Tidak Ada') from penilaian_medis_ralan_kulitdankelamin where penilaian_medis_ralan_kulitdankelamin.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_medis_ralan_kulitdankelamin.equals("Ada")){
-                        ada_penilaian_medis_ralan_kulitdankelamin++;
-                    }else{
-                        tidak_ada_penilaian_medis_ralan_kulitdankelamin++;
-                    }
-                    
-                    penilaian_medis_ralan_orthopedi=Sequel.cariIsi("select if(count(penilaian_medis_ralan_orthopedi.no_rawat)>0,'Ada','Tidak Ada') from penilaian_medis_ralan_orthopedi where penilaian_medis_ralan_orthopedi.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_medis_ralan_orthopedi.equals("Ada")){
-                        ada_penilaian_medis_ralan_orthopedi++;
-                    }else{
-                        tidak_ada_penilaian_medis_ralan_orthopedi++;
-                    }
-                    
-                    penilaian_medis_hemodialisa=Sequel.cariIsi("select if(count(penilaian_medis_hemodialisa.no_rawat)>0,'Ada','Tidak Ada') from penilaian_medis_hemodialisa where penilaian_medis_hemodialisa.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_medis_hemodialisa.equals("Ada")){
-                        ada_penilaian_medis_hemodialisa++;
-                    }else{
-                        tidak_ada_penilaian_medis_hemodialisa++;
-                    }
-                    
-                    penilaian_medis_ralan_bedah_mulut=Sequel.cariIsi("select if(count(penilaian_medis_ralan_bedah_mulut.no_rawat)>0,'Ada','Tidak Ada') from penilaian_medis_ralan_bedah_mulut where penilaian_medis_ralan_bedah_mulut.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_medis_ralan_bedah_mulut.equals("Ada")){
-                        ada_penilaian_medis_ralan_bedah_mulut++;
-                    }else{
-                        tidak_ada_penilaian_medis_ralan_bedah_mulut++;
-                    }
-                    
-                    penilaian_awal_keperawatan_ralan_geriatri=Sequel.cariIsi("select if(count(penilaian_awal_keperawatan_ralan_geriatri.no_rawat)>0,'Ada','Tidak Ada') from penilaian_awal_keperawatan_ralan_geriatri where penilaian_awal_keperawatan_ralan_geriatri.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_awal_keperawatan_ralan_geriatri.equals("Ada")){
-                        ada_penilaian_awal_keperawatan_ralan_geriatri++;
-                    }else{
-                        tidak_ada_penilaian_awal_keperawatan_ralan_geriatri++;
-                    }
-                    
-                    penilaian_medis_ralan_geriatri=Sequel.cariIsi("select if(count(penilaian_medis_ralan_geriatri.no_rawat)>0,'Ada','Tidak Ada') from penilaian_medis_ralan_geriatri where penilaian_medis_ralan_geriatri.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_medis_ralan_geriatri.equals("Ada")){
-                        ada_penilaian_medis_ralan_geriatri++;
-                    }else{
-                        tidak_ada_penilaian_medis_ralan_geriatri++;
-                    }
-                    // tambahan THT dan SEP
-                    penilaian_medis_ralan_tht=Sequel.cariIsi("select if(count(penilaian_medis_ralan_tht.no_rawat)>0,'Ada','Tidak Ada') from penilaian_medis_ralan_tht where penilaian_medis_ralan_tht.no_rawat=?",rs.getString("no_rawat"));
-                    if(penilaian_medis_ralan_tht.equals("Ada")){
-                        ada_penilaian_medis_ralan_tht++;
-                    }else{
-                        tidak_ada_penilaian_medis_ralan_tht++;
-                    }
-                    
-                    bridging_sep=Sequel.cariIsi("select if(count(bridging_sep.no_rawat)>0,'Ada','Tidak Ada') from bridging_sep where bridging_sep.no_rawat=?",rs.getString("no_rawat"));
-                    if(bridging_sep.equals("Ada")){
-                        ada_bridging_sep++;
-                    }else{
-                        tidak_ada_bridging_sep++;
-                    }
-                    
                     tabMode.addRow(new Object[]{
                         rs.getString("no_rawat"),rs.getString("tgl_registrasi"),rs.getString("nm_dokter"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),rs.getString("nm_poli"),rs.getString("status_lanjut"),
-                        soapiralan,soapiranap,resumeralan,resumeranap,triaseigd,askepigd,penilaian_medis_igd,icd10,icd9,penilaian_awal_keperawatan_ralan,penilaian_medis_ralan_penyakit_dalam,penilaian_medis_ralan_mata,
-                        penilaian_awal_keperawatan_gigi,penilaian_awal_keperawatan_kebidanan,penilaian_medis_ralan_kandungan,penilaian_awal_keperawatan_ralan_bayi,penilaian_medis_ralan_anak,penilaian_awal_keperawatan_ralan_psikiatri,penilaian_fisioterapi,penilaian_medis_ralan_rehab_medik,
-                        penilaian_medis_ralan_psikiatrik,penilaian_medis_ralan_bedah,penilaian_medis_ralan_neurologi,penilaian_medis_ralan_paru,penilaian_mcu,penilaian_medis_ralan_kulitdankelamin,penilaian_medis_ralan_orthopedi,penilaian_medis_hemodialisa,penilaian_medis_ralan_bedah_mulut,penilaian_awal_keperawatan_ralan_geriatri,penilaian_medis_ralan_geriatri,penilaian_medis_ralan_tht,bridging_sep
+                        soapiralan,soapiranap,resumeralan,resumeranap,triaseigd,askepigd,icd10,icd9
                     });                    
                 }
                 if(tabMode.getRowCount()>0){
                     tabMode.addRow(new Object[]{
-                        "","","","","","Status Data Ada",":",adasoapiralan,adasoapiranap,adaresumeralan,adaresumeranap,adatriaseigd,adaaskepigd,ada_penilaian_medis_igd,adaicd10,adaicd9,ada_penilaian_awal_keperawatan_ralan,ada_penilaian_medis_ralan_penyakit_dalam,ada_penilaian_medis_ralan_mata,ada_penilaian_awal_keperawatan_gigi,ada_penilaian_awal_keperawatan_kebidanan,ada_penilaian_medis_ralan_kandungan,
-                        ada_penilaian_awal_keperawatan_ralan_bayi,ada_penilaian_medis_ralan_anak,ada_penilaian_awal_keperawatan_ralan_psikiatri,ada_penilaian_fisioterapi,ada_penilaian_medis_ralan_rehab_medik,
-                        ada_penilaian_medis_ralan_psikiatrik,ada_penilaian_medis_ralan_bedah,ada_penilaian_medis_ralan_neurologi,ada_penilaian_medis_ralan_paru,ada_penilaian_mcu,
-                        ada_penilaian_medis_ralan_kulitdankelamin,ada_penilaian_medis_ralan_orthopedi,ada_penilaian_medis_hemodialisa,ada_penilaian_medis_ralan_bedah_mulut,ada_penilaian_awal_keperawatan_ralan_geriatri,ada_penilaian_medis_ralan_geriatri,
-                        ada_penilaian_medis_ralan_tht,ada_bridging_sep
+                        "","","","","","Status Data Ada",":",adasoapiralan,adasoapiranap,adaresumeralan,adaresumeranap,adatriaseigd,adaaskepigd,adaicd10,adaicd9
                     });
                     tabMode.addRow(new Object[]{
-                        "","","","","","Status Data Tidak Ada",":",tidakadasoapiralan,tidakadasoapiranap,tidakadaresumeralan,tidakadaresumeranap,tidakadatriaseigd,tidakadaaskepigd,tidak_ada_penilaian_medis_igd,tidakadaicd10,tidakadaicd9,tidak_ada_penilaian_awal_keperawatan_ralan,tidak_ada_penilaian_medis_ralan_penyakit_dalam,tidak_ada_penilaian_medis_ralan_mata,tidak_ada_penilaian_awal_keperawatan_gigi,tidak_ada_penilaian_awal_keperawatan_kebidanan,tidak_ada_penilaian_medis_ralan_kandungan,
-                        tidak_ada_penilaian_awal_keperawatan_ralan_bayi,tidak_ada_penilaian_medis_ralan_anak,tidak_ada_penilaian_awal_keperawatan_ralan_psikiatri,tidak_ada_penilaian_fisioterapi,tidak_ada_penilaian_medis_ralan_rehab_medik,
-                        tidak_ada_penilaian_medis_ralan_psikiatrik,tidak_ada_penilaian_medis_ralan_bedah,tidak_ada_penilaian_medis_ralan_neurologi,tidak_ada_penilaian_medis_ralan_paru,tidak_ada_penilaian_mcu,
-                        tidak_ada_penilaian_medis_ralan_kulitdankelamin,tidak_ada_penilaian_medis_ralan_orthopedi,tidak_ada_penilaian_medis_hemodialisa,tidak_ada_penilaian_medis_ralan_bedah_mulut,tidak_ada_penilaian_awal_keperawatan_ralan_geriatri,tidak_ada_penilaian_medis_ralan_geriatri,tidak_ada_penilaian_medis_ralan_tht,tidak_ada_bridging_sep
+                        "","","","","","Status Data Tidak Ada",":",tidakadasoapiralan,tidakadasoapiranap,tidakadaresumeralan,tidakadaresumeranap,tidakadatriaseigd,tidakadaaskepigd,tidakadaicd10,tidakadaicd9
                     });
                 }   
             } catch (Exception e) {
