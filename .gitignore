@@ -1,3 +1,24 @@
 ibnusinadev/
 /build/
 /dist/
+
+# NetBeans specific
+nbproject/private/
+nbbuild/
+nbdist/
+
+# Log files and temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+*~
+
+# IDEs
+.vscode/
+.idea/
+*.iml
+
+# OS-specific
+.DS_Store
+Thumbs.db
