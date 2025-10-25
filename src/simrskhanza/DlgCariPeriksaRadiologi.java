@@ -2543,7 +2543,7 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                     String signingResponse = apiPeruri.signingSession(orderId);
                     JsonNode signingNode = mapper.readTree(signingResponse);
 
-                    if(signingNode.has("resultCode") && "0".equals(signingNode.get("resultCode").asText())) {
+                    if(signingNode.has("resultCode") && signingNode.get("resultCode") != null && "0".equals(signingNode.get("resultCode").asText())) {
                         // Update status
                         Sequel.queryu2(
                             "UPDATE tracking_dokumen_ttd SET status_ttd='Sudah', " +
@@ -2556,9 +2556,21 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                             "Dokumen berhasil dikirim dan ditandatangani\n" +
                             "Order ID: " + orderId);
                     } else {
-                        String resultDesc = signingNode.has("resultDesc") ?
-                            signingNode.get("resultDesc").asText() : "Unknown error";
-                        JOptionPane.showMessageDialog(null, "Gagal signing dokumen: " + resultDesc);
+                        // Cek apakah error karena OTP expired
+                        String errorDesc = "";
+                        if(signingNode.has("resultDesc") && signingNode.get("resultDesc") != null) {
+                            errorDesc = signingNode.get("resultDesc").asText();
+                        }
+
+                        // Tampilkan pesan error yang lebih informatif
+                        if(errorDesc.toLowerCase().contains("otp") || errorDesc.toLowerCase().contains("session") || errorDesc.toLowerCase().contains("expired")) {
+                            JOptionPane.showMessageDialog(null,
+                                "Masa berlaku OTP sudah habis.\nSilahkan Klik dulu Kirim OTP",
+                                "Peringatan",
+                                JOptionPane.WARNING_MESSAGE);
+                        } else {
+                            throw new RuntimeException("Gagal signing: " + errorDesc);
+                        }
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Gagal menyimpan tracking dokumen");

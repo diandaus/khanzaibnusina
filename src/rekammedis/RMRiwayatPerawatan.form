@@ -636,7 +636,6 @@
                             </Component>
                             <Component class="widget.CekBox" name="chkSEPBPJS">
                               <Properties>
-                                <Property name="selected" type="boolean" value="true"/>
                                 <Property name="text" type="java.lang.String" value="SEP BPJS"/>
                                 <Property name="horizontalAlignment" type="int" value="2"/>
                                 <Property name="name" type="java.lang.String" value="chkSEPBPJS" noResource="true"/>

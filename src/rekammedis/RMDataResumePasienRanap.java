@@ -3055,7 +3055,7 @@ public class RMDataResumePasienRanap extends javax.swing.JDialog {
                     ObjectMapper mapper = new ObjectMapper();
                     JsonNode signingNode = mapper.readTree(signingResponse);
 
-                    if(signingNode.has("resultCode") && "0".equals(signingNode.get("resultCode").asText())) {
+                    if(signingNode.has("resultCode") && signingNode.get("resultCode") != null && "0".equals(signingNode.get("resultCode").asText())) {
                         // Update status tracking
                         Sequel.queryu2(
                             "UPDATE tracking_dokumen_ttd SET status_ttd='Sudah', " +
@@ -3069,7 +3069,21 @@ public class RMDataResumePasienRanap extends javax.swing.JDialog {
                             "Dokumen berhasil dikirim dan ditandatangani\n" +
                             "Order ID: " + orderId);
                     } else {
-                        throw new RuntimeException("Gagal signing: " + signingNode.get("resultDesc").asText());
+                        // Cek apakah error karena OTP expired
+                        String errorDesc = "";
+                        if(signingNode.has("resultDesc") && signingNode.get("resultDesc") != null) {
+                            errorDesc = signingNode.get("resultDesc").asText();
+                        }
+
+                        // Tampilkan pesan error yang lebih informatif
+                        if(errorDesc.toLowerCase().contains("otp") || errorDesc.toLowerCase().contains("session") || errorDesc.toLowerCase().contains("expired")) {
+                            JOptionPane.showMessageDialog(null,
+                                "Masa berlaku OTP sudah habis.\nSilahkan Klik dulu Kirim OTP",
+                                "Peringatan",
+                                JOptionPane.WARNING_MESSAGE);
+                        } else {
+                            throw new RuntimeException("Gagal signing: " + errorDesc);
+                        }
                     }
                 }
             }
