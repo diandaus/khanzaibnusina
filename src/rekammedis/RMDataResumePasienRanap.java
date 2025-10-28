@@ -43,6 +43,15 @@ import laporan.DlgDiagnosaPenyakit;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import org.apache.commons.io.FileUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 
 /**
@@ -2791,6 +2800,27 @@ public class RMDataResumePasienRanap extends javax.swing.JDialog {
                     byte[] pdfBytes = Base64.getDecoder().decode(base64Document);
                     Files.write(Paths.get(filePath), pdfBytes);
 
+                    // Auto upload ke server web
+                    try {
+                        // Simpan juga ke tempfile untuk upload
+                        File tempDir = new File("tempfile");
+                        if (!tempDir.exists()) {
+                            tempDir.mkdirs();
+                        }
+                        String tempFilePath = "tempfile/" + fileName;
+                        Files.write(Paths.get(tempFilePath), pdfBytes);
+
+                        // Upload ke server
+                        uploadPDFToServer(fileName, "berkasrawat/pages/upload/");
+
+                        // Hapus file temporary setelah upload
+                        new File(tempFilePath).delete();
+
+                        System.out.println("Auto upload Resume berhasil: " + fileName);
+                    } catch(Exception uploadEx) {
+                        System.out.println("Auto upload gagal: " + uploadEx.getMessage());
+                    }
+
                     // Buka file PDF
                     try {
                         File pdfFile = new File(filePath);
@@ -2798,14 +2828,14 @@ public class RMDataResumePasienRanap extends javax.swing.JDialog {
                             if(Desktop.isDesktopSupported()) {
                                 Desktop.getDesktop().open(pdfFile);
                             } else {
-                                JOptionPane.showMessageDialog(null, 
-                                    "Dokumen berhasil diunduh ke: " + filePath + "\n" +
+                                JOptionPane.showMessageDialog(null,
+                                    "Dokumen berhasil diunduh & diupload ke: " + filePath + "\n" +
                                     "Silakan buka file secara manual.");
                             }
                         }
                     } catch(Exception e) {
-                        JOptionPane.showMessageDialog(null, 
-                            "Dokumen berhasil diunduh ke: " + filePath + "\n" +
+                        JOptionPane.showMessageDialog(null,
+                            "Dokumen berhasil diunduh & diupload ke: " + filePath + "\n" +
                             "Terjadi kesalahan saat membuka file: " + e.getMessage());
                     }
                 }
@@ -3098,6 +3128,32 @@ public class RMDataResumePasienRanap extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_MnKirimDanTandaTanganActionPerformed
 /**/
+    /**
+     * Method untuk upload PDF ke server web
+     */
+    private void uploadPDFToServer(String fileName, String docpath) {
+        try {
+            File file = new File("tempfile/" + fileName);
+            if(!file.exists()) {
+                System.out.println("File tidak ditemukan untuk upload: " + fileName);
+                return;
+            }
+
+            byte[] data = FileUtils.readFileToByteArray(file);
+            org.apache.http.client.HttpClient httpClient = new DefaultHttpClient();
+            HttpPost postRequest = new HttpPost("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/upload.php?doc=" + docpath);
+            ByteArrayBody fileData = new ByteArrayBody(data, fileName);
+            MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+            reqEntity.addPart("file", fileData);
+            postRequest.setEntity(reqEntity);
+            HttpResponse response = httpClient.execute(postRequest);
+            httpClient.getConnectionManager().shutdown();
+            System.out.println("Upload berhasil: " + fileName + " - Status: " + response.getStatusLine());
+        } catch (Exception e) {
+            System.out.println("Gagal upload: " + e.getMessage());
+        }
+    }
+
     /**
     * @param args the command line arguments
     */

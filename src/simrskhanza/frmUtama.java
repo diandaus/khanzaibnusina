@@ -751,7 +751,6 @@ import kepegawaian.DlgAuditPenangananDarah;
 import kepegawaian.DlgAuditPenempatanPasien;
 import kepegawaian.DlgAuditPengelolaanLinenKotor;
 import kepegawaian.DlgAuditSterilisasiAlat;
-import kepegawaian.DlgRegistrasiAkunPeruri;
 import kepegawaian.DlgRiwayatSuratPeringatan;
 import kepegawaian.SKPKategoriPenilaian;
 import kepegawaian.SKPKriteriaPenilaian;
@@ -824,6 +823,8 @@ import laporan.DlgRekapPermintaanDiet;
 import laporan.LaporanTahunanPAM;
 import rekammedis.DlgSOAPRalanAggotaPolri;
 import laporan.DlgStatusDataRM;
+import berkasdigital.FormBerkasKlaimBpjs;
+import integration_idrg.DlgListKlaim;
 import laporan.LaporanBulananIRJ;
 import rekammedis.DlgSOAPPerawatan;
 import laporan.LaporanKedatanganPasienPerJam;
@@ -1069,94 +1070,6 @@ import setting.DlgJamDietPasien;
 import setting.DlgPasswordBPJS;
 import setting.DlgRuangOperasi;
 import setting.DlgSetHargaToko;
-import simrskhanza.DlgAbout;
-import simrskhanza.DlgAbout;
-import simrskhanza.DlgBahasa;
-import simrskhanza.DlgBahasa;
-import simrskhanza.DlgBahasa;
-import simrskhanza.DlgCacatFisik;
-import simrskhanza.DlgCacatFisik;
-import simrskhanza.DlgCacatFisik;
-import simrskhanza.DlgCariPeriksaLab;
-import simrskhanza.DlgCariPeriksaLab;
-import simrskhanza.DlgCariPeriksaLab;
-import simrskhanza.DlgCariPeriksaLabMB;
-import simrskhanza.DlgCariPeriksaLabMB;
-import simrskhanza.DlgCariPeriksaLabMB;
-import simrskhanza.DlgCariPeriksaLabPA;
-import simrskhanza.DlgCariPeriksaLabPA;
-import simrskhanza.DlgCariPeriksaLabPA;
-import simrskhanza.DlgCariPeriksaRadiologi;
-import simrskhanza.DlgCariPeriksaRadiologi;
-import simrskhanza.DlgCariPeriksaRadiologi;
-import simrskhanza.DlgCariTagihanOperasi;
-import simrskhanza.DlgCariTagihanOperasi;
-import simrskhanza.DlgCariTagihanOperasi;
-import simrskhanza.DlgDpjp;
-import simrskhanza.DlgDpjp;
-import simrskhanza.DlgDpjp;
-import simrskhanza.DlgGolonganPolri;
-import simrskhanza.DlgGolonganPolri;
-import simrskhanza.DlgGolonganPolri;
-import simrskhanza.DlgGolonganTNI;
-import simrskhanza.DlgGolonganTNI;
-import simrskhanza.DlgGolonganTNI;
-import simrskhanza.DlgIGD;
-import simrskhanza.DlgIGD;
-import simrskhanza.DlgIGD;
-import simrskhanza.DlgIKBBayi;
-import simrskhanza.DlgIKBBayi;
-import simrskhanza.DlgIKBBayi;
-import simrskhanza.DlgJabatanPolri;
-import simrskhanza.DlgJabatanPolri;
-import simrskhanza.DlgJabatanPolri;
-import simrskhanza.DlgJabatanTNI;
-import simrskhanza.DlgJabatanTNI;
-import simrskhanza.DlgJabatanTNI;
-import simrskhanza.DlgKasirRalan;
-import simrskhanza.DlgKasirRalan;
-import simrskhanza.DlgKasirRalan;
-import simrskhanza.DlgLhtCatatanPasien;
-import simrskhanza.DlgLhtCatatanPasien;
-import simrskhanza.DlgLhtCatatanPasien;
-import simrskhanza.DlgPangkatPolri;
-import simrskhanza.DlgPangkatPolri;
-import simrskhanza.DlgPangkatPolri;
-import simrskhanza.DlgPangkatTNI;
-import simrskhanza.DlgPangkatTNI;
-import simrskhanza.DlgPangkatTNI;
-import simrskhanza.DlgPasienMati;
-import simrskhanza.DlgPasienMati;
-import simrskhanza.DlgPasienMati;
-import simrskhanza.DlgPemberianDiet;
-import simrskhanza.DlgPemberianDiet;
-import simrskhanza.DlgPemberianDiet;
-import simrskhanza.DlgPenanggungJawab;
-import simrskhanza.DlgPenanggungJawab;
-import simrskhanza.DlgPenanggungJawab;
-import simrskhanza.DlgPerusahaan;
-import simrskhanza.DlgPerusahaan;
-import simrskhanza.DlgPerusahaan;
-import simrskhanza.DlgRawatJalan;
-import simrskhanza.DlgRawatJalan;
-import simrskhanza.DlgReg;
-import simrskhanza.DlgReg;
-import simrskhanza.DlgReg;
-import simrskhanza.DlgRujuk;
-import simrskhanza.DlgRujuk;
-import simrskhanza.DlgRujuk;
-import simrskhanza.DlgRujukMasuk;
-import simrskhanza.DlgRujukMasuk;
-import simrskhanza.DlgRujukMasuk;
-import simrskhanza.DlgSatuanPolri;
-import simrskhanza.DlgSatuanPolri;
-import simrskhanza.DlgSatuanPolri;
-import simrskhanza.DlgSatuanTNI;
-import simrskhanza.DlgSatuanTNI;
-import simrskhanza.DlgSatuanTNI;
-import simrskhanza.DlgSuku;
-import simrskhanza.DlgSuku;
-import simrskhanza.DlgSuku;
 import smsui.frmSmsView;
 import surat.MasterTemplatePersetujuanPenolakanTindakan;
 import surat.PengumumanEPasien;
@@ -1273,6 +1186,7 @@ public class frmUtama extends javax.swing.JFrame {
         initComponents();
         initKhanza();
         initKhanza2();
+        initRSI();
         setIconImage(new ImageIcon(super.getClass().getResource("/picture/yaski24.png")).getImage());
         
         this.setExtendedState(MAXIMIZED_BOTH);
@@ -23850,14 +23764,17 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         Panelmenu.removeAll();
         
         if(ChkInput.isSelected()==true){
-            isCombo();  
+            isCombo();
+            isComboRSI();
         }else{
             if(TCari.getText().equals("")){
-                isCariKosong();                
+                isCariKosong();
+                isCariKosongRSI();
             }else if(!TCari.getText().equals("")){
                 isCariIsi();
                 isCariIsi2();
                 isCariIsi3();
+                isCariIsiRSI();
             }    
         }
             
@@ -48932,5 +48849,90 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         btnHasilPemeriksaanECHOPediatrik.setName("btnHasilPemeriksaanECHOPediatrik"); 
         btnHasilPemeriksaanECHOPediatrik.setPreferredSize(new java.awt.Dimension(200, 90));
         btnHasilPemeriksaanECHOPediatrik.addActionListener(this::btnHasilPemeriksaanECHOPediatrikActionPerformed);
+    }
+    
+    private widget.ButtonBig btnFormBerkasKlaimBpjs,btnDlgListKlaim;
+    
+    private void initRSI() {
+        btnFormBerkasKlaimBpjs = new widget.ButtonBig();
+        btnFormBerkasKlaimBpjs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/48x48/if_x-office-document-template_25011.png")));
+        btnFormBerkasKlaimBpjs.setText("Berkas Klaim BPJS");
+        btnFormBerkasKlaimBpjs.setIconTextGap(0);
+        btnFormBerkasKlaimBpjs.setName("btnFormBerkasKlaimBpjs");
+        btnFormBerkasKlaimBpjs.setPreferredSize(new java.awt.Dimension(200, 90));
+        btnFormBerkasKlaimBpjs.addActionListener(this::btnFormBerkasKlaimBpjsActionPerformed);
+        
+        btnDlgListKlaim = new widget.ButtonBig();
+        btnDlgListKlaim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/48x48/if_x-office-document-template_25011.png")));
+        btnDlgListKlaim.setText("List Klaim BPJS");
+        btnDlgListKlaim.setIconTextGap(0);
+        btnDlgListKlaim.setName("btnDlgListKlaim");
+        btnDlgListKlaim.setPreferredSize(new java.awt.Dimension(200, 90));
+        btnDlgListKlaim.addActionListener(this::btnDlgListKlaimActionPerformed);
+    }
+    
+    private void isComboRSI() {
+        if (cmbMenu.getSelectedIndex() == 11) {
+            if (akses.getadmin()) {
+                Panelmenu.add(btnFormBerkasKlaimBpjs);
+                jmlmenu++;
+            }
+        }
+        
+        if (cmbMenu.getSelectedIndex() == 11) {
+            if (akses.getadmin()) {
+                Panelmenu.add(btnDlgListKlaim);
+                jmlmenu++;
+            }
+        }
+    }     
+    private void isCariKosongRSI() {
+        if (akses.getadmin()) {
+            Panelmenu.add(btnFormBerkasKlaimBpjs);
+            jmlmenu++;
+        }
+        
+        if (akses.getadmin()) {
+            Panelmenu.add(btnDlgListKlaim);
+            jmlmenu++;
+        }
+    }
+        
+     private void isCariIsiRSI() {
+        if (akses.getadmin()) {
+            if (btnFormBerkasKlaimBpjs.getText().toLowerCase().trim().contains(TCari.getText().toLowerCase().trim())) {
+                Panelmenu.add(btnFormBerkasKlaimBpjs);
+                jmlmenu++;
+            }
+        }
+        
+        if (akses.getadmin()) {
+            if (btnDlgListKlaim.getText().toLowerCase().trim().contains(TCari.getText().toLowerCase().trim())) {
+                Panelmenu.add(btnDlgListKlaim);
+                jmlmenu++;
+            }
+        }
+    }
+
+    private void btnFormBerkasKlaimBpjsActionPerformed(java.awt.event.ActionEvent evt) {
+        isTutup();
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        FormBerkasKlaimBpjs form=new FormBerkasKlaimBpjs(this,false);
+        form.setSize(PanelUtama.getWidth(),PanelUtama.getHeight());
+        form.setLocationRelativeTo(PanelUtama);
+        form.setVisible(true);
+        DlgHome.dispose();
+        this.setCursor(Cursor.getDefaultCursor());
+    }
+    
+    private void btnDlgListKlaimActionPerformed(java.awt.event.ActionEvent evt) {
+        isTutup();
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        DlgListKlaim form=new DlgListKlaim(this,false);
+        form.setSize(PanelUtama.getWidth(),PanelUtama.getHeight());
+        form.setLocationRelativeTo(PanelUtama);
+        form.setVisible(true);
+        DlgHome.dispose();
+        this.setCursor(Cursor.getDefaultCursor());
     }
 }

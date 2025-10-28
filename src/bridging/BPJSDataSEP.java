@@ -26,6 +26,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 import java.net.URI;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
@@ -45,10 +46,17 @@ import javax.swing.JTable;
 import javax.swing.event.DocumentEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import org.apache.commons.io.FileUtils;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -87,7 +95,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
     private BPJSCekReferensiKecamatan kecamatan=new BPJSCekReferensiKecamatan(null,false);
     private BPJSCekRiwayatRujukanTerakhir rujukanterakhir=new BPJSCekRiwayatRujukanTerakhir(null,false);
     private String prb="",no_peserta="",link="",ADDANTRIANAPIMOBILEJKN="no",requestJson,URL="",query="",utc="",user="",kddokter="",tglkkl="0000-00-00",penunjang="",kodedokterreg="",kodepolireg="",
-            jammulai="",jamselesai="",datajam="",jeniskunjungan="",hari="",nomorreg="",respon="200";
+            jammulai="",jamselesai="",datajam="",jeniskunjungan="",hari="",nomorreg="",respon="200",FileName = "",kodeberkas="";
     private HttpHeaders headers;
     private HttpEntity requestEntity;
     private ObjectMapper mapper = new ObjectMapper();
@@ -923,6 +931,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         ppSepRujukSama = new javax.swing.JMenuItem();
         ppSepRujukBeda = new javax.swing.JMenuItem();
         ppCekSEPApotekBPJS = new javax.swing.JMenuItem();
+        UploadSEP = new javax.swing.JMenuItem();
         WindowUpdatePulang = new javax.swing.JDialog();
         internalFrame5 = new widget.InternalFrame();
         BtnCloseIn4 = new widget.Button();
@@ -1490,6 +1499,22 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
             }
         });
         Popup.add(ppCekSEPApotekBPJS);
+
+        UploadSEP.setBackground(new java.awt.Color(255, 255, 254));
+        UploadSEP.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        UploadSEP.setForeground(new java.awt.Color(50, 50, 50));
+        UploadSEP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        UploadSEP.setText("Upload SEP ke Berkas Digital");
+        UploadSEP.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        UploadSEP.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        UploadSEP.setName("UploadSEP"); // NOI18N
+        UploadSEP.setPreferredSize(new java.awt.Dimension(300, 25));
+        UploadSEP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UploadSEPBtnPrintActionPerformed(evt);
+            }
+        });
+        Popup.add(UploadSEP);
 
         WindowUpdatePulang.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         WindowUpdatePulang.setName("WindowUpdatePulang"); // NOI18N
@@ -5598,6 +5623,14 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         this.setCursor(Cursor.getDefaultCursor()); 
     }//GEN-LAST:event_ppCekSEPApotekBPJSBtnPrintActionPerformed
 
+    private void UploadSEPBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UploadSEPBtnPrintActionPerformed
+        FileName = "SEP_" + tbDataSEP.getValueAt(tbDataSEP.getSelectedRow(), 1).toString().replaceAll("/", "_") + "_" + tbDataSEP.getValueAt(tbDataSEP.getSelectedRow(), 0).toString().trim();
+        CreatePDF(FileName);
+        String filePath = "tmpPDF/" + FileName;
+        UploadPDF(FileName, "berkasrawat/pages/upload/");
+        HapusPDF();
+    }//GEN-LAST:event_UploadSEPBtnPrintActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -5725,6 +5758,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
     private widget.TextBox TglLahir;
     private widget.ComboBox TipeRujukan;
     private widget.ComboBox TujuanKunjungan;
+    private javax.swing.JMenuItem UploadSEP;
     private javax.swing.JDialog WindowCariSEP;
     private javax.swing.JDialog WindowRujukan;
     private javax.swing.JDialog WindowUpdatePulang;
@@ -6591,9 +6625,20 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                      if(!prb.equals("")){
                         if(Sequel.menyimpantf("bpjs_prb","?,?","PRB",2,new String[]{response.asText(),prb})==true){
                             prb="";
-                        } 
+                        }
                      }
-                        
+
+                     // Auto create PDF dan upload setelah simpan sukses
+                     try {
+                         String autoFileName = "SEP_" + TNoRw.getText().replaceAll("/", "_") + "_" + response.asText();
+                         CreatePDF(autoFileName);
+                         UploadPDF(autoFileName, "berkasrawat/pages/upload/");
+                         HapusPDF();
+                         System.out.println("Auto upload SEP berhasil: " + autoFileName);
+                     } catch (Exception autoUploadEx) {
+                         System.out.println("Auto upload gagal: " + autoUploadEx.getMessage());
+                     }
+
                      emptTeks();
                  }else{
                      if(Sequel.menyimpantf("bridging_sep_internal","?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?","SEP",52,new String[]{
@@ -6621,7 +6666,18 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                         if(!prb.equals("")){
                            if(Sequel.menyimpantf("bpjs_prb","?,?","PRB",2,new String[]{response.asText(),prb})==true){
                                prb="";
-                           } 
+                           }
+                        }
+
+                        // Auto create PDF dan upload setelah simpan sukses (SEP Internal)
+                        try {
+                            String autoFileName = "SEP_" + TNoRw.getText().replaceAll("/", "_") + "_" + response.asText();
+                            CreatePDF(autoFileName);
+                            UploadPDF(autoFileName, "berkasrawat/pages/upload/");
+                            HapusPDF();
+                            System.out.println("Auto upload SEP Internal berhasil: " + autoFileName);
+                        } catch (Exception autoUploadEx) {
+                            System.out.println("Auto upload gagal: " + autoUploadEx.getMessage());
                         }
 
                         emptTeks();
@@ -6827,5 +6883,108 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
             }
         }
         return statusantrean;
+    }
+    
+    private void CreatePDF(String FileName) {
+        if (TabRawat.getSelectedIndex() == 1) {
+            if (tbDataSEP.getSelectedRow() != -1) {
+                this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                Map<String, Object> param = new HashMap<>();
+                param.put("namars", akses.getnamars());
+                param.put("alamatrs", akses.getalamatrs());
+                param.put("kotars", akses.getkabupatenrs());
+                param.put("propinsirs", akses.getpropinsirs());
+                param.put("kontakrs", akses.getkontakrs());
+                param.put("prb", Sequel.cariIsi("select bpjs_prb.prb from bpjs_prb where bpjs_prb.no_sep=?", tbDataSEP.getValueAt(tbDataSEP.getSelectedRow(), 0).toString()));
+                param.put("logo", Sequel.cariGambar("select gambar.bpjs from gambar"));
+                param.put("parameter", tbDataSEP.getValueAt(tbDataSEP.getSelectedRow(), 0).toString());
+                if (JenisPelayanan.getSelectedIndex() == 0) {
+                    Valid.MyReportPDFUpload("rptBridgingSEP.jasper", "report", "::[ Cetak SEP ]::", FileName, param);
+                } else {
+                    Valid.MyReportPDFUpload("rptBridgingSEP2.jasper", "report", "::[ Cetak SEP ]::", FileName, param);
+                }
+
+                this.setCursor(Cursor.getDefaultCursor());
+            } else {
+                JOptionPane.showMessageDialog(null, "Maaf, silahkan pilih data SEP yang mau dicetak...!!!!");
+                BtnBatal.requestFocus();
+            }
+        } else if (TabRawat.getSelectedIndex() == 2) {
+            if (tbDataSEPInternal.getSelectedRow() != -1) {
+                this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                Map<String, Object> param = new HashMap<>();
+                param.put("namars", akses.getnamars());
+                param.put("alamatrs", akses.getalamatrs());
+                param.put("kotars", akses.getkabupatenrs());
+                param.put("propinsirs", akses.getpropinsirs());
+                param.put("kontakrs", akses.getkontakrs());
+                param.put("prb", Sequel.cariIsi("select bpjs_prb.prb from bpjs_prb where bpjs_prb.no_sep=?", tbDataSEPInternal.getValueAt(tbDataSEPInternal.getSelectedRow(), 0).toString()));
+                param.put("logo", Sequel.cariGambar("select gambar.bpjs from gambar"));
+                param.put("no_sep", tbDataSEPInternal.getValueAt(tbDataSEPInternal.getSelectedRow(), 0).toString());
+                param.put("noskdp", tbDataSEPInternal.getValueAt(tbDataSEPInternal.getSelectedRow(), 43).toString());
+                param.put("tglrujukan", tbDataSEPInternal.getValueAt(tbDataSEPInternal.getSelectedRow(), 5).toString());
+                param.put("kdpolitujuan", tbDataSEPInternal.getValueAt(tbDataSEPInternal.getSelectedRow(), 15).toString());
+                if (JenisPelayanan.getSelectedIndex() == 0) {
+                    //    Valid.MyReportPDFUpload(tbDataSEPInternal.getValueAt(tbDataSEPInternal.getSelectedRow(), 0).toString(), "report", "::[ Cetak SEP Internal ]::", param);
+                } else {
+                    //      Valid.MyReportPDFUpload(tbDataSEPInternal.getValueAt(tbDataSEPInternal.getSelectedRow(), 0).toString(), "report", "::[ Cetak SEP Internal ]::", param);
+                }
+
+                this.setCursor(Cursor.getDefaultCursor());
+            } else {
+                JOptionPane.showMessageDialog(null, "Maaf, silahkan pilih data SEP yang mau dicetak...!!!!");
+                BtnBatal.requestFocus();
+            }
+        }
+    }
+
+    
+     private void UploadPDF(String FileName, String docpath) {
+        try {
+            File file = new File("tmpPDF/" + FileName + ".pdf");
+            byte[] data = FileUtils.readFileToByteArray(file);
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPost postRequest = new HttpPost("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/upload.php?doc=" + docpath);
+            ByteArrayBody fileData = new ByteArrayBody(data, FileName + ".pdf");
+            MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+            reqEntity.addPart("file", fileData);
+            postRequest.setEntity(reqEntity);
+            httpClient.execute(postRequest);
+
+            // Menyimpan ke database
+            boolean uploadSuccess = false;
+            kodeberkas = Sequel.cariIsi("SELECT kode FROM master_berkas_digital WHERE nama LIKE '%SEP%'");
+            if (Sequel.cariInteger("SELECT COUNT(no_rawat) AS jumlah FROM berkas_digital_perawatan WHERE lokasi_file='pages/upload/" + FileName + ".pdf'") > 0) {
+                uploadSuccess = Sequel.mengedittf("berkas_digital_perawatan", "lokasi_file=?","no_rawat=?,kode=?, lokasi_file=?", 4, new String[]{
+                    tbDataSEP.getValueAt(tbDataSEP.getSelectedRow(), 1).toString().trim(),kodeberkas,"pages/upload/" + FileName + ".pdf", "pages/upload/" + FileName + ".pdf"
+                });
+            } else {
+                uploadSuccess = Sequel.menyimpantf("berkas_digital_perawatan", "?,?,?", "No.Rawat", 3, new String[]{
+                    tbDataSEP.getValueAt(tbDataSEP.getSelectedRow(), 1).toString().trim(), kodeberkas, "pages/upload/" + FileName + ".pdf"
+                });
+            }
+
+            // Menampilkan notifikasi
+            if (uploadSuccess) {
+                JOptionPane.showMessageDialog(null, "Upload berhasil!", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Upload gagal disimpan ke database.", "Peringatan", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception e) {
+            System.out.println("Upload error: " + e);
+            JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat upload: " + e.getMessage(), "Kesalahan", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void HapusPDF() {
+        File file = new File("tmpPDF");
+        String[] myFiles;
+        if (file.isDirectory()) {
+            myFiles = file.list();
+            for (int i = 0; i < myFiles.length; i++) {
+                File myFile = new File(file, myFiles[i]);
+                myFile.delete();
+            }
+        }
     }
 }
