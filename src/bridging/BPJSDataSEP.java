@@ -5624,11 +5624,17 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
     }//GEN-LAST:event_ppCekSEPApotekBPJSBtnPrintActionPerformed
 
     private void UploadSEPBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UploadSEPBtnPrintActionPerformed
-        FileName = "SEP_" + tbDataSEP.getValueAt(tbDataSEP.getSelectedRow(), 1).toString().replaceAll("/", "_") + "_" + tbDataSEP.getValueAt(tbDataSEP.getSelectedRow(), 0).toString().trim();
-        CreatePDF(FileName);
-        String filePath = "tmpPDF/" + FileName; 
-        UploadPDF(FileName, "berkasrawat/pages/upload/");
-        HapusPDF();
+        if(tbDataSEP.getSelectedRow()== -1){
+            JOptionPane.showMessageDialog(null,"Maaf, silahkan pilih data SEP yang mau diupload...!!!!");
+            tbDataSEP.requestFocus();
+        }else{
+            // Format: SEP_[NoRawat] agar konsisten dengan DlgViewPdf
+            FileName = "SEP_" + tbDataSEP.getValueAt(tbDataSEP.getSelectedRow(), 1).toString().replaceAll("/", "_");
+            CreatePDF(FileName);
+            String filePath = "tmpPDF/" + FileName;
+            UploadPDF(FileName, "berkasrawat/pages/upload/");
+            HapusPDF();
+        }
     }//GEN-LAST:event_UploadSEPBtnPrintActionPerformed
 
     /**
@@ -6630,7 +6636,8 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
 
                      // Auto create PDF dan upload setelah simpan sukses
                      try {
-                         String autoFileName = "SEP_" + TNoRw.getText().replaceAll("/", "_") + "_" + response.asText();
+                         // Format: SEP_[NoRawat] agar konsisten dengan DlgViewPdf
+                         String autoFileName = "SEP_" + TNoRw.getText().replaceAll("/", "_");
                          CreatePDF(autoFileName);
                          UploadPDF(autoFileName, "berkasrawat/pages/upload/");
                          HapusPDF();
@@ -6671,7 +6678,8 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
 
                         // Auto create PDF dan upload setelah simpan sukses (SEP Internal)
                         try {
-                            String autoFileName = "SEP_" + TNoRw.getText().replaceAll("/", "_") + "_" + response.asText();
+                            // Format: SEP_[NoRawat] agar konsisten dengan DlgViewPdf
+                            String autoFileName = "SEP_" + TNoRw.getText().replaceAll("/", "_");
                             CreatePDF(autoFileName);
                             UploadPDF(autoFileName, "berkasrawat/pages/upload/");
                             HapusPDF();
