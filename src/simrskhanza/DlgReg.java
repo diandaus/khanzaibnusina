@@ -82,6 +82,7 @@ import bridging.ICareRiwayatPerawatan;
 import bridging.ICareRiwayatPerawatanFKTP;
 import bridging.INACBGPerawatanCorona;
 import bridging.PilihanBridgingAsuransi;
+import fungsi.WarnaTableReg;
 import inventory.DlgCopyResep;
 import rekammedis.RMDataResumePasien;
 import org.jfree.chart.ChartFactory;
@@ -370,7 +371,7 @@ public final class DlgReg extends javax.swing.JDialog {
                 column.setPreferredWidth(150);
             }
         }
-        tbPetugas.setDefaultRenderer(Object.class, new WarnaTable());
+        tbPetugas.setDefaultRenderer(Object.class, new WarnaTableReg());
 
         tabMode2=new DefaultTableModel(null,new Object[]{
             "P","No.Rawat","Tanggal","Jam","Kd.Dokter","Dokter Rujukan","Nomer RM",
@@ -448,7 +449,7 @@ public final class DlgReg extends javax.swing.JDialog {
                 column.setMaxWidth(0);
             }
         }
-        tbPetugas2.setDefaultRenderer(Object.class, new WarnaTable());
+        tbPetugas2.setDefaultRenderer(Object.class, new WarnaTableReg());
         
         TNoReg.setDocument(new batasInput((byte)8).getKata(TNoReg));
         TNoRw.setDocument(new batasInput((byte)17).getKata(TNoRw));
@@ -14486,11 +14487,15 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
     }//GEN-LAST:event_MnSkorStewardPascaAnestesiActionPerformed
 
     private void CheckinKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CheckinKeyPressed
-        // TODO add your handling code here:
+        if(Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs where no_rawat='"+TNoRw.getText()+"' ")>0) {
+            Checkin.setText(Sequel.cariIsi("select status from referensi_mobilejkn_bpjs where no_rawat=?",TNoRw.getText()));
+        }
     }//GEN-LAST:event_CheckinKeyPressed
 
     private void BookingKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BookingKeyPressed
-        // TODO add your handling code here:
+        if(Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs where no_rawat='"+TNoRw.getText()+"' ")>0) {
+            Booking.setText(Sequel.cariIsi("select validasi from referensi_mobilejkn_bpjs where no_rawat=?",TNoRw.getText()));
+        }
     }//GEN-LAST:event_BookingKeyPressed
 
     private void BtnCheckinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCheckinActionPerformed
@@ -15431,7 +15436,16 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
             kdpnj.setText(tbPetugas.getValueAt(tbPetugas.getSelectedRow(),22).toString()); 
             Sequel.cariIsi("select rujuk_masuk.perujuk from rujuk_masuk where rujuk_masuk.no_rawat=?", AsalRujukan,tbPetugas.getValueAt(tbPetugas.getSelectedRow(),2).toString());
             TNoRw.setText(tbPetugas.getValueAt(tbPetugas.getSelectedRow(),2).toString());
-            TNoReg.setText(tbPetugas.getValueAt(tbPetugas.getSelectedRow(),1).toString());    
+            TNoReg.setText(tbPetugas.getValueAt(tbPetugas.getSelectedRow(),1).toString());
+
+            // Isi field Checkin dan Booking otomatis dari referensi_mobilejkn_bpjs
+            if(Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs where no_rawat='"+TNoRw.getText()+"' ")>0) {
+                Checkin.setText(Sequel.cariIsi("select status from referensi_mobilejkn_bpjs where no_rawat=?",TNoRw.getText()));
+                Booking.setText(Sequel.cariIsi("select validasi from referensi_mobilejkn_bpjs where no_rawat=?",TNoRw.getText()));
+            } else {
+                Checkin.setText("");
+                Booking.setText("");
+            }
         }
     }
 

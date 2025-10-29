@@ -5626,7 +5626,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
     private void UploadSEPBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UploadSEPBtnPrintActionPerformed
         FileName = "SEP_" + tbDataSEP.getValueAt(tbDataSEP.getSelectedRow(), 1).toString().replaceAll("/", "_") + "_" + tbDataSEP.getValueAt(tbDataSEP.getSelectedRow(), 0).toString().trim();
         CreatePDF(FileName);
-        String filePath = "tmpPDF/" + FileName;
+        String filePath = "tmpPDF/" + FileName; 
         UploadPDF(FileName, "berkasrawat/pages/upload/");
         HapusPDF();
     }//GEN-LAST:event_UploadSEPBtnPrintActionPerformed
