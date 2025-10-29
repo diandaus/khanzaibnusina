@@ -17,6 +17,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import static java.awt.image.ImageObserver.HEIGHT;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,6 +36,13 @@ import laporan.DlgCariPenyakit;
 import simrskhanza.DlgKamarInap;
 import rekammedis.RMRiwayatPerawatan;
 import surat.SuratPersetujuanRawatInap;
+import org.apache.commons.io.FileUtils;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 /**
  *
@@ -1246,39 +1254,82 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }else{
             if(tbObat.getSelectedRow()!= -1){
                 this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                Map<String, Object> param = new HashMap<>();
-                param.put("namars",akses.getnamars());
-                param.put("alamatrs",akses.getalamatrs());
-                param.put("kotars",akses.getkabupatenrs());
-                param.put("propinsirs",akses.getpropinsirs());
-                param.put("kontakrs",akses.getkontakrs());
-                param.put("emailrs",akses.getemailrs());  
-                finger=Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",KdDokter.getText());
-                param.put("finger","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+Dokter.getText()+"\nID "+(finger.equals("")?KdDokter.getText():finger)+"\n"+DTPTgl.getSelectedItem()); 
-                param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-                Valid.MyReportqry("rptSuratPermintaanRawatInap.jasper","report","::[ Surat Permintaan Rawat Inap ]::",
-                "SELECT permintaan_ranap.no_rawat, reg_periksa.no_rkm_medis, pasien.nm_pasien, pasien.jk, "+
-                "reg_periksa.umurdaftar, reg_periksa.sttsumur, pasien.no_tlp, penjab.png_jawab, poliklinik.nm_poli, "+
-                "dokter.nm_dokter, IFNULL(dokter_dpjp.nm_dokter, '-') AS dokter_dpjp, permintaan_ranap.tanggal, "+
-                "permintaan_ranap.kd_kamar, kamar.kd_bangsal, bangsal.nm_bangsal, kamar.trf_kamar, "+
-                "permintaan_ranap.diagnosa, permintaan_ranap.catatan "+
-                "FROM permintaan_ranap "+
-                "INNER JOIN reg_periksa ON permintaan_ranap.no_rawat=reg_periksa.no_rawat "+
-                "INNER JOIN pasien ON reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                "INNER JOIN penjab ON reg_periksa.kd_pj=penjab.kd_pj "+
-                "INNER JOIN dokter ON reg_periksa.kd_dokter=dokter.kd_dokter "+
-                "INNER JOIN poliklinik ON reg_periksa.kd_poli=poliklinik.kd_poli "+
-                "INNER JOIN kamar ON permintaan_ranap.kd_kamar=kamar.kd_kamar "+
-                "INNER JOIN bangsal ON kamar.kd_bangsal=bangsal.kd_bangsal "+
-                "LEFT JOIN dpjp_ranap ON permintaan_ranap.no_rawat=dpjp_ranap.no_rawat "+
-                "LEFT JOIN dokter AS dokter_dpjp ON dpjp_ranap.kd_dokter=dokter_dpjp.kd_dokter "+
-                "WHERE reg_periksa.no_rawat='"+NoRw.getText()+"' ",param);
-                this.setCursor(Cursor.getDefaultCursor());
+
+                try {
+                    // Prepare parameters untuk report
+                    Map<String, Object> param = new HashMap<>();
+                    param.put("namars",akses.getnamars());
+                    param.put("alamatrs",akses.getalamatrs());
+                    param.put("kotars",akses.getkabupatenrs());
+                    param.put("propinsirs",akses.getpropinsirs());
+                    param.put("kontakrs",akses.getkontakrs());
+                    param.put("emailrs",akses.getemailrs());
+                    finger=Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",KdDokter.getText());
+                    param.put("finger","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+Dokter.getText()+"\nID "+(finger.equals("")?KdDokter.getText():finger)+"\n"+DTPTgl.getSelectedItem());
+                    param.put("logo",Sequel.cariGambar("select setting.logo from setting"));
+
+                    String query = "SELECT permintaan_ranap.no_rawat, reg_periksa.no_rkm_medis, pasien.nm_pasien, pasien.jk, "+
+                        "reg_periksa.umurdaftar, reg_periksa.sttsumur, pasien.no_tlp, penjab.png_jawab, poliklinik.nm_poli, "+
+                        "dokter.nm_dokter, IFNULL(dokter_dpjp.nm_dokter, '-') AS dokter_dpjp, permintaan_ranap.tanggal, "+
+                        "permintaan_ranap.kd_kamar, kamar.kd_bangsal, bangsal.nm_bangsal, kamar.trf_kamar, "+
+                        "permintaan_ranap.diagnosa, permintaan_ranap.catatan "+
+                        "FROM permintaan_ranap "+
+                        "INNER JOIN reg_periksa ON permintaan_ranap.no_rawat=reg_periksa.no_rawat "+
+                        "INNER JOIN pasien ON reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
+                        "INNER JOIN penjab ON reg_periksa.kd_pj=penjab.kd_pj "+
+                        "INNER JOIN dokter ON reg_periksa.kd_dokter=dokter.kd_dokter "+
+                        "INNER JOIN poliklinik ON reg_periksa.kd_poli=poliklinik.kd_poli "+
+                        "INNER JOIN kamar ON permintaan_ranap.kd_kamar=kamar.kd_kamar "+
+                        "INNER JOIN bangsal ON kamar.kd_bangsal=bangsal.kd_bangsal "+
+                        "LEFT JOIN dpjp_ranap ON permintaan_ranap.no_rawat=dpjp_ranap.no_rawat "+
+                        "LEFT JOIN dokter AS dokter_dpjp ON dpjp_ranap.kd_dokter=dokter_dpjp.kd_dokter "+
+                        "WHERE reg_periksa.no_rawat='"+NoRw.getText()+"' ";
+
+                    // Generate nama file PDF
+                    String namaFile = "SPRI_" + NoRw.getText().replaceAll("/", "_");
+
+                    // Generate PDF ke folder tmpPDF
+                    Valid.MyReportPDFqryUpload("rptSuratPermintaanRawatInap.jasper", "report",
+                        "::[ Surat Permintaan Rawat Inap ]::", query, namaFile, param);
+
+                    // Upload langsung ke berkasrawat via HTTP
+                    UploadPDF(namaFile, "berkasrawat/pages/upload/");
+
+                    JOptionPane.showMessageDialog(null,
+                        "Surat Permintaan Rawat Inap berhasil dibuat dan diupload!\n" +
+                        "File: " + namaFile + ".pdf");
+
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+                    e.printStackTrace();
+                } finally {
+                    this.setCursor(Cursor.getDefaultCursor());
+                }
             }else{
                 JOptionPane.showMessageDialog(null,"Maaf, silahkan pilih data...!!!!");
             }
         }
     }//GEN-LAST:event_BtnSuratPermintaanActionPerformed
+
+    // Method untuk upload PDF langsung ke berkasrawat via HTTP
+    private void UploadPDF(String FileName, String docpath) {
+        try {
+            File file = new File("tmpPDF/" + FileName + ".pdf");
+            byte[] data = FileUtils.readFileToByteArray(file);
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPost postRequest = new HttpPost("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/upload.php?doc=" + docpath);
+            ByteArrayBody fileData = new ByteArrayBody(data, FileName + ".pdf");
+            MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+            reqEntity.addPart("file", fileData);
+            postRequest.setEntity(reqEntity);
+            httpClient.execute(postRequest);
+
+            System.out.println("PDF berhasil diupload ke: " + docpath + "/" + FileName + ".pdf");
+        } catch (Exception e) {
+            System.out.println("Error upload PDF: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     private void BtnRiwayatPasienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRiwayatPasienActionPerformed
         if(tabMode.getRowCount()==0){

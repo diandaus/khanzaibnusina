@@ -593,6 +593,20 @@ private void optimizePDF(File pdfFile) {
                     // Optimasi PDF hasil merge untuk performa lebih cepat
                     optimizePDF(mergedFile);
 
+                    publish("Membersihkan file temporary...");
+
+                    // Cleanup: Hapus file-file source setelah merge berhasil
+                    // Hanya simpan file hasil gabungan saja
+                    for (File pdfFile : pdfFiles) {
+                        if (pdfFile.exists() && !pdfFile.equals(mergedFile)) {
+                            if (pdfFile.delete()) {
+                                System.out.println("Deleted: " + pdfFile.getName());
+                            } else {
+                                System.out.println("Failed to delete: " + pdfFile.getName());
+                            }
+                        }
+                    }
+
                     publish("Selesai!");
 
                     return mergedFile;
