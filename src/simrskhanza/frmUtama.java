@@ -12,6 +12,7 @@
 
 package simrskhanza;
 
+import berkasdigital.DlgManagemenFileKlaim;
 import bridging.AkunRekeningBankJabar;
 import bridging.AkunRekeningBankJateng;
 import bridging.AkunRekeningBankMandiri;
@@ -48851,7 +48852,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         btnHasilPemeriksaanECHOPediatrik.addActionListener(this::btnHasilPemeriksaanECHOPediatrikActionPerformed);
     }
     
-    private widget.ButtonBig btnFormBerkasKlaimBpjs,btnDlgListKlaim;
+    private widget.ButtonBig btnFormBerkasKlaimBpjs,btnDlgListKlaim,btnDlgManagemenFileKlaim;
     
     private void initRSI() {
         btnFormBerkasKlaimBpjs = new widget.ButtonBig();
@@ -48869,6 +48870,14 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         btnDlgListKlaim.setName("btnDlgListKlaim");
         btnDlgListKlaim.setPreferredSize(new java.awt.Dimension(200, 90));
         btnDlgListKlaim.addActionListener(this::btnDlgListKlaimActionPerformed);
+        
+        btnDlgManagemenFileKlaim = new widget.ButtonBig();
+        btnDlgManagemenFileKlaim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/48x48/if_x-office-document-template_25011.png")));
+        btnDlgManagemenFileKlaim.setText("File Klaim BPJS");
+        btnDlgManagemenFileKlaim.setIconTextGap(0);
+        btnDlgManagemenFileKlaim.setName("btnDlgManagemenFileKlaim");
+        btnDlgManagemenFileKlaim.setPreferredSize(new java.awt.Dimension(200, 90));
+        btnDlgManagemenFileKlaim.addActionListener(this::btnDlgManagemenFileKlaimActionPerformed);
     }
     
     private void isComboRSI() {
@@ -48885,6 +48894,13 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
                 jmlmenu++;
             }
         }
+        
+        if (cmbMenu.getSelectedIndex() == 11) {
+            if (akses.getadmin()) {
+                Panelmenu.add(btnDlgManagemenFileKlaim);
+                jmlmenu++;
+            }
+        }
     }     
     private void isCariKosongRSI() {
         if (akses.getadmin()) {
@@ -48894,6 +48910,11 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         
         if (akses.getadmin()) {
             Panelmenu.add(btnDlgListKlaim);
+            jmlmenu++;
+        }
+        
+        if (akses.getadmin()) {
+            Panelmenu.add(btnDlgManagemenFileKlaim);
             jmlmenu++;
         }
     }
@@ -48909,6 +48930,13 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         if (akses.getadmin()) {
             if (btnDlgListKlaim.getText().toLowerCase().trim().contains(TCari.getText().toLowerCase().trim())) {
                 Panelmenu.add(btnDlgListKlaim);
+                jmlmenu++;
+            }
+        }
+        
+        if (akses.getadmin()) {
+            if (btnDlgManagemenFileKlaim.getText().toLowerCase().trim().contains(TCari.getText().toLowerCase().trim())) {
+                Panelmenu.add(btnDlgManagemenFileKlaim);
                 jmlmenu++;
             }
         }
@@ -48929,6 +48957,17 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         isTutup();
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         DlgListKlaim form=new DlgListKlaim(this,false);
+        form.setSize(PanelUtama.getWidth(),PanelUtama.getHeight());
+        form.setLocationRelativeTo(PanelUtama);
+        form.setVisible(true);
+        DlgHome.dispose();
+        this.setCursor(Cursor.getDefaultCursor());
+    }
+    
+    private void btnDlgManagemenFileKlaimActionPerformed(java.awt.event.ActionEvent evt) {
+        isTutup();
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        DlgManagemenFileKlaim form=new DlgManagemenFileKlaim(this,false);
         form.setSize(PanelUtama.getWidth(),PanelUtama.getHeight());
         form.setLocationRelativeTo(PanelUtama);
         form.setVisible(true);

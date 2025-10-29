@@ -6638,7 +6638,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                      try {
                          // Format: SEP_[NoRawat] agar konsisten dengan DlgViewPdf
                          String autoFileName = "SEP_" + TNoRw.getText().replaceAll("/", "_");
-                         CreatePDF(autoFileName);
+                         CreatePDFAuto(autoFileName, response.asText());
                          UploadPDF(autoFileName, "berkasrawat/pages/upload/");
                          HapusPDF();
                          System.out.println("Auto upload SEP berhasil: " + autoFileName);
@@ -6680,7 +6680,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                         try {
                             // Format: SEP_[NoRawat] agar konsisten dengan DlgViewPdf
                             String autoFileName = "SEP_" + TNoRw.getText().replaceAll("/", "_");
-                            CreatePDF(autoFileName);
+                            CreatePDFAuto(autoFileName, response.asText());
                             UploadPDF(autoFileName, "berkasrawat/pages/upload/");
                             HapusPDF();
                             System.out.println("Auto upload SEP Internal berhasil: " + autoFileName);
@@ -6943,6 +6943,29 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(null, "Maaf, silahkan pilih data SEP yang mau dicetak...!!!!");
                 BtnBatal.requestFocus();
             }
+        }
+    }
+
+    // Method khusus untuk auto-upload setelah simpan (menggunakan data dari form input, bukan tabel)
+    private void CreatePDFAuto(String FileName, String noSEP) {
+        try {
+            Map<String, Object> param = new HashMap<>();
+            param.put("namars", akses.getnamars());
+            param.put("alamatrs", akses.getalamatrs());
+            param.put("kotars", akses.getkabupatenrs());
+            param.put("propinsirs", akses.getpropinsirs());
+            param.put("kontakrs", akses.getkontakrs());
+            param.put("prb", Sequel.cariIsi("select bpjs_prb.prb from bpjs_prb where bpjs_prb.no_sep=?", noSEP));
+            param.put("logo", Sequel.cariGambar("select gambar.bpjs from gambar"));
+            param.put("parameter", noSEP);
+
+            if (JenisPelayanan.getSelectedIndex() == 0) {
+                Valid.MyReportPDFUpload("rptBridgingSEP.jasper", "report", "::[ Cetak SEP ]::", FileName, param);
+            } else {
+                Valid.MyReportPDFUpload("rptBridgingSEP2.jasper", "report", "::[ Cetak SEP ]::", FileName, param);
+            }
+        } catch (Exception e) {
+            System.out.println("Error CreatePDFAuto: " + e.getMessage());
         }
     }
 

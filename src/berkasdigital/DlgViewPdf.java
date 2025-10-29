@@ -88,8 +88,8 @@ public class DlgViewPdf extends javax.swing.JDialog {
         initComponents();
 
         // Set ukuran dialog dan frame sesuai A4
-        setSize(850, 800);
-        internalFrame1.setPreferredSize(new Dimension(850, 800));
+        setSize(850, 670);
+        internalFrame1.setPreferredSize(new Dimension(850, 670));
 
         // Override undecorated jika perlu, atau tetap undecorated tapi dengan ukuran fix
         setResizable(true);  // Biar bisa di-resize manual jika diperlukan
