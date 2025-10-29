@@ -457,7 +457,7 @@ public class FormBerkasKlaimBpjs extends javax.swing.JDialog {
             // Ukuran dan posisi (center) sudah di-set di constructor DlgViewPdf (650x900 - lebar A4)
 
             // Tampilkan semua PDF yang tersedia berdasarkan no_rawat
-            // Urutan: SEP, Triase, Awal_Medis_IGD, SPRI, Lab, Radiologi
+            // Urutan: SEP, Triase, Awal_Medis_IGD, SKDP, SPRI, Lab, Radiologi
             viewer.tampilMultiplePdf(noRawat, pathFile);
 
             viewer.setVisible(true);
@@ -696,7 +696,7 @@ public class FormBerkasKlaimBpjs extends javax.swing.JDialog {
 
             // Cari kode berkas yang sesuai (bisa disesuaikan dengan kebutuhan)
             // Untuk upload manual, kita gunakan kode berkas umum atau bisa pilih dari master
-            String[] options = {"SEP", "Triase", "Awal Medis IGD", "SPRI", "Lab", "Radiologi", "Lainnya"};
+            String[] options = {"SEP", "Gruper", "RiwayatPerawatan", "Triase", "Awal Medis IGD", "SPRI", "Lab", "Radiologi", "Lainnya"};
             String jenisBerkas = (String) JOptionPane.showInputDialog(
                 null,
                 "Pilih jenis berkas:",

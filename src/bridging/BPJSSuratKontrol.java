@@ -1307,7 +1307,8 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void MnUploadSKDPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnUploadSKDPActionPerformed
         if(tbObat.getSelectedRow()!= -1){
-            FileName = "SKDP_" + tbObat.getValueAt(tbObat.getSelectedRow(), 1).toString().replaceAll("/", "_") + "_" + tbObat.getValueAt(tbObat.getSelectedRow(), 9).toString().replaceAll("/", "_");
+            // Format: SKDP_[NoRawat] agar sesuai dengan format di DlgViewPdf dan FormBerkasKlaimBpjs
+            FileName = "SKDP_" + tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString().replaceAll("/", "_");
             CreatePDF(FileName);
             UploadPDF(FileName, "berkasrawat/pages/upload/");
             HapusPDF();

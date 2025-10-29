@@ -340,8 +340,10 @@ void viewpdf(String fileName,String fileLocation){
             // Urutan jenis berkas sesuai kebutuhan
             String[] jenisBerkas = {
                 "SEP_",
-                "Resume_",
                 "Gruper_",
+                "Resume_",
+                "RiwayatPerawatan_",
+                "SKDP_",
                 "SPRI_",
                 "Awal_Medis_IGD_",
                 "Triase_",
@@ -359,7 +361,13 @@ void viewpdf(String fileName,String fileLocation){
 
             // Download semua PDF yang tersedia
             for (String jenis : jenisBerkas) {
-                String fileName = jenis + noRawatFormatted + "_signed.pdf";
+                // File dari bridging BPJS/Kemenkes tidak perlu signed (sudah sah dari sumber)
+                String fileName;
+                if (jenis.equals("SEP_") || jenis.equals("Gruper_") || jenis.equals("SKDP_")) {
+                    fileName = jenis + noRawatFormatted + ".pdf";  // Tanpa _signed
+                } else {
+                    fileName = jenis + noRawatFormatted + "_signed.pdf";  // Dengan _signed untuk TTe
+                }
 
                 try {
                     URL url = new URL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/" + pathFile + "/" + fileName);
@@ -534,8 +542,10 @@ public void tampilMultiplePdf(String noRawat, String pathFile) {
         // Urutan jenis berkas sesuai kebutuhan
         String[] jenisBerkas = {
             "SEP_",
-            "Resume_",
             "Gruper_",
+            "Resume_",
+            "RiwayatPerawatan_",
+            "SKDP_",
             "SPRI_",
             "Awal_Medis_IGD_",
             "Triase_",
@@ -552,7 +562,13 @@ public void tampilMultiplePdf(String noRawat, String pathFile) {
 
         // Loop untuk setiap jenis berkas
         for (String jenis : jenisBerkas) {
-            String fileName = jenis + noRawatFormatted + "_signed.pdf";
+            // File dari bridging BPJS/Kemenkes tidak perlu signed (sudah sah dari sumber)
+            String fileName;
+            if (jenis.equals("SEP_") || jenis.equals("Gruper_") || jenis.equals("SKDP_")) {
+                fileName = jenis + noRawatFormatted + ".pdf";  // Tanpa _signed
+            } else {
+                fileName = jenis + noRawatFormatted + "_signed.pdf";  // Dengan _signed untuk TTe
+            }
 
             try {
                 // Cek apakah file ada di server
