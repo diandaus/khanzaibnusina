@@ -67,6 +67,7 @@ import org.mozilla.javascript.tools.idswitch.FileBody;
 import org.springframework.http.HttpEntity;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.apache.pdfbox.io.MemoryUsageSetting;
+import org.apache.pdfbox.pdmodel.PDDocument;
 
 /**
  *
@@ -251,7 +252,28 @@ public class DlgViewPdf extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnViewFileActionPerformed
 void viewpdf(String fileName,String fileLocation){
           try {
-                //HttpPost postRequest = new HttpPost("http://"+koneksiDB.HOSTHYBRIDWEB()+":"+koneksiDB.PORTWEB()+"/"+koneksiDB.HYBRIDWEB()+"/berkastte/upload.php?doc="+docpath);
+                // Validasi file sebelum dibuka
+                File localFile = null;
+                if(fileLocation.equals("local")){
+                    localFile = new File("tempfile/" + fileName);
+                    if (!localFile.exists()) {
+                        JOptionPane.showMessageDialog(this,
+                            "File tidak ditemukan: " + fileName,
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    // Validasi apakah benar file PDF dengan cek header
+                    if (!isValidPDF(localFile)) {
+                        JOptionPane.showMessageDialog(this,
+                            "File bukan PDF yang valid atau file rusak: " + fileName,
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+
                 SwingController ctrl = new SwingController();
                 SwingViewBuilder vb = new SwingViewBuilder(ctrl);
                 JPanel s = vb.buildViewerPanel();
@@ -260,17 +282,123 @@ void viewpdf(String fileName,String fileLocation){
                 ctrl.getDocumentViewController().setAnnotationCallback(
                 new org.icepdf.ri.common.MyAnnotationCallback(ctrl.getDocumentViewController())
                 );
-                if(fileLocation.equals("local")){  
-                  ctrl.openDocument("tempfile/"+txtNameFile.getText());
+
+                if(fileLocation.equals("local")){
+                    ctrl.openDocument(localFile.getAbsolutePath());
                 }else{
-                 URL url =new URL("http://"+koneksiDB.HOSTHYBRIDWEB()+ ":" + koneksiDB.PORTWEB() + "/"+koneksiDB.HYBRIDWEB()+"/"+txtLokasiFile.getText()+"/"+txtNameFile.getText());
-                   ctrl.openDocument(url);
+                    URL url = new URL("http://"+koneksiDB.HOSTHYBRIDWEB()+ ":" + koneksiDB.PORTWEB() + "/"+koneksiDB.HYBRIDWEB()+"/"+txtLokasiFile.getText()+"/"+fileName);
+                    ctrl.openDocument(url);
                 }
-              jScrollPane1.setViewportView(s); 
+
+                jScrollPane1.setViewportView(s);
         }
         catch (Exception e){
-            
+            System.err.println("Error membuka PDF: " + fileName);
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                "Gagal membuka PDF: " + fileName + "\n" +
+                "Error: " + e.getMessage() + "\n\n" +
+                "Kemungkinan file rusak atau tidak valid.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
         }
+}
+
+// Method helper untuk validasi PDF
+private boolean isValidPDF(File file) {
+    try {
+        byte[] header = new byte[5];
+        java.io.FileInputStream fis = new java.io.FileInputStream(file);
+        fis.read(header);
+        fis.close();
+
+        // File PDF harus dimulai dengan %PDF-
+        String headerStr = new String(header);
+        return headerStr.startsWith("%PDF-");
+    } catch (Exception e) {
+        return false;
+    }
+}
+
+// Method untuk optimasi PDF agar lebih cepat dibuka (ala PDFsam)
+private void optimizePDF(File pdfFile) {
+    PDDocument document = null;
+    File tempOptimized = null;
+
+    try {
+        // Load PDF dengan memory optimization (strategi PDFsam)
+        // Gunakan temp file untuk memory besar, bukan full main memory
+        org.apache.pdfbox.io.MemoryUsageSetting memSettings =
+            org.apache.pdfbox.io.MemoryUsageSetting.setupMixed(10 * 1024 * 1024); // 10MB max main memory
+
+        document = PDDocument.load(pdfFile, memSettings);
+
+        // Buat file temporary untuk hasil optimasi
+        tempOptimized = new File(pdfFile.getParent(), "temp_optimized_" + pdfFile.getName());
+
+        // Optimasi 1: Set document version ke 1.6 untuk object streams support
+        document.setVersion(1.6f);
+
+        // Optimasi 2: Remove unused resources (optional metadata)
+        if (document.getDocumentInformation() != null) {
+            // Keep only essential metadata
+            org.apache.pdfbox.pdmodel.PDDocumentInformation info = document.getDocumentInformation();
+            // Clear non-essential metadata to reduce size
+            info.setProducer("SIMRS Khanza - PDF Merger");
+            info.setCreator("SIMRS Khanza");
+        }
+
+        // Save dengan optimasi maksimal (strategi PDFsam):
+        // PDFBox otomatis akan:
+        // - Enable object streams (PDF 1.5+)
+        // - Compress streams with flate
+        // - Remove unused objects
+        // - Optimize cross-reference table
+        document.save(tempOptimized);
+
+        // Tutup document
+        document.close();
+        document = null;
+
+        // Cek hasil optimasi
+        long originalSize = pdfFile.length();
+        long optimizedSize = tempOptimized.length();
+
+        System.out.println("Ukuran original: " + (originalSize / 1024) + " KB");
+        System.out.println("Ukuran optimized: " + (optimizedSize / 1024) + " KB");
+
+        // Replace file original dengan yang sudah dioptimasi
+        if (pdfFile.delete()) {
+            if (!tempOptimized.renameTo(pdfFile)) {
+                // Jika rename gagal, copy manual
+                Files.copy(tempOptimized.toPath(), pdfFile.toPath(),
+                          java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                tempOptimized.delete();
+            }
+        }
+
+        long reduction = originalSize - optimizedSize;
+        int percentage = originalSize > 0 ? (int)((reduction * 100) / originalSize) : 0;
+        System.out.println("PDF berhasil dioptimasi: " + pdfFile.getName() +
+                         " (hemat " + (percentage >= 0 ? percentage : 0) + "%)");
+
+    } catch (Exception e) {
+        System.err.println("Gagal mengoptimasi PDF: " + e.getMessage());
+        // Jika optimasi gagal, file original tetap digunakan
+        e.printStackTrace();
+    } finally {
+        // Cleanup
+        try {
+            if (document != null) {
+                document.close();
+            }
+            if (tempOptimized != null && tempOptimized.exists()) {
+                tempOptimized.delete();
+            }
+        } catch (Exception e) {
+            // Ignore cleanup errors
+        }
+    }
 }
     void openpdf(String file){
           try {
@@ -330,115 +458,202 @@ void viewpdf(String fileName,String fileLocation){
             return;
         }
 
+        // Disable tombol saat proses berjalan
+        BtnMergePDF.setEnabled(false);
+        BtnViewFile.setEnabled(false);
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-        try {
-            String noRawat = txtNoRawat.getText();
-            String pathFile = txtLokasiFile.getText();
-            String noRawatFormatted = noRawat.replaceAll("/", "_");
+        // Gunakan SwingWorker untuk proses background
+        javax.swing.SwingWorker<File, String> worker = new javax.swing.SwingWorker<File, String>() {
+            private java.util.List<File> pdfFiles = new java.util.ArrayList<>();
+            private String errorMessage = null;
 
-            // Urutan jenis berkas sesuai kebutuhan
-            String[] jenisBerkas = {
-                "SEP_",
-                "Gruper_",
-                "Resume_",
-                "RiwayatPerawatan_",
-                "SKDP_",
-                "SPRI_",
-                "Awal_Medis_IGD_",
-                "Triase_",
-                "Lab_",
-                "Radiologi_",
-                "Billing_"
-            };
-
-            // List untuk menyimpan file PDF yang berhasil didownload
-            java.util.List<File> pdfFiles = new java.util.ArrayList<>();
-            File tempDir = new File("tempfile");
-            if (!tempDir.exists()) {
-                tempDir.mkdirs();
-            }
-
-            // Download semua PDF yang tersedia
-            for (String jenis : jenisBerkas) {
-                // File dari bridging BPJS/Kemenkes tidak perlu signed (sudah sah dari sumber)
-                String fileName;
-                if (jenis.equals("SEP_") || jenis.equals("Gruper_") || jenis.equals("SKDP_")) {
-                    fileName = jenis + noRawatFormatted + ".pdf";  // Tanpa _signed
-                } else {
-                    fileName = jenis + noRawatFormatted + "_signed.pdf";  // Dengan _signed untuk TTe
-                }
-
+            @Override
+            protected File doInBackground() throws Exception {
                 try {
-                    URL url = new URL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/" + pathFile + "/" + fileName);
+                    String noRawat = txtNoRawat.getText();
+                    String pathFile = txtLokasiFile.getText();
+                    String noRawatFormatted = noRawat.replaceAll("/", "_");
 
-                    // Cek apakah file ada
-                    java.net.HttpURLConnection connection = (java.net.HttpURLConnection) url.openConnection();
-                    connection.setRequestMethod("HEAD");
-                    connection.connect();
+                    // Urutan jenis berkas sesuai kebutuhan
+                    String[] jenisBerkas = {
+                        "SEP_",
+                        "Gruper_",
+                        "Resume_",
+                        "RiwayatPerawatan_",
+                        "SKDP_",
+                        "SPRI_",
+                        "Awal_Medis_IGD_",
+                        "Triase_",
+                        "Lab_",
+                        "Radiologi_",
+                        "Billing_"
+                    };
 
-                    if (connection.getResponseCode() == 200) {
-                        // Download file
-                        File tempFile = new File(tempDir, fileName);
-                        FileUtils.copyURLToFile(url, tempFile);
-                        pdfFiles.add(tempFile);
-                        System.out.println("Downloaded: " + fileName);
+                    File tempDir = new File("tempfile");
+                    if (!tempDir.exists()) {
+                        tempDir.mkdirs();
                     }
-                    connection.disconnect();
+
+                    publish("Memulai download berkas...");
+
+                    // Download semua PDF yang tersedia
+                    int fileCount = 0;
+                    for (String jenis : jenisBerkas) {
+                        // File dari bridging BPJS/Kemenkes tidak perlu signed (sudah sah dari sumber)
+                        String fileName;
+                        if (jenis.equals("SEP_") || jenis.equals("Gruper_") || jenis.equals("SKDP_")) {
+                            fileName = jenis + noRawatFormatted + ".pdf";  // Tanpa _signed
+                        } else {
+                            fileName = jenis + noRawatFormatted + "_signed.pdf";  // Dengan _signed untuk TTe
+                        }
+
+                        try {
+                            URL url = new URL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/" + pathFile + "/" + fileName);
+
+                            // Cek apakah file ada
+                            java.net.HttpURLConnection connection = (java.net.HttpURLConnection) url.openConnection();
+                            connection.setRequestMethod("HEAD");
+                            connection.setConnectTimeout(5000);
+                            connection.setReadTimeout(5000);
+                            connection.connect();
+
+                            if (connection.getResponseCode() == 200) {
+                                long contentLength = connection.getContentLengthLong();
+                                connection.disconnect();
+
+                                // Skip file yang terlalu kecil (kemungkinan corrupt)
+                                if (contentLength < 100) {
+                                    System.out.println("Skip file (terlalu kecil/corrupt): " + fileName + " (" + contentLength + " bytes)");
+                                    continue;
+                                }
+
+                                publish("Downloading: " + jenis.replace("_", ""));
+
+                                // Download file
+                                File tempFile = new File(tempDir, fileName);
+                                FileUtils.copyURLToFile(url, tempFile);
+
+                                // Validasi file PDF setelah di-download
+                                if (isValidPDF(tempFile)) {
+                                    pdfFiles.add(tempFile);
+                                    fileCount++;
+                                    System.out.println("Downloaded: " + fileName);
+                                    publish("Berhasil: " + jenis.replace("_", "") + " (" + fileCount + " file)");
+                                } else {
+                                    System.out.println("Skip file (bukan PDF valid): " + fileName);
+                                    tempFile.delete(); // Hapus file yang tidak valid
+                                }
+                            } else {
+                                connection.disconnect();
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Skip file: " + fileName + " - " + e.getMessage());
+                        }
+                    }
+
+                    if (pdfFiles.isEmpty()) {
+                        errorMessage = "Tidak ada file PDF yang ditemukan untuk digabungkan!";
+                        return null;
+                    }
+
+                    publish("Menggabungkan " + pdfFiles.size() + " file PDF...");
+
+                    // Nama file hasil merge
+                    String mergedFileName = "Gabungan_Berkas_" + noRawatFormatted + ".pdf";
+                    File mergedFile = new File(tempDir, mergedFileName);
+
+                    // Merge PDF menggunakan PDFBox dengan optimasi
+                    org.apache.pdfbox.multipdf.PDFMergerUtility pdfMerger = new org.apache.pdfbox.multipdf.PDFMergerUtility();
+
+                    // Set destination file
+                    pdfMerger.setDestinationFileName(mergedFile.getAbsolutePath());
+
+                    // PENTING: Preserve signature widget appearance (ala PDFsam)
+                    // Ini akan membuat visual signature tetap muncul (barcode, checkmark)
+                    // meskipun signature validation akan tetap invalid
+                    try {
+                        pdfMerger.setAcroFormMergeMode(
+                            org.apache.pdfbox.multipdf.PDFMergerUtility.AcroFormMergeMode.JOIN_FORM_FIELDS_MODE
+                        );
+                    } catch (Exception e) {
+                        // Jika method tidak tersedia di versi PDFBox lama, skip
+                        System.out.println("AcroForm merge mode not supported, skipping...");
+                    }
+
+                    for (File pdfFile : pdfFiles) {
+                        pdfMerger.addSource(pdfFile);
+                    }
+
+                    // Lakukan merge dengan memory optimization
+                    pdfMerger.mergeDocuments(org.apache.pdfbox.io.MemoryUsageSetting.setupTempFileOnly());
+
+                    publish("Mengoptimasi PDF...");
+
+                    // Optimasi PDF hasil merge untuk performa lebih cepat
+                    optimizePDF(mergedFile);
+
+                    publish("Selesai!");
+
+                    return mergedFile;
+
                 } catch (Exception e) {
-                    System.out.println("Skip file: " + fileName);
+                    errorMessage = "Error saat menggabungkan PDF: " + e.getMessage();
+                    e.printStackTrace();
+                    return null;
                 }
             }
 
-            if (pdfFiles.isEmpty()) {
-                JOptionPane.showMessageDialog(this,
-                    "Tidak ada file PDF yang ditemukan untuk digabungkan!",
-                    "Informasi",
-                    JOptionPane.INFORMATION_MESSAGE);
-                this.setCursor(Cursor.getDefaultCursor());
-                return;
+            @Override
+            protected void process(java.util.List<String> chunks) {
+                // Update UI dengan progress (optional - bisa ditampilkan di status bar)
+                for (String message : chunks) {
+                    System.out.println("Progress: " + message);
+                }
             }
 
-            // Merge PDF menggunakan PDFBox
-            org.apache.pdfbox.multipdf.PDFMergerUtility pdfMerger = new org.apache.pdfbox.multipdf.PDFMergerUtility();
+            @Override
+            protected void done() {
+                try {
+                    File mergedFile = get();
 
-            for (File pdfFile : pdfFiles) {
-                pdfMerger.addSource(pdfFile);
+                    if (mergedFile != null && mergedFile.exists()) {
+                        String noRawatFormatted = txtNoRawat.getText().replaceAll("/", "_");
+                        String mergedFileName = "Gabungan_Berkas_" + noRawatFormatted + ".pdf";
+
+                        JOptionPane.showMessageDialog(DlgViewPdf.this,
+                            "Berkas berhasil digabungkan!\n" +
+                            "Total: " + pdfFiles.size() + " file\n" +
+                            "Lokasi: " + mergedFile.getAbsolutePath(),
+                            "Sukses",
+                            JOptionPane.INFORMATION_MESSAGE);
+
+                        // Tampilkan hasil merge
+                        txtNameFile.setText(mergedFileName);
+                        viewpdf(mergedFileName, "local");
+                    } else if (errorMessage != null) {
+                        JOptionPane.showMessageDialog(DlgViewPdf.this,
+                            errorMessage,
+                            errorMessage.contains("Error") ? "Error" : "Informasi",
+                            errorMessage.contains("Error") ? JOptionPane.ERROR_MESSAGE : JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(DlgViewPdf.this,
+                        "Error: " + e.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                    e.printStackTrace();
+                } finally {
+                    // Enable kembali tombol
+                    BtnMergePDF.setEnabled(true);
+                    BtnViewFile.setEnabled(true);
+                    setCursor(Cursor.getDefaultCursor());
+                }
             }
+        };
 
-            // Nama file hasil merge
-            String mergedFileName = "Gabungan_Berkas_" + noRawatFormatted + ".pdf";
-            File mergedFile = new File(tempDir, mergedFileName);
-            pdfMerger.setDestinationFileName(mergedFile.getAbsolutePath());
-
-            // Lakukan merge
-            pdfMerger.mergeDocuments(org.apache.pdfbox.io.MemoryUsageSetting.setupMainMemoryOnly());
-
-            JOptionPane.showMessageDialog(this,
-                "Berkas berhasil digabungkan!\n" +
-                "Total: " + pdfFiles.size() + " file\n" +
-                "Lokasi: " + mergedFile.getAbsolutePath(),
-                "Sukses",
-                JOptionPane.INFORMATION_MESSAGE);
-
-            // Tampilkan hasil merge
-            txtNameFile.setText(mergedFileName);
-            viewpdf(mergedFileName, "local");
-
-            // Hapus file temporary setelah merge (optional)
-            // for (File pdfFile : pdfFiles) {
-            //     pdfFile.delete();
-            // }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,
-                "Error saat menggabungkan PDF: " + e.getMessage(),
-                "Error",
-                JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        } finally {
-            this.setCursor(Cursor.getDefaultCursor());
-        }
+        // Jalankan worker di background thread
+        worker.execute();
     }//GEN-LAST:event_BtnMergePDFActionPerformed
 
     private void BtnMergePDFKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnMergePDFKeyPressed
@@ -534,7 +749,7 @@ void deleteFile(){
         }
    }
 
-public void tampilMultiplePdf(String noRawat, String pathFile) {
+public boolean tampilMultiplePdf(String noRawat, String pathFile) {
     try {
         // Format no_rawat untuk nama file
         String noRawatFormatted = noRawat.replaceAll("/", "_");
@@ -580,40 +795,73 @@ public void tampilMultiplePdf(String noRawat, String pathFile) {
                 connection.connect();
 
                 if (connection.getResponseCode() == 200) {
-                    // File ada, buat viewer untuk PDF ini
-                    SwingController ctrl = new SwingController();
-                    SwingViewBuilder vb = new SwingViewBuilder(ctrl);
-                    JPanel pdfPanel = vb.buildViewerPanel();
-                    ComponentKeyBinding.install(ctrl, pdfPanel);
-                    ctrl.setToolBarVisible(false);
-                    ctrl.getDocumentViewController().setAnnotationCallback(
-                        new org.icepdf.ri.common.MyAnnotationCallback(ctrl.getDocumentViewController())
-                    );
-                    ctrl.openDocument(url);
+                    // Validasi apakah benar PDF dengan cek Content-Type
+                    String contentType = connection.getContentType();
+                    long contentLength = connection.getContentLengthLong();
 
-                    // Set ukuran panel
-                    pdfPanel.setPreferredSize(new java.awt.Dimension(850, 800));
-                    pdfPanel.setMaximumSize(new java.awt.Dimension(Integer.MAX_VALUE, 800));
+                    connection.disconnect();
 
-                    // Tambahkan separator jika bukan PDF pertama
-                    if (pdfCount > 0) {
-                        containerPanel.add(new javax.swing.JSeparator());
+                    // Skip file yang terlalu kecil (kemungkinan corrupt)
+                    if (contentLength < 100) {
+                        System.out.println("File terlalu kecil, kemungkinan corrupt: " + fileName + " (" + contentLength + " bytes)");
+                        continue;
                     }
 
-                    // Tambahkan label nama berkas
-                    javax.swing.JLabel label = new javax.swing.JLabel(jenis.replace("_", " ") + noRawat);
-                    label.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
-                    label.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
-                    containerPanel.add(label);
+                    try {
+                        // File ada, buat viewer untuk PDF ini
+                        SwingController ctrl = new SwingController();
+                        SwingViewBuilder vb = new SwingViewBuilder(ctrl);
+                        JPanel pdfPanel = vb.buildViewerPanel();
+                        ComponentKeyBinding.install(ctrl, pdfPanel);
+                        ctrl.setToolBarVisible(false);
+                        ctrl.getDocumentViewController().setAnnotationCallback(
+                            new org.icepdf.ri.common.MyAnnotationCallback(ctrl.getDocumentViewController())
+                        );
+                        ctrl.openDocument(url);
 
-                    // Tambahkan PDF panel
-                    containerPanel.add(pdfPanel);
-                    pdfCount++;
+                        // Set ukuran panel
+                        pdfPanel.setPreferredSize(new java.awt.Dimension(850, 800));
+                        pdfPanel.setMaximumSize(new java.awt.Dimension(Integer.MAX_VALUE, 800));
+
+                        // Tambahkan separator jika bukan PDF pertama
+                        if (pdfCount > 0) {
+                            containerPanel.add(new javax.swing.JSeparator());
+                        }
+
+                        // Tambahkan label nama berkas
+                        javax.swing.JLabel label = new javax.swing.JLabel(jenis.replace("_", " ") + noRawat);
+                        label.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
+                        label.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+                        containerPanel.add(label);
+
+                        // Tambahkan PDF panel
+                        containerPanel.add(pdfPanel);
+                        pdfCount++;
+
+                        System.out.println("Berhasil load PDF: " + fileName);
+                    } catch (Exception pdfError) {
+                        // PDF error saat dibuka (corrupt/invalid)
+                        System.err.println("Error membuka PDF (corrupt/invalid): " + fileName);
+                        System.err.println("Error detail: " + pdfError.getMessage());
+
+                        // Tambahkan label error untuk file yang corrupt
+                        if (pdfCount > 0) {
+                            containerPanel.add(new javax.swing.JSeparator());
+                        }
+                        javax.swing.JLabel errorLabel = new javax.swing.JLabel(
+                            "<html><b style='color:red;'>" + jenis.replace("_", " ") + noRawat +
+                            "</b> - <i>File rusak atau tidak valid</i></html>"
+                        );
+                        errorLabel.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 12));
+                        errorLabel.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+                        containerPanel.add(errorLabel);
+                    }
+                } else {
+                    connection.disconnect();
                 }
-                connection.disconnect();
             } catch (Exception e) {
-                // File tidak ada atau error, skip ke file berikutnya
-                System.out.println("File tidak ditemukan: " + fileName);
+                // File tidak ada atau error koneksi, skip ke file berikutnya
+                System.out.println("File tidak ditemukan atau error koneksi: " + fileName);
             }
         }
 
@@ -622,12 +870,14 @@ public void tampilMultiplePdf(String noRawat, String pathFile) {
             jScrollPane1.setViewportView(containerPanel);
             txtLokasiFile.setText(pathFile);
             txtNoRawat.setText(noRawat);
+            return true; // Ada file yang berhasil dimuat
         } else {
             // Tidak ada PDF yang ditemukan
             JOptionPane.showMessageDialog(this,
                 "Tidak ada berkas PDF yang ditemukan untuk No. Rawat: " + noRawat,
                 "Informasi",
                 JOptionPane.INFORMATION_MESSAGE);
+            return false; // Tidak ada file yang dimuat
         }
 
     } catch (Exception e) {
@@ -635,6 +885,7 @@ public void tampilMultiplePdf(String noRawat, String pathFile) {
             "Error saat memuat berkas: " + e.getMessage(),
             "Error",
             JOptionPane.ERROR_MESSAGE);
+        return false; // Error, tidak ada file yang dimuat
     }
 }
 

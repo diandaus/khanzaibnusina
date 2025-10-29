@@ -21,9 +21,9 @@ import java.util.List;
 
 public class ApiPeruri {
 
-    private static final String BASE_URL = "https://apgdev.peruri.co.id:19044/gateway/";
+    private static final String BASE_URL = "https://apg.peruri.co.id:9055/gateway/";
     private static final String SYSTEM_ID = "RSI-IBNUSINA-SIGLI";
-    private static final String API_KEY = " 0fff6fb9-1a7a-4025-b10f-5f7640eff999";
+    private static final String API_KEY = "fc77df73-ee4d-42f9-91cc-98922dd85c4b";
 
     private static String jwtToken = null; // Variabel untuk menyimpan JWT token
     private SSLContext sslContext;
@@ -53,7 +53,7 @@ public class ApiPeruri {
     }
 
  public String generateJwtToken() throws Exception {
-    String url = BASE_URL + "jwtSandbox/1.0/getJsonWebToken/v1";
+    String url = BASE_URL + "jwt/1.0/getJsonWebToken/v1";
 
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
@@ -475,7 +475,7 @@ public Map<String, Object> sendDocument(String jwtToken, String email, String fi
 public Map<String, Object> sendDocument(String jwtToken, String email, String fileName, String base64Document,
                                         String page, String lowerLeftX, String lowerLeftY,
                                         String upperRightX, String upperRightY) throws Exception {
-    String url = BASE_URL + "digitalSignatureFullJwtSandbox/1.0/sendDocument/v1";
+    String url = BASE_URL + "digitalSignatureSession/1.0/sendDocument/v1";
 
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);

@@ -578,9 +578,14 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
 
             // Tampilkan semua PDF yang tersedia berdasarkan no_rawat
             // Urutan: SEP, Triase, Awal_Medis_IGD, SKDP, SPRI, Lab, Radiologi
-            viewer.tampilMultiplePdf(noRawat, pathFile);
+            boolean hasFiles = viewer.tampilMultiplePdf(noRawat, pathFile);
 
-            viewer.setVisible(true);
+            // Hanya buka viewer jika ada file yang ditemukan
+            if (hasFiles) {
+                viewer.setVisible(true);
+            } else {
+                viewer.dispose(); // Tutup viewer jika tidak ada file
+            }
 
             this.setCursor(Cursor.getDefaultCursor());
         } else {
