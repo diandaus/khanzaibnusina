@@ -95,6 +95,7 @@ import rekammedis.RMDataMonitoringReaksiTranfusi;
 import rekammedis.RMDataPartograf;
 import rekammedis.RMDataResumePasienRanap;
 import rekammedis.RMDataSkriningGiziLanjut;
+import rekammedis.RMHandOver;
 import rekammedis.RMHasilEndoskopiFaringLaring;
 import rekammedis.RMHasilEndoskopiHidung;
 import rekammedis.RMHasilEndoskopiTelinga;
@@ -168,6 +169,7 @@ import rekammedis.RMSkriningNutrisiDewasa;
 import rekammedis.RMSkriningNutrisiLansia;
 import rekammedis.RMTimeOutSebelumInsisi;
 import rekammedis.RMTransferPasienAntarRuang;
+import rekammedis.RMVerifikasiCPPT;
 import rekammedis.ValidasiSBAR;
 import rekammedis.ValidasiSOAP;
 import rekammedis.ValidasiTBAK;
@@ -1568,7 +1570,6 @@ public final class DlgRawatInap extends javax.swing.JDialog {
         jLabel61 = new widget.Label();
         BtnInputKonsul = new widget.Button();
         BtnInputKonsul1 = new widget.Button();
-        BtnInputJadwalOP1 = new widget.Button();
         BtnTemplateResep = new widget.Button();
         BtnTemplatePemberianObat = new widget.Button();
         BtnBalanceCairan = new widget.Button();
@@ -1578,6 +1579,7 @@ public final class DlgRawatInap extends javax.swing.JDialog {
         BtnInputKonsul2 = new widget.Button();
         BtnHasilAwalMedis = new widget.Button();
         BtnInputBacaanEKG = new widget.Button();
+        BtnHandOver = new widget.Button();
         internalFrame6 = new widget.InternalFrame();
         Scroll4 = new widget.ScrollPane();
         tbPemeriksaanObstetri = new widget.Table();
@@ -2085,7 +2087,7 @@ public final class DlgRawatInap extends javax.swing.JDialog {
         panelGlass10.add(jLabel19);
 
         DTPCari1.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "22-12-2024" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "01-11-2025" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -2099,7 +2101,7 @@ public final class DlgRawatInap extends javax.swing.JDialog {
         panelGlass10.add(jLabel21);
 
         DTPCari2.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "22-12-2024" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "01-11-2025" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -3005,23 +3007,6 @@ public final class DlgRawatInap extends javax.swing.JDialog {
         panelGlass12.add(BtnInputKonsul1);
         BtnInputKonsul1.setBounds(910, 50, 160, 30);
 
-        BtnInputJadwalOP1.setForeground(new java.awt.Color(0, 0, 0));
-        BtnInputJadwalOP1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/Hospital.png"))); // NOI18N
-        BtnInputJadwalOP1.setMnemonic('4');
-        BtnInputJadwalOP1.setText("Status Verifikasi SOAP");
-        BtnInputJadwalOP1.setToolTipText("");
-        BtnInputJadwalOP1.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        BtnInputJadwalOP1.setGlassColor(new java.awt.Color(255, 153, 153));
-        BtnInputJadwalOP1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        BtnInputJadwalOP1.setName("BtnInputJadwalOP1"); // NOI18N
-        BtnInputJadwalOP1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnInputJadwalOP1ActionPerformed(evt);
-            }
-        });
-        panelGlass12.add(BtnInputJadwalOP1);
-        BtnInputJadwalOP1.setBounds(910, 90, 160, 30);
-
         BtnTemplateResep.setForeground(new java.awt.Color(0, 0, 0));
         BtnTemplateResep.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/Agenda-1-16x16.png"))); // NOI18N
         BtnTemplateResep.setMnemonic('4');
@@ -3171,6 +3156,23 @@ public final class DlgRawatInap extends javax.swing.JDialog {
         });
         panelGlass12.add(BtnInputBacaanEKG);
         BtnInputBacaanEKG.setBounds(1080, 210, 160, 30);
+
+        BtnHandOver.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/couple24.png"))); // NOI18N
+        BtnHandOver.setMnemonic('4');
+        BtnHandOver.setText("Hand Over");
+        BtnHandOver.setToolTipText("");
+        BtnHandOver.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        BtnHandOver.setGlassColor(new java.awt.Color(255, 153, 153));
+        BtnHandOver.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        BtnHandOver.setName("BtnHandOver"); // NOI18N
+        BtnHandOver.setPreferredSize(new java.awt.Dimension(149, 30));
+        BtnHandOver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnHandOverActionPerformed(evt);
+            }
+        });
+        panelGlass12.add(BtnHandOver);
+        BtnHandOver.setBounds(910, 90, 160, 26);
 
         PanelInput1.add(panelGlass12, java.awt.BorderLayout.CENTER);
 
@@ -4941,7 +4943,7 @@ public final class DlgRawatInap extends javax.swing.JDialog {
         TPasien.setBounds(283, 10, 260, 23);
 
         DTPTgl.setForeground(new java.awt.Color(50, 70, 50));
-        DTPTgl.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "22-12-2024" }));
+        DTPTgl.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "01-11-2025" }));
         DTPTgl.setDisplayFormat("dd-MM-yyyy");
         DTPTgl.setName("DTPTgl"); // NOI18N
         DTPTgl.setOpaque(false);
@@ -10535,36 +10537,19 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     }//GEN-LAST:event_BtnInputKonsulActionPerformed
 
     private void BtnInputKonsul1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnInputKonsul1ActionPerformed
-         if(TPasien.getText().trim().equals("")||TNoRw.getText().trim().equals("")){
-            JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu dengan menklik data pada table...!!!");
+         if(TNoRw.getText().trim().equals("")){
+            JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu pasien...!!!");
             TCari.requestFocus();
-        }else{
+        } else {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            ValidasiSOAP form=new ValidasiSOAP(null,false);
-            form.isCek();
-            form.emptTeks();
-            form.setNoRm(TNoRw.getText(),DTPCari2.getDate());
-            form.tampil();
-            form.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
-            form.setLocationRelativeTo(internalFrame1);
-            form.setVisible(true);
+            RMVerifikasiCPPT verifikasi = new RMVerifikasiCPPT(null,true);
+            verifikasi.setNoRm(TNoRM.getText(), TPasien.getText(), TNoRw.getText());
+            verifikasi.setSize(internalFrame1.getWidth(), internalFrame1.getHeight());
+            verifikasi.setLocationRelativeTo(internalFrame1);
+            verifikasi.setVisible(true);
             this.setCursor(Cursor.getDefaultCursor());
         }
     }//GEN-LAST:event_BtnInputKonsul1ActionPerformed
-
-    private void BtnInputJadwalOP1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnInputJadwalOP1ActionPerformed
-        if(TNoRw.getText().trim().equals("") ){
-            JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu dengan menklik data pada table...!!!");
-            TCari.requestFocus();
-        }else{
-            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            DlgSOAPOld soap=new DlgSOAPOld(null,false);
-            soap.setNoRawat(TNoRw.getText(),TNoRw.getText());
-            soap.setSize(internalFrame1.getWidth(),internalFrame1.getHeight());
-            soap.setLocationRelativeTo(internalFrame1);
-            soap.setVisible(true);
-        }
-    }//GEN-LAST:event_BtnInputJadwalOP1ActionPerformed
 
     private void tbPemeriksaanSbarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPemeriksaanSbarMouseClicked
         if(tabModePemeriksaanSbar.getRowCount()!=0){
@@ -11138,6 +11123,24 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             this.setCursor(Cursor.getDefaultCursor());
         }        // TODO add your handling code here:
     }//GEN-LAST:event_BtnHasilRadiologi1ActionPerformed
+
+    private void BtnHandOverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHandOverActionPerformed
+        if (TNoRw.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Maaf, Silahkan anda pilih dulu dengan menklik data pada table...!!!");
+            TCari.requestFocus();
+        } else {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            RMHandOver form = new RMHandOver(null, false);
+            form.isCek();
+            form.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
+            form.setLocationRelativeTo(internalFrame1);
+            form.setNoRm(TNoRw.getText(), DTPCari2.getDate());
+            form.tampil();
+            //    form.emptTeks();
+            form.setVisible(true);
+            this.setCursor(Cursor.getDefaultCursor());
+        }
+    }//GEN-LAST:event_BtnHandOverActionPerformed
 
     private void BtnSkorBromagePascaAnestesiActionPerformed(java.awt.event.ActionEvent evt) {                                                            
         if(TPasien.getText().trim().equals("")||TNoRw.getText().trim().equals("")){
@@ -11912,6 +11915,7 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     private widget.Button BtnDokumentasiESWL;
     private widget.Button BtnEdit;
     private widget.Button BtnFollowUpDBD;
+    private widget.Button BtnHandOver;
     private widget.Button BtnHapus;
     private widget.Button BtnHasilAwalMedis;
     private widget.Button BtnHasilAwalMedis1;
@@ -11922,7 +11926,6 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     private widget.Button BtnHasilRadiologi1;
     private widget.Button BtnInformasiObat;
     private widget.Button BtnInputBacaanEKG;
-    private widget.Button BtnInputJadwalOP1;
     private widget.Button BtnInputKonsul;
     private widget.Button BtnInputKonsul1;
     private widget.Button BtnInputKonsul2;

@@ -6639,7 +6639,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                          // Format: SEP_[NoRawat] agar konsisten dengan DlgViewPdf
                          String autoFileName = "SEP_" + TNoRw.getText().replaceAll("/", "_");
                          CreatePDFAuto(autoFileName, response.asText());
-                         UploadPDF(autoFileName, "berkasrawat/pages/upload/");
+                         UploadPDF(autoFileName, "berkasrawat/pages/upload/", TNoRw.getText());
                          HapusPDF();
                          System.out.println("Auto upload SEP berhasil: " + autoFileName);
                      } catch (Exception autoUploadEx) {
@@ -6681,7 +6681,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                             // Format: SEP_[NoRawat] agar konsisten dengan DlgViewPdf
                             String autoFileName = "SEP_" + TNoRw.getText().replaceAll("/", "_");
                             CreatePDFAuto(autoFileName, response.asText());
-                            UploadPDF(autoFileName, "berkasrawat/pages/upload/");
+                            UploadPDF(autoFileName, "berkasrawat/pages/upload/", TNoRw.getText());
                             HapusPDF();
                             System.out.println("Auto upload SEP Internal berhasil: " + autoFileName);
                         } catch (Exception autoUploadEx) {
@@ -6972,6 +6972,12 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
     
      private void UploadPDF(String FileName, String docpath) {
         try {
+            // Validasi baris tabel dipilih
+            if (tbDataSEP.getSelectedRow() == -1) {
+                JOptionPane.showMessageDialog(null, "Silahkan pilih data SEP terlebih dahulu!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             File file = new File("tmpPDF/" + FileName + ".pdf");
             byte[] data = FileUtils.readFileToByteArray(file);
             HttpClient httpClient = new DefaultHttpClient();
@@ -7004,6 +7010,38 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
         } catch (Exception e) {
             System.out.println("Upload error: " + e);
             JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat upload: " + e.getMessage(), "Kesalahan", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // Method overload untuk auto-upload dengan parameter noRawat (dipanggil dari insertSEP)
+    private void UploadPDF(String FileName, String docpath, String noRawat) {
+        try {
+            File file = new File("tmpPDF/" + FileName + ".pdf");
+            byte[] data = FileUtils.readFileToByteArray(file);
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPost postRequest = new HttpPost("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/upload.php?doc=" + docpath);
+            ByteArrayBody fileData = new ByteArrayBody(data, FileName + ".pdf");
+            MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+            reqEntity.addPart("file", fileData);
+            postRequest.setEntity(reqEntity);
+            httpClient.execute(postRequest);
+
+            // Menyimpan ke database
+            boolean uploadSuccess = false;
+            kodeberkas = Sequel.cariIsi("SELECT kode FROM master_berkas_digital WHERE nama LIKE '%SEP%'");
+            if (Sequel.cariInteger("SELECT COUNT(no_rawat) AS jumlah FROM berkas_digital_perawatan WHERE lokasi_file='pages/upload/" + FileName + ".pdf'") > 0) {
+                uploadSuccess = Sequel.mengedittf("berkas_digital_perawatan", "lokasi_file=?","no_rawat=?,kode=?, lokasi_file=?", 4, new String[]{
+                    noRawat.trim(), kodeberkas, "pages/upload/" + FileName + ".pdf", "pages/upload/" + FileName + ".pdf"
+                });
+            } else {
+                uploadSuccess = Sequel.menyimpantf("berkas_digital_perawatan", "?,?,?", "No.Rawat", 3, new String[]{
+                    noRawat.trim(), kodeberkas, "pages/upload/" + FileName + ".pdf"
+                });
+            }
+
+            System.out.println("Auto upload berhasil untuk No.Rawat: " + noRawat);
+        } catch (Exception e) {
+            System.out.println("Upload error: " + e);
         }
     }
 

@@ -31,7 +31,6 @@ import bridging.SisruteRujukanKeluar;
 import laporan.DlgDiagnosaPenyakit;
 import informasi.InformasiAnalisaKamin;
 import keuangan.DlgKamar;
-import fungsi.WarnaTable;
 import fungsi.WarnaTableKamarInap;
 import fungsi.batasInput;
 import fungsi.koneksiDB;
@@ -73,8 +72,6 @@ import keuangan.DlgPerkiraanBiayaRanap;
 import laporan.DlgBerkasRawat;
 import laporan.DlgDataInsidenKeselamatan;
 import laporan.DlgDataKlasifikasiPasienRanap;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import permintaan.DlgPermintaanKerohanian;
 import permintaan.DlgPermintaanKonsultasiMedik;
 import permintaan.DlgPermintaanLaboratorium;
@@ -82,6 +79,7 @@ import permintaan.DlgPermintaanPelayananInformasiObat;
 import permintaan.DlgPermintaanRadiologi;
 import rekammedis.AsesmenAwalKeperawatanNeonatusNICU;
 import rekammedis.AsesmenKhususKebidananIbuNifas;
+import rekammedis.DlgPemberianObatPasien;
 import rekammedis.RMCatatanADIMEGizi;
 import rekammedis.RMCatatanAnastesiSedasi;
 import rekammedis.RMCatatanPengkajianPaskaOperasi;
@@ -112,7 +110,6 @@ import rekammedis.RMDataCatatanObservasiInduksiPersalinan;
 import rekammedis.RMDataCatatanObservasiIntradialitik;
 import rekammedis.RMDataCatatanObservasiPerina;
 import rekammedis.RMDataCatatanObservasiRanap;
-import rekammedis.RMDataCatatanObservasiRanapKebidanan;
 import rekammedis.RMDataCatatanObservasiRanapPostPartum;
 import rekammedis.RMDataCatatanObservasiRestrainNonFarmakologi;
 import rekammedis.RMDataCatatanObservasiVentilator;
@@ -917,6 +914,7 @@ public class DlgKamarInap extends javax.swing.JDialog {
         MnCatatanPersalinan = new javax.swing.JMenuItem();
         MnCatatanObservasiPerina = new javax.swing.JMenuItem();
         MnCatatanObservasiBBL = new javax.swing.JMenuItem();
+        MnPemberianObatPasien = new javax.swing.JMenuItem();
         MnDiagnosa = new javax.swing.JMenuItem();
         MnGizi = new javax.swing.JMenu();
         ppSkriningNutrisiDewasa = new javax.swing.JMenuItem();
@@ -1182,6 +1180,7 @@ public class DlgKamarInap extends javax.swing.JDialog {
         TPasienCari = new widget.TextBox();
         jLabel37 = new widget.Label();
         cmbStatusBayar = new widget.ComboBox();
+        BtnJadwalObat = new widget.Button();
 
         WindowInputKamar.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         WindowInputKamar.setName("WindowInputKamar"); // NOI18N
@@ -2754,6 +2753,21 @@ public class DlgKamarInap extends javax.swing.JDialog {
             }
         });
         MnObservasi.add(MnCatatanObservasiBBL);
+
+        MnPemberianObatPasien.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        MnPemberianObatPasien.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        MnPemberianObatPasien.setText("Pemberian Obat Rekam Medis");
+        MnPemberianObatPasien.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        MnPemberianObatPasien.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        MnPemberianObatPasien.setIconTextGap(5);
+        MnPemberianObatPasien.setName("MnPemberianObatPasien"); // NOI18N
+        MnPemberianObatPasien.setPreferredSize(new java.awt.Dimension(210, 26));
+        MnPemberianObatPasien.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MnPemberianObatPasienActionPerformed(evt);
+            }
+        });
+        MnObservasi.add(MnPemberianObatPasien);
 
         MnDataRM.add(MnObservasi);
 
@@ -6051,6 +6065,25 @@ public class DlgKamarInap extends javax.swing.JDialog {
         cmbStatusBayar.setName("cmbStatusBayar"); // NOI18N
         cmbStatusBayar.setPreferredSize(new java.awt.Dimension(120, 23));
         panelGlass9.add(cmbStatusBayar);
+
+        BtnJadwalObat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/Syringe.png"))); // NOI18N
+        BtnJadwalObat.setMnemonic('K');
+        BtnJadwalObat.setText("Jadwal Obat");
+        BtnJadwalObat.setToolTipText("Alt+K");
+        BtnJadwalObat.setGlassColor(new java.awt.Color(153, 255, 153));
+        BtnJadwalObat.setName("BtnJadwalObat"); // NOI18N
+        BtnJadwalObat.setPreferredSize(new java.awt.Dimension(180, 30));
+        BtnJadwalObat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnJadwalObatActionPerformed(evt);
+            }
+        });
+        BtnJadwalObat.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BtnJadwalObatKeyPressed(evt);
+            }
+        });
+        panelGlass9.add(BtnJadwalObat);
 
         internalFrame1.add(panelGlass9, java.awt.BorderLayout.PAGE_START);
 
@@ -16497,6 +16530,39 @@ if(tabMode.getRowCount()==0){
             }
         }        // TODO add your handling code here:
     }//GEN-LAST:event_GenerateKlaimBtnPrintActionPerformed
+
+    private void BtnJadwalObatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnJadwalObatActionPerformed
+        MnPemberianObatPasienActionPerformed(null);
+    }//GEN-LAST:event_BtnJadwalObatActionPerformed
+
+    private void BtnJadwalObatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnJadwalObatKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnJadwalObatKeyPressed
+
+    private void MnPemberianObatPasienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnPemberianObatPasienActionPerformed
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Maaf, tabel masih kosong...!!!!");
+            TCari.requestFocus();
+        } else if (norawat.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Maaf, Silahkan anda pilih dulu dengan mengklik data pada tabel...!!!");
+            tbKamIn.requestFocus();
+        } else {
+            if (tbKamIn.getSelectedRow() != -1) {
+                this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                DlgPemberianObatPasien beriObat = new DlgPemberianObatPasien(null, false);
+                akses.setform("DlgKamarInap");
+                beriObat.emptTeks();
+                beriObat.isCek();
+                beriObat.setData(norawat.getText(), TNoRM.getText(), TPasien.getText(), "ranap", tbKamIn.getValueAt(tbKamIn.getSelectedRow(), 7).toString());
+                beriObat.setSize(internalFrame1.getWidth() - 40, internalFrame1.getHeight() - 40);
+                beriObat.setLocationRelativeTo(internalFrame1);
+                beriObat.setAlwaysOnTop(false);
+                beriObat.setVisible(true);
+                BtnCariActionPerformed(null);
+                this.setCursor(Cursor.getDefaultCursor());
+            }
+        }
+    }//GEN-LAST:event_MnPemberianObatPasienActionPerformed
     
     private void MnSkorAldrettePascaAnestesiActionPerformed(java.awt.event.ActionEvent evt) {
         if(tabMode.getRowCount()==0){
@@ -19398,6 +19464,7 @@ if(tabMode.getRowCount()==0){
     private widget.Button BtnCloseInpindah;
     private widget.Button BtnHapusGabung;
     private widget.Button BtnIn;
+    private widget.Button BtnJadwalObat;
     private widget.Button BtnKeluar;
     private widget.Button BtnKeluar4;
     private widget.Button BtnKetWarna3;
@@ -19513,6 +19580,7 @@ if(tabMode.getRowCount()==0){
     private javax.swing.JMenuItem MnPemantauanPEWSAnak;
     private javax.swing.JMenuItem MnPemantauanPEWSDewasa;
     private javax.swing.JMenuItem MnPemberianObat;
+    private javax.swing.JMenuItem MnPemberianObatPasien;
     private javax.swing.JMenuItem MnPemberianTransfusiDarah;
     private javax.swing.JMenuItem MnPengantarPulang;
     private javax.swing.JMenuItem MnPenggunaanKamar;

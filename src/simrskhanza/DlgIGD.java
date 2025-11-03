@@ -90,6 +90,7 @@ import permintaan.DlgPermintaanLaboratorium;
 import permintaan.DlgPermintaanPelayananInformasiObat;
 import permintaan.DlgPermintaanRadiologi;
 import permintaan.DlgPermintaanRanap;
+import rekammedis.DlgPemberianObatPasien;
 import rekammedis.RMCatatanADIMEGizi;
 import rekammedis.RMCatatanPersalinan;
 import rekammedis.RMChecklistKriteriaMasukHCU;
@@ -706,6 +707,7 @@ public final class DlgIGD extends javax.swing.JDialog {
         MnPenilaianUlangNyeri = new javax.swing.JMenuItem();
         MnCatatanKeperawatan = new javax.swing.JMenuItem();
         MnCatatanPersalinan = new javax.swing.JMenuItem();
+        MnPemberianObatPasien = new javax.swing.JMenuItem();
         MnGizi = new javax.swing.JMenu();
         ppSkriningNutrisiDewasa = new javax.swing.JMenuItem();
         ppSkriningNutrisiLansia = new javax.swing.JMenuItem();
@@ -919,6 +921,7 @@ public final class DlgIGD extends javax.swing.JDialog {
         jLabel6 = new widget.Label();
         TCari = new widget.TextBox();
         BtnCari = new widget.Button();
+        BtnJadwalObat = new widget.Button();
         PanelInput = new javax.swing.JPanel();
         FormInput = new widget.PanelBiasa();
         jLabel3 = new widget.Label();
@@ -1819,6 +1822,21 @@ public final class DlgIGD extends javax.swing.JDialog {
             }
         });
         MnRMCatatanMonitoring.add(MnCatatanPersalinan);
+
+        MnPemberianObatPasien.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        MnPemberianObatPasien.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        MnPemberianObatPasien.setText("Pemberian Obat Rekam Medis");
+        MnPemberianObatPasien.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        MnPemberianObatPasien.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        MnPemberianObatPasien.setIconTextGap(5);
+        MnPemberianObatPasien.setName("MnPemberianObatPasien"); // NOI18N
+        MnPemberianObatPasien.setPreferredSize(new java.awt.Dimension(210, 26));
+        MnPemberianObatPasien.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MnPemberianObatPasienActionPerformed(evt);
+            }
+        });
+        MnRMCatatanMonitoring.add(MnPemberianObatPasien);
 
         MnDataRM.add(MnRMCatatanMonitoring);
 
@@ -4781,7 +4799,7 @@ public final class DlgIGD extends javax.swing.JDialog {
         panelGlass7.add(jLabel15);
 
         DTPCari1.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "17-09-2024" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "03-11-2025" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -4795,7 +4813,7 @@ public final class DlgIGD extends javax.swing.JDialog {
         panelGlass7.add(jLabel17);
 
         DTPCari2.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "17-09-2024" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "03-11-2025" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -4832,6 +4850,25 @@ public final class DlgIGD extends javax.swing.JDialog {
             }
         });
         panelGlass7.add(BtnCari);
+
+        BtnJadwalObat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/Syringe.png"))); // NOI18N
+        BtnJadwalObat.setMnemonic('K');
+        BtnJadwalObat.setText("Jadwal Obat");
+        BtnJadwalObat.setToolTipText("Alt+K");
+        BtnJadwalObat.setGlassColor(new java.awt.Color(153, 255, 153));
+        BtnJadwalObat.setName("BtnJadwalObat"); // NOI18N
+        BtnJadwalObat.setPreferredSize(new java.awt.Dimension(180, 30));
+        BtnJadwalObat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnJadwalObatActionPerformed(evt);
+            }
+        });
+        BtnJadwalObat.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BtnJadwalObatKeyPressed(evt);
+            }
+        });
+        panelGlass7.add(BtnJadwalObat);
 
         jPanel2.add(panelGlass7, java.awt.BorderLayout.CENTER);
 
@@ -4887,7 +4924,7 @@ public final class DlgIGD extends javax.swing.JDialog {
         jLabel9.setBounds(165, 72, 36, 23);
 
         DTPReg.setForeground(new java.awt.Color(50, 70, 50));
-        DTPReg.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "17-09-2024" }));
+        DTPReg.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "03-11-2025" }));
         DTPReg.setDisplayFormat("dd-MM-yyyy");
         DTPReg.setName("DTPReg"); // NOI18N
         DTPReg.setOpaque(false);
@@ -10962,6 +10999,39 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
         }
     }//GEN-LAST:event_MnSuratPerintahRawatInapActionPerformed
 
+    private void BtnJadwalObatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnJadwalObatActionPerformed
+        MnPemberianObatPasienActionPerformed(null);
+    }//GEN-LAST:event_BtnJadwalObatActionPerformed
+
+    private void BtnJadwalObatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnJadwalObatKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnJadwalObatKeyPressed
+
+    private void MnPemberianObatPasienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnPemberianObatPasienActionPerformed
+        if (tabMode.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(null, "Maaf, tabel masih kosong...!!!!");
+            TCari.requestFocus();
+        } else if (TNoRw.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(null, "Maaf, Silahkan anda pilih dulu dengan mengklik data pada tabel...!!!");
+            tbPetugas.requestFocus();
+        } else {
+            if (tbPetugas.getSelectedRow() != -1) {
+                this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                DlgPemberianObatPasien beriObat = new DlgPemberianObatPasien(null, false);
+                akses.setform("DlgIGD");
+                beriObat.emptTeks();
+                beriObat.isCek();
+                beriObat.setData(TNoRw.getText(), TNoRM.getText(), TPasien.getText(), "IGD ("+tbPetugas.getValueAt(tbPetugas.getSelectedRow(), 18).toString()+")", tbPetugas.getValueAt(tbPetugas.getSelectedRow(), 11).toString());
+                beriObat.setSize(internalFrame1.getWidth() - 40, internalFrame1.getHeight() - 40);
+                beriObat.setLocationRelativeTo(internalFrame1);
+                beriObat.setAlwaysOnTop(false);
+                beriObat.setVisible(true);
+                BtnCariActionPerformed(null);
+                this.setCursor(Cursor.getDefaultCursor());
+            }
+        }
+    }//GEN-LAST:event_MnPemberianObatPasienActionPerformed
+
     private void MnPenilaianPreInduksiActionPerformed(java.awt.event.ActionEvent evt) {                                                       
         if(tabMode.getRowCount()==0){
             JOptionPane.showMessageDialog(null,"Maaf, data registrasi sudah habis...!!!!");
@@ -11008,6 +11078,7 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
     private widget.Button BtnDokter;
     private widget.Button BtnEdit;
     private widget.Button BtnHapus;
+    private widget.Button BtnJadwalObat;
     private widget.Button BtnKeluar;
     private widget.Button BtnKeluar3;
     private widget.Button BtnKeluar4;
@@ -11132,6 +11203,7 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
     private javax.swing.JMenuItem MnPemantauanPEWSAnak;
     private javax.swing.JMenuItem MnPemantauanPEWSDewasa;
     private javax.swing.JMenuItem MnPemberianObat;
+    private javax.swing.JMenuItem MnPemberianObatPasien;
     private javax.swing.JMenuItem MnPengkajianRestrain;
     private javax.swing.JMenuItem MnPenilaianAwalKeperawatanIGD;
     private javax.swing.JMenuItem MnPenilaianFisioterapi;

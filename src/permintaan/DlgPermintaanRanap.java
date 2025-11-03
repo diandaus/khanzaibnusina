@@ -31,6 +31,7 @@ import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import kepegawaian.DlgCariDokter;
 import keuangan.DlgKamar;
 import laporan.DlgCariPenyakit;
 import simrskhanza.DlgKamarInap;
@@ -61,6 +62,7 @@ public class DlgPermintaanRanap extends javax.swing.JDialog {
     private boolean aktif=false;
     private BackgroundMusic music;
     private DlgCariPenyakit penyakit=new DlgCariPenyakit(null,false);
+    private DlgCariDokter dokter=new DlgCariDokter(null,false);
     
 
     /** Creates new form DlgPemberianInfus
@@ -153,7 +155,7 @@ public class DlgPermintaanRanap extends javax.swing.JDialog {
             });
         } 
         
-        kamar.addWindowListener(new WindowListener() {
+                kamar.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {}
             @Override
@@ -205,6 +207,31 @@ public class DlgPermintaanRanap extends javax.swing.JDialog {
                     }   
                 }  
                 Diagnosa.requestFocus();
+            }
+            @Override
+            public void windowIconified(WindowEvent e) {}
+            @Override
+            public void windowDeiconified(WindowEvent e) {}
+            @Override
+            public void windowActivated(WindowEvent e) {}
+            @Override
+            public void windowDeactivated(WindowEvent e) {}
+        });
+        
+        dokter.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {}
+            @Override
+            public void windowClosing(WindowEvent e) {}
+            @Override
+            public void windowClosed(WindowEvent e) {
+                if(dokter.getTable().getSelectedRow()!= -1){
+                    if(i==1){
+                        KdDPJP = dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),0).toString();
+                        DPJP.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),1).toString());
+                        btnDPJP.requestFocus();
+                    }
+                }
             }
             @Override
             public void windowIconified(WindowEvent e) {}
@@ -297,6 +324,9 @@ public class DlgPermintaanRanap extends javax.swing.JDialog {
         Catatan = new widget.TextBox();
         jLabel14 = new widget.Label();
         btnDiagnosa = new widget.Button();
+        DPJP = new widget.TextBox();
+        jLabel16 = new widget.Label();
+        btnDPJP = new widget.Button();
         PanelAccor = new widget.PanelBiasa();
         ChkAccor = new widget.CekBox();
         ScrollMenu = new widget.ScrollPane();
@@ -555,7 +585,7 @@ public class DlgPermintaanRanap extends javax.swing.JDialog {
         R2.setPreferredSize(new java.awt.Dimension(165, 23));
         panelCari.add(R2);
 
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "29-11-2021" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "13-10-2025" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -578,7 +608,7 @@ public class DlgPermintaanRanap extends javax.swing.JDialog {
         jLabel25.setPreferredSize(new java.awt.Dimension(30, 23));
         panelCari.add(jLabel25);
 
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "29-11-2021" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "13-10-2025" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -646,7 +676,7 @@ public class DlgPermintaanRanap extends javax.swing.JDialog {
         NmPasien.setBounds(288, 10, 330, 23);
 
         DTPTgl.setForeground(new java.awt.Color(50, 70, 50));
-        DTPTgl.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "29-11-2021" }));
+        DTPTgl.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "13-10-2025" }));
         DTPTgl.setDisplayFormat("dd-MM-yyyy");
         DTPTgl.setName("DTPTgl"); // NOI18N
         DTPTgl.setOpaque(false);
@@ -805,6 +835,43 @@ public class DlgPermintaanRanap extends javax.swing.JDialog {
         FormInput.add(btnDiagnosa);
         btnDiagnosa.setBounds(289, 130, 28, 23);
 
+        DPJP.setHighlighter(null);
+        DPJP.setName("DPJP"); // NOI18N
+        DPJP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DPJPActionPerformed(evt);
+            }
+        });
+        DPJP.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                DPJPKeyPressed(evt);
+            }
+        });
+        FormInput.add(DPJP);
+        DPJP.setBounds(80, 160, 320, 23);
+
+        jLabel16.setText("DPJP :");
+        jLabel16.setName("jLabel16"); // NOI18N
+        FormInput.add(jLabel16);
+        jLabel16.setBounds(0, 160, 69, 23);
+
+        btnDPJP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/190.png"))); // NOI18N
+        btnDPJP.setMnemonic('3');
+        btnDPJP.setToolTipText("Alt+3");
+        btnDPJP.setName("btnDPJP"); // NOI18N
+        btnDPJP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDPJPActionPerformed(evt);
+            }
+        });
+        btnDPJP.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnDPJPKeyPressed(evt);
+            }
+        });
+        FormInput.add(btnDPJP);
+        btnDPJP.setBounds(400, 160, 28, 23);
+
         PanelInput.add(FormInput, java.awt.BorderLayout.CENTER);
 
         internalFrame1.add(PanelInput, java.awt.BorderLayout.PAGE_START);
@@ -948,7 +1015,7 @@ public class DlgPermintaanRanap extends javax.swing.JDialog {
 }//GEN-LAST:event_DTPTglKeyPressed
 
     private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(NoRw.getText().trim().equals("")||NoRM.getText().trim().equals("")||NmPasien.getText().trim().equals("")){
+ if(NoRw.getText().trim().equals("")||NoRM.getText().trim().equals("")||NmPasien.getText().trim().equals("")){
             Valid.textKosong(TCari,"Pasien");
         }else if(KdBangsal.getText().trim().equals("")||KdKamar.getText().trim().equals("")||NmBangsal.getText().trim().equals("")){
             Valid.textKosong(btnKamar,"Kamar/Bangsal");
@@ -958,6 +1025,12 @@ public class DlgPermintaanRanap extends javax.swing.JDialog {
             if(Sequel.menyimpantf("permintaan_ranap","?,?,?,?,?","Pasien",5,new String[]{
                 NoRw.getText(),Valid.SetTgl(DTPTgl.getSelectedItem()+""),KdKamar.getText(),Diagnosa.getText(),Catatan.getText()
             })==true){
+                // Simpan DPJP jika ada input dokter DPJP
+                if(!KdDPJP.trim().equals("")){
+                    Sequel.menyimpantf("dpjp_ranap","?,?","Dokter",2,new String[]{
+                        NoRw.getText(),KdDPJP
+                    });
+                }
                 tampil();
                 Sequel.mengedit("kamar","kd_kamar=?","status='DIBOOKING'",1,new String[]{KdKamar.getText()});
                 emptTeks();
@@ -1417,6 +1490,27 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
     }//GEN-LAST:event_BtnPersetujuanRanapActionPerformed
 
+    private void DPJPKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_DPJPKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DPJPKeyPressed
+
+    private void btnDPJPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDPJPActionPerformed
+        i = 1;
+        dokter.isCek();
+        dokter.setSize(internalFrame1.getWidth() - 20, internalFrame1.getHeight() - 20);
+        dokter.setLocationRelativeTo(internalFrame1);
+        dokter.setAlwaysOnTop(false);
+        dokter.setVisible(true);        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDPJPActionPerformed
+
+    private void btnDPJPKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnDPJPKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDPJPKeyPressed
+
+    private void DPJPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DPJPActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DPJPActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -1451,6 +1545,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.TextBox Catatan;
     private widget.CekBox ChkAccor;
     private widget.CekBox ChkInput;
+    private widget.TextBox DPJP;
     private widget.Tanggal DTPCari1;
     private widget.Tanggal DTPCari2;
     private widget.Tanggal DTPTgl;
@@ -1476,6 +1571,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.ScrollPane Scroll;
     private widget.ScrollPane ScrollMenu;
     private widget.TextBox TCari;
+    private widget.Button btnDPJP;
     private widget.Button btnDiagnosa;
     private widget.Button btnKamar;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -1486,6 +1582,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.Label jLabel13;
     private widget.Label jLabel14;
     private widget.Label jLabel15;
+    private widget.Label jLabel16;
     private widget.Label jLabel20;
     private widget.Label jLabel25;
     private widget.Label jLabel5;
@@ -1499,7 +1596,8 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.panelisi panelGlass8;
     private widget.Table tbObat;
     // End of variables declaration//GEN-END:variables
-
+    private String KdDPJP = "";
+    
     public void tampil() {     
         Valid.tabelKosong(tabMode);
         try{ 
@@ -1617,6 +1715,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         HargaKamar.setText("");
         Diagnosa.setText("");
         Catatan.setText("");
+        KdDPJP = "";
         DTPTgl.setDate(new Date());
         Diagnosa.requestFocus();
     }
@@ -1658,7 +1757,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private void isForm(){
         if(ChkInput.isSelected()==true){
             ChkInput.setVisible(false);
-            PanelInput.setPreferredSize(new Dimension(WIDTH,186));
+            PanelInput.setPreferredSize(new Dimension(WIDTH,213));
             FormInput.setVisible(true);      
             ChkInput.setVisible(true);
         }else if(ChkInput.isSelected()==false){           
