@@ -1342,7 +1342,15 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void UploadPDF(String FileName, String docpath) {
         try {
+            // Langsung upload ke server tanpa simpan ke database
             File file = new File("tmpPDF/" + FileName + ".pdf");
+
+            // Validasi file exists
+            if (!file.exists()) {
+                JOptionPane.showMessageDialog(null, "File PDF tidak ditemukan: " + FileName + ".pdf", "Kesalahan", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             byte[] data = FileUtils.readFileToByteArray(file);
             HttpClient httpClient = new DefaultHttpClient();
             HttpPost postRequest = new HttpPost("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/upload.php?doc=" + docpath);
@@ -1350,30 +1358,34 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
             reqEntity.addPart("file", fileData);
             postRequest.setEntity(reqEntity);
-            httpClient.execute(postRequest);
 
-            // Menyimpan ke database
-            boolean uploadSuccess = false;
-            kodeberkas = Sequel.cariIsi("SELECT kode FROM master_berkas_digital WHERE nama LIKE '%Surat Kontrol%'");
-            if (Sequel.cariInteger("SELECT COUNT(no_rawat) AS jumlah FROM berkas_digital_perawatan WHERE lokasi_file='pages/upload/" + FileName + ".pdf'") > 0) {
-                uploadSuccess = Sequel.mengedittf("berkas_digital_perawatan", "lokasi_file=?","no_rawat=?,kode=?, lokasi_file=?", 4, new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString().trim(),kodeberkas,"pages/upload/" + FileName + ".pdf", "pages/upload/" + FileName + ".pdf"
-                });
+            org.apache.http.HttpResponse response = httpClient.execute(postRequest);
+
+            // Cek response status
+            int statusCode = response.getStatusLine().getStatusCode();
+            if (statusCode == 200) {
+                System.out.println("Upload berhasil: " + FileName + ".pdf ke " + docpath);
+                JOptionPane.showMessageDialog(null,
+                    "Upload Surat Kontrol berhasil!\n" +
+                    "File: " + FileName + ".pdf\n" +
+                    "Lokasi: " + docpath,
+                    "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
             } else {
-                uploadSuccess = Sequel.menyimpantf("berkas_digital_perawatan", "?,?,?", "No.Rawat", 3, new String[]{
-                    tbObat.getValueAt(tbObat.getSelectedRow(), 0).toString().trim(), kodeberkas, "pages/upload/" + FileName + ".pdf"
-                });
+                System.out.println("Upload gagal dengan status code: " + statusCode);
+                JOptionPane.showMessageDialog(null,
+                    "Upload gagal ke server.\nStatus: " + statusCode,
+                    "Peringatan",
+                    JOptionPane.WARNING_MESSAGE);
             }
 
-            // Menampilkan notifikasi
-            if (uploadSuccess) {
-                JOptionPane.showMessageDialog(null, "Upload Surat Kontrol berhasil!", "Informasi", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, "Upload gagal disimpan ke database.", "Peringatan", JOptionPane.WARNING_MESSAGE);
-            }
         } catch (Exception e) {
             System.out.println("Upload error: " + e);
-            JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat upload: " + e.getMessage(), "Kesalahan", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null,
+                "Terjadi kesalahan saat upload:\n" + e.getMessage(),
+                "Kesalahan",
+                JOptionPane.ERROR_MESSAGE);
         }
     }
 
