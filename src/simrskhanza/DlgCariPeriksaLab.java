@@ -6616,9 +6616,8 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                             }
 
                             // Generate nama file
-                            String fileName = "Lab_" + 
-                                Valid.SetTgl(tbDokter.getValueAt(tbDokter.getSelectedRow(),3).toString()).replaceAll("-","") + "_" +
-                                tbDokter.getValueAt(tbDokter.getSelectedRow(),0).toString().replaceAll("/","_") + 
+                            String fileName = "Lab_" +
+                                tbDokter.getValueAt(tbDokter.getSelectedRow(),0).toString().replaceAll("/","_") +
                                 "_signed.pdf";
                             String filePath = userDocumentsPath + "/" + fileName;
 
