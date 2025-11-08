@@ -4380,11 +4380,11 @@ public final class RMPenilaianAwalKeperawatanIGD extends javax.swing.JDialog {
        TabRawat.setSelectedIndex(1);
     }
     
-    public void Otomatis(){
-        if(Sequel.cariInteger("select count(no_rawat) from data_triase_igdprimer where no_rawat='"+TNoRw.getText()+"' ")>0) {
-            KeluhanUtama.setText(Sequel.cariIsi("select keluhan_utama from data_triase_igdprimer where no_rawat=?",TNoRw.getText()));             
-        }else if (Sequel.cariInteger("select count(no_rawat) from data_triase_igdsekunder where no_rawat='"+TNoRw.getText()+"' ")>0) {
-            KeluhanUtama.setText(Sequel.cariIsi("select anamnesa_singkat from data_triase_igdsekunder where no_rawat=?",TNoRw.getText()));            
+    private void Otomatis() {
+      if(Sequel.cariInteger("select count(no_rawat) from penilaian_medis_igd where no_rawat='"+TNoRw.getText()+"' ")>0){
+            KeluhanUtama.setText(Sequel.cariIsi("select rps from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            RPD.setText(Sequel.cariIsi("select rpd from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            RPO.setText(Sequel.cariIsi("select rpo from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
         }
     }
     

@@ -487,7 +487,9 @@ private void optimizePDF(File pdfFile) {
                         "Triase_",
                         "Lab_",
                         "Radiologi_",
-                        "Billing_"
+                        "Billing_",
+                        "LaporanOperasi_",
+                        "LaporanAnastesi_"
                     };
 
                     File tempDir = new File("tempfile");
@@ -559,8 +561,47 @@ private void optimizePDF(File pdfFile) {
 
                     publish("Menggabungkan " + pdfFiles.size() + " file PDF...");
 
-                    // Nama file hasil merge
-                    String mergedFileName = "Gabungan_Berkas_" + noRawatFormatted + ".pdf";
+                    // Ambil data pasien dan SEP dari database untuk nama file
+                    String tanggal = "";
+                    String namaPasien = "";
+                    String noSep = "";
+
+                    try {
+                        // Query untuk mendapatkan tanggal, nama pasien, dan no SEP
+                        String sqlPasien = "SELECT DATE_FORMAT(reg_periksa.tgl_registrasi, '%d') as tgl, " +
+                                          "UPPER(pasien.nm_pasien) as nama, " +
+                                          "IFNULL(bridging_sep.no_sep, '') as sep " +
+                                          "FROM reg_periksa " +
+                                          "INNER JOIN pasien ON reg_periksa.no_rkm_medis = pasien.no_rkm_medis " +
+                                          "LEFT JOIN bridging_sep ON reg_periksa.no_rawat = bridging_sep.no_rawat " +
+                                          "WHERE reg_periksa.no_rawat = ?";
+
+                        PreparedStatement psPasien = koneksi.prepareStatement(sqlPasien);
+                        psPasien.setString(1, noRawat);
+                        ResultSet rsPasien = psPasien.executeQuery();
+
+                        if (rsPasien.next()) {
+                            tanggal = rsPasien.getString("tgl");
+                            namaPasien = rsPasien.getString("nama");
+                            noSep = rsPasien.getString("sep");
+                        }
+
+                        rsPasien.close();
+                        psPasien.close();
+                    } catch (Exception e) {
+                        System.err.println("Error mengambil data pasien: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+
+                    // Nama file hasil merge dengan format: "DD NAMAPASIEN NoSEP.pdf"
+                    String mergedFileName;
+                    if (!tanggal.isEmpty() && !namaPasien.isEmpty() && !noSep.isEmpty()) {
+                        mergedFileName = tanggal + " " + namaPasien + " " + noSep + ".pdf";
+                    } else {
+                        // Fallback ke format lama jika data tidak lengkap
+                        mergedFileName = "Gabungan_Berkas_" + noRawatFormatted + ".pdf";
+                    }
+
                     File mergedFile = new File(tempDir, mergedFileName);
 
                     // Merge PDF menggunakan PDFBox dengan optimasi
@@ -632,8 +673,8 @@ private void optimizePDF(File pdfFile) {
                     File mergedFile = get();
 
                     if (mergedFile != null && mergedFile.exists()) {
-                        String noRawatFormatted = txtNoRawat.getText().replaceAll("/", "_");
-                        String mergedFileName = "Gabungan_Berkas_" + noRawatFormatted + ".pdf";
+                        // Ambil nama file dari file yang sudah dibuat
+                        String mergedFileName = mergedFile.getName();
 
                         JOptionPane.showMessageDialog(DlgViewPdf.this,
                             "Berkas berhasil digabungkan!\n" +
@@ -780,7 +821,9 @@ public boolean tampilMultiplePdf(String noRawat, String pathFile) {
             "Triase_",
             "Lab_",
             "Radiologi_",
-            "Billing_"
+            "Billing_",
+            "LaporanOperasi_",
+            "LaporanAnastesi_"
         };
 
         // Panel container untuk multiple PDF

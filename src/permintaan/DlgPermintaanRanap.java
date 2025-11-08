@@ -1752,6 +1752,9 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         ChkInput.setSelected(true);
         aktif=false;
         isForm();
+        if(Sequel.cariInteger("select count(no_rawat) from penilaian_medis_igd where no_rawat='"+NoRw.getText()+"' ")>0){
+            Diagnosa.setText(Sequel.cariIsi("select diagnosis from penilaian_medis_igd where no_rawat=?",NoRw.getText()));
+        }
     }
     
     private void isForm(){

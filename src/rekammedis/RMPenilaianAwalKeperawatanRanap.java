@@ -8505,6 +8505,7 @@ public final class RMPenilaianAwalKeperawatanRanap extends javax.swing.JDialog {
         }
         Valid.tabelKosong(tabModeRencana);
         TabRawat.setSelectedIndex(0);
+        Otomatis();
         MacamKasus.requestFocus();
     } 
 
@@ -9154,6 +9155,18 @@ public final class RMPenilaianAwalKeperawatanRanap extends javax.swing.JDialog {
             LCount.setText(""+tabMode.getRowCount());
         }else{
             JOptionPane.showMessageDialog(null,"Gagal menghapus..!!");
+        }
+    }
+    
+    private void Otomatis() {
+      Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat='"+TNoRw.getText()+"' ",TNoRM);
+         if(Sequel.cariInteger("select count(no_rawat) from penilaian_medis_igd where no_rawat='"+TNoRw.getText()+"' ")>0){
+            RPK.setText(Sequel.cariIsi("select rpk from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            RPO.setText(Sequel.cariIsi("select rpo from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            RPD.setText(Sequel.cariIsi("select rpd from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            TB.setText(Sequel.cariIsi("select tb from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            BB.setText(Sequel.cariIsi("select bb from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            GCS.setText(Sequel.cariIsi("select gcs from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
         }
     }
 

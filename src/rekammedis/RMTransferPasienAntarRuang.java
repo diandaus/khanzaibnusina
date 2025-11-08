@@ -49,6 +49,7 @@ public final class RMTransferPasienAntarRuang extends javax.swing.JDialog {
     private int i=0,pilihan=0;
     private DlgCariPetugas petugas=new DlgCariPetugas(null,false);
     private StringBuilder htmlContent;
+    private RMCariJumlahObat cariobat=new RMCariJumlahObat(null,false);
     
     /** Creates new form DlgRujuk
      * @param parent
@@ -379,6 +380,7 @@ public final class RMTransferPasienAntarRuang extends javax.swing.JDialog {
         NmPetugasMenerima = new widget.TextBox();
         BtnMenerima = new widget.Button();
         label16 = new widget.Label();
+        BtnCariObat = new widget.Button();
         internalFrame3 = new widget.InternalFrame();
         Scroll = new widget.ScrollPane();
         tbObat = new widget.Table();
@@ -646,7 +648,7 @@ public final class RMTransferPasienAntarRuang extends javax.swing.JDialog {
         jLabel11.setBounds(740, 10, 30, 23);
 
         TanggalMasuk.setForeground(new java.awt.Color(50, 70, 50));
-        TanggalMasuk.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "11-04-2023 11:05:53" }));
+        TanggalMasuk.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "07-11-2025 23:42:58" }));
         TanggalMasuk.setDisplayFormat("dd-MM-yyyy HH:mm:ss");
         TanggalMasuk.setName("TanggalMasuk"); // NOI18N
         TanggalMasuk.setOpaque(false);
@@ -665,7 +667,7 @@ public final class RMTransferPasienAntarRuang extends javax.swing.JDialog {
         label12.setBounds(201, 40, 55, 23);
 
         TanggalPindah.setForeground(new java.awt.Color(50, 70, 50));
-        TanggalPindah.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "11-04-2023 11:05:53" }));
+        TanggalPindah.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "07-11-2025 23:42:58" }));
         TanggalPindah.setDisplayFormat("dd-MM-yyyy HH:mm:ss");
         TanggalPindah.setName("TanggalPindah"); // NOI18N
         TanggalPindah.setOpaque(false);
@@ -853,7 +855,7 @@ public final class RMTransferPasienAntarRuang extends javax.swing.JDialog {
         scrollPane3.setViewportView(ObatYangDiberikan);
 
         FormInput.add(scrollPane3);
-        scrollPane3.setBounds(15, 240, 410, 73);
+        scrollPane3.setBounds(15, 240, 380, 73);
 
         scrollPane4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         scrollPane4.setName("scrollPane4"); // NOI18N
@@ -1317,6 +1319,19 @@ public final class RMTransferPasienAntarRuang extends javax.swing.JDialog {
         FormInput.add(label16);
         label16.setBounds(46, 630, 90, 23);
 
+        BtnCariObat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/190.png"))); // NOI18N
+        BtnCariObat.setMnemonic('2');
+        BtnCariObat.setToolTipText("Ambil dari data obat yang di berikan");
+        BtnCariObat.setName("BtnCariObat"); // NOI18N
+        BtnCariObat.setPreferredSize(new java.awt.Dimension(28, 23));
+        BtnCariObat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCariObatActionPerformed(evt);
+            }
+        });
+        FormInput.add(BtnCariObat);
+        BtnCariObat.setBounds(400, 240, 40, 23);
+
         scrollInput.setViewportView(FormInput);
 
         internalFrame2.add(scrollInput, java.awt.BorderLayout.CENTER);
@@ -1357,7 +1372,7 @@ public final class RMTransferPasienAntarRuang extends javax.swing.JDialog {
         panelGlass9.add(jLabel19);
 
         DTPCari1.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "11-04-2023" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "07-11-2025" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -1371,7 +1386,7 @@ public final class RMTransferPasienAntarRuang extends javax.swing.JDialog {
         panelGlass9.add(jLabel21);
 
         DTPCari2.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "11-04-2023" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "07-11-2025" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -2152,6 +2167,18 @@ public final class RMTransferPasienAntarRuang extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_BtnRefreshPhoto1ActionPerformed
 
+    private void BtnCariObatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariObatActionPerformed
+        if(TNoRw.getText().isEmpty()&&TNoRM.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null,"Pasien masih kosong...!!!");
+        }else{
+            cariobat.setNoRawat(TNoRw.getText());
+            cariobat.tampil();
+            cariobat.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+            cariobat.setLocationRelativeTo(internalFrame1);
+            cariobat.setVisible(true);
+        }
+    }//GEN-LAST:event_BtnCariObatActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -2173,6 +2200,7 @@ public final class RMTransferPasienAntarRuang extends javax.swing.JDialog {
     private widget.Button BtnAll;
     private widget.Button BtnBatal;
     private widget.Button BtnCari;
+    private widget.Button BtnCariObat;
     private widget.Button BtnDokter;
     private widget.Button BtnEdit;
     private widget.Button BtnHapus;
@@ -2514,7 +2542,7 @@ public final class RMTransferPasienAntarRuang extends javax.swing.JDialog {
         TCari.setText(norwt);
         DTPCari2.setDate(tgl2);    
         isRawat(); 
-        if(Sequel.cariInteger("select count(no_rawat) from data_triase_igdprimer where no_rawat='"+TNoRw.getText()+"' ")>0) {
+        /*if(Sequel.cariInteger("select count(no_rawat) from data_triase_igdprimer where no_rawat='"+TNoRw.getText()+"' ")>0) {
             KeluhanUtamaSebelumTransfer.setText(Sequel.cariIsi("select keluhan_utama from data_triase_igdprimer where no_rawat=?",TNoRw.getText())); 
             TDSebelumTransfer.setText(Sequel.cariIsi("select tekanan_darah from data_triase_igd where no_rawat=?",TNoRw.getText())); 
             NadiSebelumTransfer.setText(Sequel.cariIsi("select nadi from data_triase_igd where no_rawat=?",TNoRw.getText()));
@@ -2528,7 +2556,22 @@ public final class RMTransferPasienAntarRuang extends javax.swing.JDialog {
             SuhuSebelumTransfer.setText(Sequel.cariIsi("select suhu from data_triase_igd where no_rawat=?",TNoRw.getText()));            
         }else{
     
-    } 
+    } */
+        //Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat='"+TNoRw.getText()+"' ",TNoRM);
+         if(Sequel.cariInteger("select count(no_rawat) from penilaian_medis_igd where no_rawat='"+TNoRw.getText()+"' ")>0){
+            DiagnosaUtama.setText(Sequel.cariIsi("select diagnosis from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            ObatYangDiberikan.setText(Sequel.cariIsi("select tata from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            TDSebelumTransfer.setText(Sequel.cariIsi("select td from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            NadiSebelumTransfer.setText(Sequel.cariIsi("select nadi from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            RRSebelumTransfer.setText(Sequel.cariIsi("select rr from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            SuhuSebelumTransfer.setText(Sequel.cariIsi("select suhu from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            KeluhanUtamaSebelumTransfer.setText(Sequel.cariIsi("select keluhan_utama from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            TDSetelahTransfer.setText(Sequel.cariIsi("select td from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            NadiSetelahTransfer.setText(Sequel.cariIsi("select nadi from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            RRSetelahTransfer.setText(Sequel.cariIsi("select rr from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            SuhuSetelahTransfer.setText(Sequel.cariIsi("select suhu from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            KeluhanUtamaSetelahTransfer.setText(Sequel.cariIsi("select keluhan_utama from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));         
+        }
     }
     
     public void isCek(){

@@ -2486,6 +2486,7 @@ public final class RMPenilaianAwalMedisRanapDewasa extends javax.swing.JDialog {
         Edukasi.setText("");
         TglAsuhan.setDate(new Date());
         TabRawat.setSelectedIndex(0);
+        Otomatis();
         Anamnesis.requestFocus();
     } 
 
@@ -2604,6 +2605,22 @@ public final class RMPenilaianAwalMedisRanapDewasa extends javax.swing.JDialog {
             TabRawat.setSelectedIndex(1);
         }else{
             JOptionPane.showMessageDialog(null,"Gagal menghapus..!!");
+        }
+    }
+    
+    private void Otomatis() {
+      Sequel.cariIsi("select reg_periksa.no_rkm_medis from reg_periksa where reg_periksa.no_rawat='"+TNoRw.getText()+"' ",TNoRM);
+         if(Sequel.cariInteger("select count(no_rawat) from penilaian_medis_igd where no_rawat='"+TNoRw.getText()+"' ")>0){
+            RPK.setText(Sequel.cariIsi("select rpk from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            RPO.setText(Sequel.cariIsi("select rpo from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            RPD.setText(Sequel.cariIsi("select rpd from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            TB.setText(Sequel.cariIsi("select tb from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            BB.setText(Sequel.cariIsi("select bb from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            GCS.setText(Sequel.cariIsi("select gcs from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            Radiologi.setText(Sequel.cariIsi("select rad from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            Laborat.setText(Sequel.cariIsi("select lab from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            Tatalaksana.setText(Sequel.cariIsi("select tata from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
+            Diagnosis.setText(Sequel.cariIsi("select diagnosis from penilaian_medis_igd where no_rawat=?",TNoRw.getText()));
         }
     }
 
