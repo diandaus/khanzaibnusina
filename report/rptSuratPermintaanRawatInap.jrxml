@@ -167,6 +167,9 @@ FROM kamar_inap)]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
 		<band height="78" splitType="Stretch">
 			<staticText>
 				<reportElement x="1" y="61" width="550" height="17" uuid="ee7a4847-ec68-44b5-a675-e2643f0be1a3"/>
@@ -219,9 +222,6 @@ FROM kamar_inap)]]>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 		</band>
-	</title>
-	<pageHeader>
-		<band splitType="Stretch"/>
 	</pageHeader>
 	<detail>
 		<band height="398" splitType="Stretch">

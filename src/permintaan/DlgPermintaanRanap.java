@@ -1326,6 +1326,18 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             TCari.requestFocus();
         }else{
             if(tbObat.getSelectedRow()!= -1){
+                // Validasi: Pastikan data sudah ada di tabel permintaan_ranap
+                int cek = Sequel.cariInteger("select count(*) from permintaan_ranap where no_rawat=?", NoRw.getText());
+                if(cek == 0){
+                    JOptionPane.showMessageDialog(null,
+                        "Data permintaan ranap belum tersimpan!\n\n" +
+                        "Silakan klik tombol 'Simpan' terlebih dahulu\n" +
+                        "sebelum mencetak surat permintaan.",
+                        "Peringatan",
+                        JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
                 this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
                 try {
@@ -1356,10 +1368,51 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                         "INNER JOIN bangsal ON kamar.kd_bangsal=bangsal.kd_bangsal "+
                         "LEFT JOIN dpjp_ranap ON permintaan_ranap.no_rawat=dpjp_ranap.no_rawat "+
                         "LEFT JOIN dokter AS dokter_dpjp ON dpjp_ranap.kd_dokter=dokter_dpjp.kd_dokter "+
-                        "WHERE reg_periksa.no_rawat='"+NoRw.getText()+"' ";
+                        "WHERE permintaan_ranap.no_rawat='"+NoRw.getText()+"' ";
 
                     // Generate nama file PDF
                     String namaFile = "SPRI_" + NoRw.getText().replaceAll("/", "_");
+
+                    // Debug: Print query untuk cek
+                    System.out.println("Query SPRI: " + query);
+
+                    // Debug: Test query sederhana dulu
+                    try {
+                        PreparedStatement psTest = koneksi.prepareStatement(
+                            "select * from permintaan_ranap where no_rawat=?");
+                        psTest.setString(1, NoRw.getText());
+                        ResultSet rsTest = psTest.executeQuery();
+                        if(rsTest.next()){
+                            System.out.println("✓ Data ditemukan di permintaan_ranap:");
+                            System.out.println("  - no_rawat: " + rsTest.getString("no_rawat"));
+                            System.out.println("  - tanggal: " + rsTest.getString("tanggal"));
+                            System.out.println("  - kd_kamar: " + rsTest.getString("kd_kamar"));
+                            System.out.println("  - diagnosa: " + rsTest.getString("diagnosa"));
+                        } else {
+                            System.out.println("✗ Data TIDAK ditemukan di permintaan_ranap!");
+                        }
+                        rsTest.close();
+                        psTest.close();
+                    } catch (Exception ex) {
+                        System.out.println("Error test query: " + ex);
+                    }
+
+                    // Test query JOIN untuk melihat hasilnya
+                    try {
+                        PreparedStatement psTestJoin = koneksi.prepareStatement(query);
+                        ResultSet rsTestJoin = psTestJoin.executeQuery();
+                        if(rsTestJoin.next()){
+                            System.out.println("✓ Query JOIN berhasil, ada hasil!");
+                            System.out.println("  - nm_pasien: " + rsTestJoin.getString("nm_pasien"));
+                        } else {
+                            System.out.println("✗ Query JOIN TIDAK mengembalikan hasil!");
+                            System.out.println("  Kemungkinan: Salah satu JOIN gagal");
+                        }
+                        rsTestJoin.close();
+                        psTestJoin.close();
+                    } catch (Exception ex) {
+                        System.out.println("Error test query JOIN: " + ex);
+                    }
 
                     // Generate PDF ke folder tmpPDF
                     Valid.MyReportPDFqryUpload("rptSuratPermintaanRawatInap.jasper", "report",
@@ -1367,6 +1420,19 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
                     // Upload langsung ke berkasrawat via HTTP
                     UploadPDF(namaFile, "berkasrawat/pages/upload/");
+
+                    // Buka PDF file yang sudah di-generate (lebih reliable daripada generate ulang)
+                    File pdfFile = new File("tmpPDF/" + namaFile + ".pdf");
+                    if(pdfFile.exists()){
+                        try {
+                            java.awt.Desktop.getDesktop().open(pdfFile);
+                        } catch (Exception ex) {
+                            System.out.println("Error membuka PDF: " + ex);
+                            // Fallback: Coba dengan report viewer
+                            Valid.MyReportqry("rptSuratPermintaanRawatInap.jasper", "report",
+                                "::[ Surat Permintaan Rawat Inap ]::", query, param);
+                        }
+                    }
 
                     JOptionPane.showMessageDialog(null,
                         "Surat Permintaan Rawat Inap berhasil dibuat dan diupload!\n" +

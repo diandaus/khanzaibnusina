@@ -31,6 +31,7 @@ import rekammedis.DlgBeriInstrumen2;
 import rekammedis.RMChecklistPostOperasi;
 import rekammedis.RMChecklistPreOperasi;
 import rekammedis.RMDataCatatanKamarPemulihan;
+import rekammedis.RMLaporanOperasi;
 import rekammedis.RMMonitoringAldrettePascaAnestesi;
 import rekammedis.RMMonitoringBromagePascaAnestesi;
 import rekammedis.RMMonitoringStewardPascaAnestesi;
@@ -2216,7 +2217,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_BtnCatatanKamarPemulihanActionPerformed
 
     private void BtnLaporanOperasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLaporanOperasiActionPerformed
-       /* if(tabMode.getRowCount()==0){
+       if(tabMode.getRowCount()==0){
             JOptionPane.showMessageDialog(null,"Maaf, table masih kosong...!!!!");
             TCari.requestFocus();
         }else{            
@@ -2233,7 +2234,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             }else{
                 JOptionPane.showMessageDialog(null,"Maaf, silahkan pilih data...!!!!");
             }
-        }*/
+        }
     }//GEN-LAST:event_BtnLaporanOperasiActionPerformed
 
     /**

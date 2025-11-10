@@ -995,7 +995,7 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
      private void isMenu() {
         if (ChkAccor.isSelected() == true) {
             ChkAccor.setVisible(false);
-            PanelAccor.setPreferredSize(new Dimension(450, internalFrame1.getHeight()));
+            PanelAccor.setPreferredSize(new Dimension(650, internalFrame1.getHeight()));
             FormBilling.setVisible(true);
             ChkAccor.setVisible(true);
 
