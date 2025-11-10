@@ -48,7 +48,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import org.apache.commons.io.FileUtils;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.HttpMultipartMode;
@@ -56,6 +55,7 @@ import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
+import fungsi.akses;
 
 /**
  * Form untuk menampilkan Berkas Klaim BPJS dari data reg_periksa
@@ -182,6 +182,45 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
         // Set tanggal default
         DTPTglAwal.setDate(new Date());
         DTPTglAkhir.setDate(new Date());
+
+        // Inisialisasi komponen untuk Panel Accordion
+        FormBilling = new javax.swing.JPanel();
+        FormBilling.setLayout(new java.awt.BorderLayout());
+        FormBilling.setBackground(new java.awt.Color(255, 255, 255));
+
+        // Header panel
+        widget.panelisi headerPanel = new widget.panelisi();
+        headerPanel.setLayout(new java.awt.BorderLayout());
+        headerPanel.setPreferredSize(new java.awt.Dimension(400, 50));
+
+        widget.Label lblHeader = new widget.Label();
+        lblHeader.setText("  Billing Pasien");
+        lblHeader.setFont(new java.awt.Font("Tahoma", 1, 11));
+        lblHeader.setForeground(new java.awt.Color(50, 50, 50));
+        headerPanel.add(lblHeader, java.awt.BorderLayout.NORTH);
+
+        FormBilling.add(headerPanel, java.awt.BorderLayout.NORTH);
+
+        loadBillingHTML = new javax.swing.JEditorPane();
+        loadBillingHTML.setContentType("text/html");
+        loadBillingHTML.setEditable(false);
+        loadBillingHTML.setBackground(new java.awt.Color(255, 255, 255));
+
+        widget.ScrollPane scrollBilling = new widget.ScrollPane();
+        scrollBilling.setViewportView(loadBillingHTML);
+        FormBilling.add(scrollBilling, java.awt.BorderLayout.CENTER);
+
+        lblNoRawat = new widget.Label();
+        lblNoRawat.setText("");
+        lblNoRawat.setName("lblNoRawat");
+        lblNoRawat.setVisible(false);
+
+        // Tambahkan FormBilling ke ScrollMenu
+        ScrollMenu.setViewportView(FormBilling);
+
+        // Set initial state accordion (collapsed)
+        PanelAccor.setPreferredSize(new Dimension(20, 700));
+        FormBilling.setVisible(false);
     }
 
     /**
@@ -216,6 +255,9 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
         tbListPasienRalan = new widget.Table();
         Scroll1 = new widget.ScrollPane();
         tbListPasienRanap = new widget.Table();
+        PanelAccor = new widget.PanelBiasa();
+        ChkAccor = new widget.CekBox();
+        ScrollMenu = new widget.ScrollPane();
 
         Popup.setName("Popup"); // NOI18N
 
@@ -279,7 +321,7 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
         panelisi3.add(jLabel7);
 
         DTPTglAwal.setForeground(new java.awt.Color(50, 70, 50));
-        DTPTglAwal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "29-10-2025" }));
+        DTPTglAwal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10-11-2025" }));
         DTPTglAwal.setDisplayFormat("dd-MM-yyyy");
         DTPTglAwal.setName("DTPTglAwal"); // NOI18N
         DTPTglAwal.setOpaque(false);
@@ -295,7 +337,7 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
         panelisi3.add(jLabel8);
 
         DTPTglAkhir.setForeground(new java.awt.Color(50, 70, 50));
-        DTPTglAkhir.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "29-10-2025" }));
+        DTPTglAkhir.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10-11-2025" }));
         DTPTglAkhir.setDisplayFormat("dd-MM-yyyy");
         DTPTglAkhir.setName("DTPTglAkhir"); // NOI18N
         DTPTglAkhir.setOpaque(false);
@@ -447,6 +489,37 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
 
         internalFrame1.add(TabRawat, java.awt.BorderLayout.CENTER);
 
+        PanelAccor.setBackground(new java.awt.Color(255, 255, 255));
+        PanelAccor.setName("PanelAccor"); // NOI18N
+        PanelAccor.setPreferredSize(new java.awt.Dimension(445, 43));
+        PanelAccor.setLayout(new java.awt.BorderLayout(1, 1));
+
+        ChkAccor.setBackground(new java.awt.Color(255, 250, 250));
+        ChkAccor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/kiri.png"))); // NOI18N
+        ChkAccor.setSelected(false);
+        ChkAccor.setFocusable(false);
+        ChkAccor.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ChkAccor.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ChkAccor.setName("ChkAccor"); // NOI18N
+        ChkAccor.setPreferredSize(new java.awt.Dimension(15, 20));
+        ChkAccor.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/kiri.png"))); // NOI18N
+        ChkAccor.setRolloverSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/kanan.png"))); // NOI18N
+        ChkAccor.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/kanan.png"))); // NOI18N
+        ChkAccor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ChkAccorActionPerformed(evt);
+            }
+        });
+        PanelAccor.add(ChkAccor, java.awt.BorderLayout.WEST);
+
+        ScrollMenu.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        ScrollMenu.setName("ScrollMenu"); // NOI18N
+        ScrollMenu.setOpaque(true);
+        ScrollMenu.setPreferredSize(new java.awt.Dimension(407, 1075));
+        PanelAccor.add(ScrollMenu, java.awt.BorderLayout.CENTER);
+
+        internalFrame1.add(PanelAccor, java.awt.BorderLayout.EAST);
+
         getContentPane().add(internalFrame1, java.awt.BorderLayout.CENTER);
 
         pack();
@@ -511,8 +584,15 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
     }//GEN-LAST:event_TabRawatMouseClicked
 
     private void tbListPasienRanapMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbListPasienRanapMouseClicked
-        
+        if (tbListPasienRanap.getSelectedRow() != -1) {
+            String noRawat = tbListPasienRanap.getValueAt(tbListPasienRanap.getSelectedRow(), 1).toString();
+            lblNoRawat.setText(noRawat);
 
+            // Jika accordion terbuka, tampilkan billing
+            if (ChkAccor.isSelected()) {
+                tampilBilling();
+            }
+        }
     }//GEN-LAST:event_tbListPasienRanapMouseClicked
 
     private void tbListPasienRanapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbListPasienRanapKeyPressed
@@ -520,8 +600,15 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
     }//GEN-LAST:event_tbListPasienRanapKeyPressed
 
     private void tbListPasienRalanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbListPasienRalanMouseClicked
-       
+        if (tbListPasienRalan.getSelectedRow() != -1) {
+            String noRawat = tbListPasienRalan.getValueAt(tbListPasienRalan.getSelectedRow(), 1).toString();
+            lblNoRawat.setText(noRawat);
 
+            // Jika accordion terbuka, tampilkan billing
+            if (ChkAccor.isSelected()) {
+                tampilBilling();
+            }
+        }
     }//GEN-LAST:event_tbListPasienRalanMouseClicked
 
     private void tbListPasienRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tbListPasienRalanKeyPressed
@@ -687,6 +774,10 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
                 JOptionPane.WARNING_MESSAGE);
         }        // TODO add your handling code here:
     }//GEN-LAST:event_MnUploadFilePDFActionPerformed
+
+    private void ChkAccorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChkAccorActionPerformed
+         isMenu();
+    }//GEN-LAST:event_ChkAccorActionPerformed
     /**
      * @param args the command line arguments
      */
@@ -708,14 +799,17 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
     private widget.Button BtnAll;
     private widget.Button BtnCariTindakan;
     private widget.Button BtnKeluar;
+    private widget.CekBox ChkAccor;
     private widget.Tanggal DTPTglAkhir;
     private widget.Tanggal DTPTglAwal;
     private widget.Label LCount;
     private javax.swing.JMenuItem MnTampilkanBerkas;
     private javax.swing.JMenuItem MnUploadFilePDF;
+    private widget.PanelBiasa PanelAccor;
     private javax.swing.JPopupMenu Popup;
     private widget.ScrollPane Scroll1;
     private widget.ScrollPane Scroll2;
+    private widget.ScrollPane ScrollMenu;
     private widget.TextBox TCariKunjungan;
     private widget.TextBox TNoRw;
     private javax.swing.JTabbedPane TabRawat;
@@ -729,7 +823,10 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
     private widget.Table tbListPasienRalan;
     private widget.Table tbListPasienRanap;
     // End of variables declaration//GEN-END:variables
-
+    private javax.swing.JPanel FormBilling;
+    private javax.swing.JEditorPane loadBillingHTML;
+    private widget.Label lblNoRawat;
+    
     private void tampilRalan() {
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         try {
@@ -863,8 +960,8 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
             // Baca file sebagai byte array
             byte[] data = FileUtils.readFileToByteArray(sourceFile);
 
-            // Setup HTTP client untuk upload
-            HttpClient httpClient = new DefaultHttpClient();
+            // Setup HTTP client untuk upload (gunakan fully qualified name untuk menghindari conflict)
+            org.apache.http.client.HttpClient httpClient = new DefaultHttpClient();
             String uploadUrl = "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" +
                              koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() +
                              "/upload.php?doc=berkasrawat/pages/upload/";
@@ -892,6 +989,90 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
                 "Terjadi kesalahan saat upload:\n" + e.getMessage(),
                 "Kesalahan",
                 JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+     private void isMenu() {
+        if (ChkAccor.isSelected() == true) {
+            ChkAccor.setVisible(false);
+            PanelAccor.setPreferredSize(new Dimension(450, internalFrame1.getHeight()));
+            FormBilling.setVisible(true);
+            ChkAccor.setVisible(true);
+
+            // Tampilkan billing saat accordion dibuka
+            if (!lblNoRawat.getText().isEmpty()) {
+                tampilBilling();
+            }
+        } else {
+            ChkAccor.setVisible(false);
+            PanelAccor.setPreferredSize(new Dimension(20, internalFrame1.getHeight()));
+            FormBilling.setVisible(false);
+            ChkAccor.setVisible(true);
+        }
+        getContentPane().validate();
+        getContentPane().repaint();
+    }
+     
+     private void tampilBilling() {
+        try {
+            try (PreparedStatement ps = koneksi.prepareStatement(
+                "select b.no, b.nm_perawatan, b.pemisah, b.biaya, b.jumlah, " +
+                "b.tambahan, b.totalbiaya from billing b where b.no_rawat = ?"
+            )) {
+                ps.setString(1, lblNoRawat.getText());
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        int row = 0;
+                        double total = 0;
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("<html><head><style>")
+                            .append("body { font-family: Tahoma, Arial, sans-serif; font-size: 9px; padding: 5px; }")
+                            .append("table { width: 100%; border-collapse: collapse; font-size: 9px; }")
+                            .append("td { padding: 2px; border-bottom: 1px solid #e0e0e0; font-size: 9px; }")
+                            .append(".header-row { background-color: #f5f5f5; font-weight: bold; }")
+                            .append(".total-row { background-color: #fff4e0; font-weight: bold; border-top: 2px solid #333; font-size: 10px; }")
+                            .append("</style></head><body><table>");
+                        do {
+                            total += rs.getDouble("totalbiaya");
+                            if (row++ < 6) {
+                                sb.append("<tr><td width=\"20%\">")
+                                    .append(rs.getString("no").trim())
+                                    .append("</td><td width=\"40%\" colspan=\"5\">")
+                                    .append(rs.getString("nm_perawatan").trim())
+                                    .append("</td></tr>");
+                            } else {
+                                if (rs.getString("no").isBlank() && rs.getDouble("biaya") == 0) {
+                                    sb.append("<tr><td width=\"20%\">")
+                                        .append(rs.getString("no").trim());
+                                    if (rs.getString("nm_perawatan").startsWith("Total")) {
+                                        sb.append("</td><td colspan=\"5\" align=\"right\">");
+                                    } else {
+                                        sb.append("</td><td colspan=\"5\">");
+                                    }
+                                    sb.append(rs.getString("nm_perawatan").trim()).append("</td></tr>");
+                                } else {
+                                    sb.append("<tr><td width=\"20%\">").append(rs.getString("no")).append("</td><td width=\"48%\">").append(rs.getString("nm_perawatan"))
+                                        .append("</td><td width=\"9%\" align=\"right\">").append(rs.getDouble("biaya") == 0 ? "" : Valid.SetAngka(rs.getDouble("biaya")))
+                                        .append("</td><td width=\"2%\" align=\"right\">").append(rs.getDouble("jumlah") == 0 ? "" : Valid.SetAngka(rs.getDouble("jumlah")))
+                                        .append("</td><td width=\"9%\" align=\"right\">").append(rs.getDouble("tambahan") == 0 ? "" : Valid.SetAngka(rs.getDouble("tambahan")))
+                                        .append("</td><td width=\"10%\" align=\"right\">").append(rs.getDouble("totalbiaya") == 0 ? "" : Valid.SetAngka(rs.getDouble("totalbiaya")))
+                                        .append("</td></tr>");
+                                }
+                            }
+                        } while (rs.next());
+                        sb.append("<tr class=\"total-row\"><td width=\"20%\">TOTAL BIAYA</td><td>:</td><td colspan=\"4\" align=\"right\">")
+                            .append(Valid.SetAngka(total))
+                            .append("</td></tr></table></body></html>");
+                        loadBillingHTML.setText(sb.toString());
+                    } else {
+                        loadBillingHTML.setText("<html><body style='font-family: Tahoma; font-size: 9px; padding: 20px; text-align: center; color: #999;'>"
+                            + "<p>Tidak ada data billing untuk nomor rawat: " + lblNoRawat.getText() + "</p>"
+                            + "</body></html>");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Notif : " + e);
         }
     }
 }

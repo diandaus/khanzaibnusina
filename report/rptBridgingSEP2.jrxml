@@ -756,7 +756,7 @@ from bridging_sep  where no_sep= $P{parameter}]]>
 					<font fontName="Tahoma" size="8"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{flagprosedur}.replaceAll("0","- Prosedur Tidak Berkelanjutan").replaceAll("1","- Prosedur dan Terapi Berkelanjutan")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{flagprosedur}==null || $F{flagprosedur}.trim().equals("")) ? "" : $F{flagprosedur}.replaceAll("0","- Prosedur Tidak Berkelanjutan").replaceAll("1","- Prosedur dan Terapi Berkelanjutan")]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="392" y="148" width="7" height="13" uuid="81f033b7-b5d7-468c-b270-18b28de35011">

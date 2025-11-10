@@ -1017,7 +1017,7 @@ and bridging_sep_internal.tglrujukan=$P{tglrujukan}  and bridging_sep_internal.k
 					<font fontName="Tahoma" size="8"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{flagprosedur}.replaceAll("0","- Prosedur Tidak Berkelanjutan").replaceAll("1","- Prosedur dan Terapi Berkelanjutan")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{flagprosedur}==null || $F{flagprosedur}.trim().equals("")) ? "" : $F{flagprosedur}.replaceAll("0","- Prosedur Tidak Berkelanjutan").replaceAll("1","- Prosedur dan Terapi Berkelanjutan")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="">
 				<reportElement mode="Transparent" x="326" y="63" width="204" height="13" uuid="b5536cc7-4e36-4b10-842e-be6690aea54e">

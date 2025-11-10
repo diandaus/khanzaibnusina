@@ -836,7 +836,7 @@ public boolean tampilMultiplePdf(String noRawat, String pathFile) {
         for (String jenis : jenisBerkas) {
             // File dari bridging BPJS/Kemenkes tidak perlu signed (sudah sah dari sumber)
             String fileName;
-            if (jenis.equals("SEP_") || jenis.equals("Gruper_") || jenis.equals("SKDP_")) {
+            if (jenis.equals("SEP_") || jenis.equals("Gruper_") || jenis.equals("SKDP_") || jenis.equals("Billing_")) {
                 fileName = jenis + noRawatFormatted + ".pdf";  // Tanpa _signed
             } else {
                 fileName = jenis + noRawatFormatted + "_signed.pdf";  // Dengan _signed untuk TTe

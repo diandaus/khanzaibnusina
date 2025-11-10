@@ -683,7 +683,7 @@ inner join pegawai on pemeriksaan_ralan.nip=pegawai.nik]]>
 					<font fontName="Tahoma" size="8"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{flagprosedur}.replaceAll("0","- Prosedur Tidak Berkelanjutan").replaceAll("1","- Prosedur dan Terapi Berkelanjutan")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($P{flagprosedur}==null || $P{flagprosedur}.trim().equals("")) ? "" : $P{flagprosedur}.replaceAll("0","- Prosedur Tidak Berkelanjutan").replaceAll("1","- Prosedur dan Terapi Berkelanjutan")]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="397" y="174" width="7" height="13" uuid="b9dce338-f2cd-4fbd-8a9b-f1d157298dcb">

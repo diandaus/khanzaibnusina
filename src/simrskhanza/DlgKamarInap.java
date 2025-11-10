@@ -77,6 +77,7 @@ import permintaan.DlgPermintaanKonsultasiMedik;
 import permintaan.DlgPermintaanLaboratorium;
 import permintaan.DlgPermintaanPelayananInformasiObat;
 import permintaan.DlgPermintaanRadiologi;
+import permintaan.DlgPermintaanRanap;
 import rekammedis.AsesmenAwalKeperawatanNeonatusNICU;
 import rekammedis.AsesmenKhususKebidananIbuNifas;
 import rekammedis.DlgPemberianObatPasien;
@@ -1181,6 +1182,7 @@ public class DlgKamarInap extends javax.swing.JDialog {
         jLabel37 = new widget.Label();
         cmbStatusBayar = new widget.ComboBox();
         BtnJadwalObat = new widget.Button();
+        BtnPermintaanRawatInap = new widget.Button();
 
         WindowInputKamar.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         WindowInputKamar.setName("WindowInputKamar"); // NOI18N
@@ -5909,7 +5911,7 @@ public class DlgKamarInap extends javax.swing.JDialog {
         R2.setPreferredSize(new java.awt.Dimension(90, 23));
         panelCari.add(R2);
 
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "01-11-2025" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10-11-2025" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -5932,7 +5934,7 @@ public class DlgKamarInap extends javax.swing.JDialog {
         jLabel22.setPreferredSize(new java.awt.Dimension(25, 23));
         panelCari.add(jLabel22);
 
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "01-11-2025" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10-11-2025" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -5958,7 +5960,7 @@ public class DlgKamarInap extends javax.swing.JDialog {
         R3.setPreferredSize(new java.awt.Dimension(75, 23));
         panelCari.add(R3);
 
-        DTPCari3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "01-11-2025" }));
+        DTPCari3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10-11-2025" }));
         DTPCari3.setDisplayFormat("dd-MM-yyyy");
         DTPCari3.setName("DTPCari3"); // NOI18N
         DTPCari3.setOpaque(false);
@@ -5981,7 +5983,7 @@ public class DlgKamarInap extends javax.swing.JDialog {
         jLabel25.setPreferredSize(new java.awt.Dimension(25, 23));
         panelCari.add(jLabel25);
 
-        DTPCari4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "01-11-2025" }));
+        DTPCari4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10-11-2025" }));
         DTPCari4.setDisplayFormat("dd-MM-yyyy");
         DTPCari4.setName("DTPCari4"); // NOI18N
         DTPCari4.setOpaque(false);
@@ -6084,6 +6086,25 @@ public class DlgKamarInap extends javax.swing.JDialog {
             }
         });
         panelGlass9.add(BtnJadwalObat);
+
+        BtnPermintaanRawatInap.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/repeat.png"))); // NOI18N
+        BtnPermintaanRawatInap.setMnemonic('K');
+        BtnPermintaanRawatInap.setText("Permintaan Ranap");
+        BtnPermintaanRawatInap.setToolTipText("Alt+K");
+        BtnPermintaanRawatInap.setGlassColor(new java.awt.Color(255, 51, 51));
+        BtnPermintaanRawatInap.setName("BtnPermintaanRawatInap"); // NOI18N
+        BtnPermintaanRawatInap.setPreferredSize(new java.awt.Dimension(180, 30));
+        BtnPermintaanRawatInap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnPermintaanRawatInapActionPerformed(evt);
+            }
+        });
+        BtnPermintaanRawatInap.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BtnPermintaanRawatInapKeyPressed(evt);
+            }
+        });
+        panelGlass9.add(BtnPermintaanRawatInap);
 
         internalFrame1.add(panelGlass9, java.awt.BorderLayout.PAGE_START);
 
@@ -16563,6 +16584,21 @@ if(tabMode.getRowCount()==0){
             }
         }
     }//GEN-LAST:event_MnPemberianObatPasienActionPerformed
+
+    private void BtnPermintaanRawatInapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPermintaanRawatInapActionPerformed
+        akses.setform("DlgPermintaanRanap");
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        DlgPermintaanRanap form = new DlgPermintaanRanap(null, false);
+        form.isCek();
+        form.setSize(internalFrame1.getWidth()-20, internalFrame1.getHeight()-20);
+        form.setLocationRelativeTo(internalFrame1);
+        form.setVisible(true);
+        this.setCursor(Cursor.getDefaultCursor());
+    }//GEN-LAST:event_BtnPermintaanRawatInapActionPerformed
+
+    private void BtnPermintaanRawatInapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPermintaanRawatInapKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnPermintaanRawatInapKeyPressed
     
     private void MnSkorAldrettePascaAnestesiActionPerformed(java.awt.event.ActionEvent evt) {
         if(tabMode.getRowCount()==0){
@@ -19469,6 +19505,7 @@ if(tabMode.getRowCount()==0){
     private widget.Button BtnKeluar4;
     private widget.Button BtnKetWarna3;
     private widget.Button BtnOut;
+    private widget.Button BtnPermintaanRawatInap;
     private widget.Button BtnPrint;
     private widget.Button BtnPrint5;
     private widget.Button BtnSeek5;

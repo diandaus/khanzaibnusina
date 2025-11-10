@@ -35,6 +35,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
+import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -57,6 +58,18 @@ import simrskhanza.DlgInputResepPulang;
 import simrskhanza.DlgPeriksaLaboratoriumMB;
 import simrskhanza.DlgPeriksaLaboratoriumPA;
 import simrskhanza.DlgTagihanOperasi;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.commons.io.FileUtils;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
+import java.io.ByteArrayOutputStream;
 
 /**
  *
@@ -3910,7 +3923,41 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     if(i==1){
                         ttl=(ttlLaborat+ttlRadiologi+ttlOperasi+ttlObat+ttlRanap_Dokter+ttlRanap_Paramedis+ttlRalan_Dokter+
                                 ttlRalan_Paramedis+ttlTambahan+ttlKamar+ttlRegistrasi+ttlHarian+ttlRetur_Obat+ttlResep_Pulang+ttlService);
-                        Valid.panggilUrl("billing/LaporanBilling2.php?petugas="+akses.getkode().replaceAll(" ","_")+"&ttl="+ttl+"&tanggal="+DTPTgl.getSelectedItem().toString().replaceAll(" ","_")+"&usere="+koneksiDB.USERHYBRIDWEB()+"&passwordte="+koneksiDB.PASHYBRIDWEB());
+
+                        // Pilihan mode: Auto-generate atau Manual
+                        this.setCursor(Cursor.getDefaultCursor());
+                        String[] options = {"Auto-Generate & Upload", "Tampilkan di Browser (Manual)", "Batal"};
+                        int choice = JOptionPane.showOptionDialog(null,
+                            "Pilih cara cetak billing:",
+                            "Cetak Billing",
+                            JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            options,
+                            options[0]);
+
+                        if (choice == 0) {
+                            // Auto-generate HTML dan upload
+                            generateAndUploadBillingPDFAuto();
+                        } else if (choice == 1) {
+                            // Mode manual (lama)
+                            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                            Valid.panggilUrl("billing/LaporanBilling2.php?petugas="+akses.getkode().replaceAll(" ","_")+"&ttl="+ttl+"&tanggal="+DTPTgl.getSelectedItem().toString().replaceAll(" ","_")+"&usere="+koneksiDB.USERHYBRIDWEB()+"&passwordte="+koneksiDB.PASHYBRIDWEB());
+
+                            this.setCursor(Cursor.getDefaultCursor());
+                            int uploadChoice = JOptionPane.showConfirmDialog(null,
+                                "Billing telah ditampilkan di browser.\n\n" +
+                                "Apakah Anda ingin mengupload PDF billing ke berkasrawat?\n" +
+                                "(Pastikan Anda sudah menyimpan PDF dari browser terlebih dahulu)",
+                                "Upload Billing ke Berkasrawat",
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.QUESTION_MESSAGE);
+
+                            if (uploadChoice == JOptionPane.YES_OPTION) {
+                                uploadBillingPDF();
+                            }
+                        }
+                        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                     }else if(i==2){
                         Valid.panggilUrl("billing/LaporanBilling3.php?petugas="+akses.getkode().replaceAll(" ","_")+"&tanggal="+DTPTgl.getSelectedItem().toString().replaceAll(" ","_")+"&usere="+koneksiDB.USERHYBRIDWEB()+"&passwordte="+koneksiDB.PASHYBRIDWEB());
                     }else if(i==3){
@@ -7571,15 +7618,191 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             }
 
             Sequel.AutoComitTrue();
-            
+
             if(sukses==true){
                 if(notaranap.equals("Yes")){
                     this.dispose();
                 }
             }
         }catch (Exception ex) {
-            System.out.println("Notifikasi : "+ex);            
+            System.out.println("Notifikasi : "+ex);
             JOptionPane.showMessageDialog(null,"Maaf, gagal menyimpan data. Data yang sama dimasukkan sebelumnya...!");
+        }
+    }
+
+    private void generateAndUploadBillingPDFAuto() {
+        try {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+            // Format parameter
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String tanggalCetak = dateFormat.format(new Date());
+            String noRawatFormatted = TNoRw.getText().replaceAll("/", "_");
+
+            // Panggil PHP untuk generate HTML billing
+            String generateUrl = "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" +
+                               koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() +
+                               "/billing/GenerateAndSaveBillingPDF.php?" +
+                               "norawat=" + TNoRw.getText().replaceAll(" ", "_") +
+                               "&petugas=" + akses.getkode().replaceAll(" ", "_") +
+                               "&tanggal=" + tanggalCetak.replaceAll(" ", "_") +
+                               "&usere=" + koneksiDB.USERHYBRIDWEB() +
+                               "&passwordte=" + koneksiDB.PASHYBRIDWEB();
+
+            // Execute HTTP GET untuk generate HTML
+            org.apache.http.client.HttpClient httpClient = new DefaultHttpClient();
+            HttpGet getRequest = new HttpGet(generateUrl);
+            HttpResponse response = httpClient.execute(getRequest);
+
+            // Parse JSON response
+            String jsonResponse = EntityUtils.toString(response.getEntity());
+            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            com.fasterxml.jackson.databind.JsonNode jsonNode = mapper.readTree(jsonResponse);
+
+            if (jsonNode.get("success").asBoolean()) {
+                // HTML generated successfully
+                String htmlFile = jsonNode.get("html_file").asText();
+                String suggestedPdfName = jsonNode.get("suggested_pdf_name").asText();
+
+                this.setCursor(Cursor.getDefaultCursor());
+
+                // Instruksi untuk user
+                int choice = JOptionPane.showConfirmDialog(null,
+                    "File billing HTML telah di-generate!\n\n" +
+                    "Untuk melanjutkan, silakan:\n" +
+                    "1. Buka browser dan akses file HTML\n" +
+                    "2. Print dan save as PDF (Ctrl+P)\n" +
+                    "3. Pilih 'Ya' untuk upload PDF setelah menyimpan\n\n" +
+                    "Apakah Anda ingin membuka file HTML sekarang?",
+                    "Generate Billing PDF",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
+
+                if (choice == JOptionPane.YES_OPTION) {
+                    // Buka HTML di browser
+                    String htmlUrl = "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" +
+                                   koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() +
+                                   "/" + htmlFile;
+                    Valid.panggilUrl(htmlFile);
+
+                    // Tunggu user save PDF, lalu tanya upload
+                    int uploadChoice = JOptionPane.showConfirmDialog(null,
+                        "Setelah Anda menyimpan PDF dari browser,\n" +
+                        "klik 'Ya' untuk upload ke berkasrawat\n\n" +
+                        "Sudah selesai menyimpan PDF?",
+                        "Upload Billing",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE);
+
+                    if (uploadChoice == JOptionPane.YES_OPTION) {
+                        uploadBillingPDF();
+                    }
+                }
+            } else {
+                this.setCursor(Cursor.getDefaultCursor());
+                JOptionPane.showMessageDialog(null,
+                    "Gagal generate billing:\n" + jsonNode.get("message").asText(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            this.setCursor(Cursor.getDefaultCursor());
+            System.out.println("Error generate billing: " + e);
+            JOptionPane.showMessageDialog(null,
+                "Terjadi kesalahan saat generate billing:\n" + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void uploadBillingPDF() {
+        JFileChooser jfc = new JFileChooser();
+        FileNameExtensionFilter pdfFilter = new FileNameExtensionFilter("File PDF", "pdf");
+
+        // Setup file chooser
+        jfc.setDialogTitle("Pilih File PDF Billing yang Sudah Disimpan");
+        jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        jfc.setAcceptAllFileFilterUsed(false);
+        jfc.setFileFilter(pdfFilter);
+
+        if (jfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+            File selectedFile = jfc.getSelectedFile();
+            String fileName = selectedFile.getName();
+
+            // Validasi PDF
+            if (!fileName.toLowerCase().endsWith(".pdf")) {
+                JOptionPane.showMessageDialog(null,
+                    "File yang dipilih harus berformat PDF!",
+                    "Peringatan",
+                    JOptionPane.WARNING_MESSAGE);
+                this.setCursor(Cursor.getDefaultCursor());
+                return;
+            }
+
+            // Format noRawat: ganti / dengan _
+            String noRawatFormatted = TNoRw.getText().replaceAll("/", "_");
+
+            // Generate nama file: Billing_{NoRawat}
+            String namaFileBaru = "Billing_" + noRawatFormatted;
+
+            // Konfirmasi upload
+            int confirm = JOptionPane.showConfirmDialog(null,
+                "File billing akan diupload dengan nama:\n" +
+                namaFileBaru + ".pdf\n\n" +
+                "No.Rawat: " + TNoRw.getText() + "\n" +
+                "Pasien: " + TPasien.getText() + "\n" +
+                "Jenis: Billing\n\n" +
+                "Lanjutkan upload?",
+                "Konfirmasi Upload",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                try {
+                    // Baca file sebagai byte array
+                    byte[] data = FileUtils.readFileToByteArray(selectedFile);
+
+                    // Setup HTTP client untuk upload
+                    org.apache.http.client.HttpClient httpClient = new DefaultHttpClient();
+                    String uploadUrl = "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" +
+                                     koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() +
+                                     "/upload.php?doc=berkasrawat/pages/upload/";
+
+                    HttpPost postRequest = new HttpPost(uploadUrl);
+                    ByteArrayBody fileData = new ByteArrayBody(data, namaFileBaru + ".pdf");
+                    MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+                    reqEntity.addPart("file", fileData);
+                    postRequest.setEntity(reqEntity);
+                    httpClient.execute(postRequest);
+
+                    // Notifikasi sukses
+                    JOptionPane.showMessageDialog(null,
+                        "Upload berhasil!\n" +
+                        "File: " + namaFileBaru + ".pdf\n" +
+                        "Jenis: Billing\n" +
+                        "No.Rawat: " + TNoRw.getText() + "\n" +
+                        "Lokasi: berkasrawat/pages/upload/",
+                        "Informasi",
+                        JOptionPane.INFORMATION_MESSAGE);
+
+                } catch (Exception e) {
+                    System.out.println("Upload error: " + e);
+                    JOptionPane.showMessageDialog(null,
+                        "Terjadi kesalahan saat upload:\n" + e.getMessage(),
+                        "Kesalahan",
+                        JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null,
+                    "Upload dibatalkan!",
+                    "Informasi",
+                    JOptionPane.INFORMATION_MESSAGE);
+            }
+
+            this.setCursor(Cursor.getDefaultCursor());
         }
     }
 }

@@ -48,6 +48,9 @@ public class FormBerkasKlaimBpjs extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
+        // Initialize billing accordion sebelum set size
+        initBillingAccordion();
+
         this.setLocation(10, 10);
         setSize(1250, 700);
 
@@ -575,6 +578,14 @@ public class FormBerkasKlaimBpjs extends javax.swing.JDialog {
     private widget.Table tbPasien;
     // End of variables declaration//GEN-END:variables
 
+    // Additional components for billing accordion
+    private widget.PanelBiasa PanelAccor;
+    private widget.CekBox ChkAccor;
+    private widget.ScrollPane ScrollBilling;
+    private javax.swing.JPanel FormBilling;
+    private javax.swing.JEditorPane loadBillingHTML;
+    private widget.Label lblNoRawat;
+
     /**
      * Method untuk menampilkan data pasien dari reg_periksa
      */
@@ -660,8 +671,13 @@ public class FormBerkasKlaimBpjs extends javax.swing.JDialog {
             System.out.println("No.RM: " + noRM);
             System.out.println("Nama: " + namaPasien);
 
-            // TODO: Implementasi action ketika data diklik
-            // Misal: buka form detail, tampilkan berkas PDF, dll
+            // Set no rawat untuk ditampilkan di billing
+            lblNoRawat.setText(noRawat);
+
+            // Tampilkan billing jika accordion terbuka
+            if (ChkAccor.isSelected()) {
+                tampilBilling();
+            }
         }
     }
 
@@ -777,6 +793,166 @@ public class FormBerkasKlaimBpjs extends javax.swing.JDialog {
                 "Terjadi kesalahan saat upload:\n" + e.getMessage(),
                 "Kesalahan",
                 JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    /**
+     * Method untuk inisialisasi komponen billing accordion
+     */
+    private void initBillingAccordion() {
+        // Initialize PanelAccor
+        PanelAccor = new widget.PanelBiasa();
+        PanelAccor.setName("PanelAccor");
+        PanelAccor.setBackground(new java.awt.Color(255, 255, 255));
+        PanelAccor.setPreferredSize(new Dimension(20, 700));
+        PanelAccor.setLayout(new java.awt.BorderLayout());
+
+        // Initialize ChkAccor (checkbox untuk toggle accordion)
+        ChkAccor = new widget.CekBox();
+        ChkAccor.setName("ChkAccor");
+        ChkAccor.setBackground(new java.awt.Color(255, 250, 250));
+        ChkAccor.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
+        ChkAccor.setForeground(new java.awt.Color(50, 50, 50));
+        ChkAccor.setText("Billing");
+        ChkAccor.setFont(new java.awt.Font("Tahoma", 1, 10));
+        ChkAccor.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ChkAccor.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ChkAccor.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ChkAccor.setIconTextGap(2);
+        ChkAccor.setPreferredSize(new Dimension(20, 100));
+        ChkAccor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ChkAccorActionPerformed(evt);
+            }
+        });
+
+        // Initialize FormBilling (panel yang berisi billing display)
+        FormBilling = new javax.swing.JPanel();
+        FormBilling.setName("FormBilling");
+        FormBilling.setBackground(new java.awt.Color(255, 255, 255));
+        FormBilling.setLayout(new java.awt.BorderLayout());
+        FormBilling.setVisible(false);
+
+        // Initialize lblNoRawat (hidden label untuk menyimpan no rawat)
+        lblNoRawat = new widget.Label();
+        lblNoRawat.setName("lblNoRawat");
+        lblNoRawat.setText("");
+        lblNoRawat.setVisible(false);
+
+        // Initialize loadBillingHTML (JEditorPane untuk menampilkan HTML billing)
+        loadBillingHTML = new javax.swing.JEditorPane();
+        loadBillingHTML.setName("loadBillingHTML");
+        loadBillingHTML.setContentType("text/html");
+        loadBillingHTML.setEditable(false);
+        loadBillingHTML.setBackground(new java.awt.Color(255, 255, 255));
+
+        // Initialize ScrollBilling
+        ScrollBilling = new widget.ScrollPane();
+        ScrollBilling.setName("ScrollBilling");
+        ScrollBilling.setViewportView(loadBillingHTML);
+
+        // Add components to FormBilling
+        FormBilling.add(lblNoRawat, java.awt.BorderLayout.PAGE_START);
+        FormBilling.add(ScrollBilling, java.awt.BorderLayout.CENTER);
+
+        // Add components to PanelAccor
+        PanelAccor.add(ChkAccor, java.awt.BorderLayout.EAST);
+        PanelAccor.add(FormBilling, java.awt.BorderLayout.CENTER);
+
+        // Add PanelAccor to main frame
+        getContentPane().add(PanelAccor, java.awt.BorderLayout.WEST);
+
+        // Revalidate and repaint to show the components
+        getContentPane().revalidate();
+        getContentPane().repaint();
+    }
+
+    /**
+     * Event handler untuk ChkAccor (checkbox accordion)
+     */
+    private void ChkAccorActionPerformed(java.awt.event.ActionEvent evt) {
+        isMenu();
+    }
+
+    /**
+     * Method untuk handle accordion expand/collapse
+     */
+    private void isMenu() {
+        if (ChkAccor.isSelected()) {
+            ChkAccor.setVisible(false);
+            PanelAccor.setPreferredSize(new Dimension(400, 700));
+            FormBilling.setVisible(true);
+            ChkAccor.setVisible(true);
+
+            // Tampilkan billing saat accordion dibuka
+            if (!lblNoRawat.getText().isEmpty()) {
+                tampilBilling();
+            }
+        } else {
+            ChkAccor.setVisible(false);
+            PanelAccor.setPreferredSize(new Dimension(20, 700));
+            FormBilling.setVisible(false);
+            ChkAccor.setVisible(true);
+        }
+        getContentPane().validate();
+        getContentPane().repaint();
+    }
+
+    /**
+     * Method untuk menampilkan data billing pasien
+     */
+    private void tampilBilling() {
+        try {
+            try (PreparedStatement ps = koneksi.prepareStatement(
+                "select b.no, b.nm_perawatan, b.pemisah, b.biaya, b.jumlah, " +
+                "b.tambahan, b.totalbiaya from billing b where b.no_rawat = ?"
+            )) {
+                ps.setString(1, lblNoRawat.getText());
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        int row = 0;
+                        double total = 0;
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("<html><body><table cellspacing=\"0\" cellpadding=\"0\">");
+                        do {
+                            total += rs.getDouble("totalbiaya");
+                            if (row++ < 6) {
+                                sb.append("<tr><td width=\"20%\">")
+                                    .append(rs.getString("no").trim())
+                                    .append("</td><td width=\"40%\" colspan=\"5\">")
+                                    .append(rs.getString("nm_perawatan").trim())
+                                    .append("</td></tr>");
+                            } else {
+                                if (rs.getString("no").isBlank() && rs.getDouble("biaya") == 0) {
+                                    sb.append("<tr><td width=\"20%\">")
+                                        .append(rs.getString("no").trim());
+                                    if (rs.getString("nm_perawatan").startsWith("Total")) {
+                                        sb.append("</td><td colspan=\"5\" align=\"right\">");
+                                    } else {
+                                        sb.append("</td><td colspan=\"5\">");
+                                    }
+                                    sb.append(rs.getString("nm_perawatan").trim()).append("</td></tr>");
+                                } else {
+                                    sb.append("<tr><td width=\"20%\">").append(rs.getString("no")).append("</td><td width=\"48%\">").append(rs.getString("nm_perawatan"))
+                                        .append("</td><td width=\"9%\" align=\"right\">").append(rs.getDouble("biaya") == 0 ? "" : Valid.SetAngka(rs.getDouble("biaya")))
+                                        .append("</td><td width=\"2%\" align=\"right\">").append(rs.getDouble("jumlah") == 0 ? "" : Valid.SetAngka(rs.getDouble("jumlah")))
+                                        .append("</td><td width=\"9%\" align=\"right\">").append(rs.getDouble("tambahan") == 0 ? "" : Valid.SetAngka(rs.getDouble("tambahan")))
+                                        .append("</td><td width=\"10%\" align=\"right\">").append(rs.getDouble("totalbiaya") == 0 ? "" : Valid.SetAngka(rs.getDouble("totalbiaya")))
+                                        .append("</td></tr>");
+                                }
+                            }
+                        } while (rs.next());
+                        sb.append("<tr><td width=\"20%\" style=\"font-weight: bold\">TOTAL BIAYA</td><td style=\"font-weight: bold\">:</td><td colspan=\"4\" style=\"font-weight: bold; text-align: right\">")
+                            .append(Valid.SetAngka(total))
+                            .append("</td></tr></table></body></html>");
+                        loadBillingHTML.setText(sb.toString());
+                    } else {
+                        loadBillingHTML.setText("");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Notif : " + e);
         }
     }
 }
