@@ -252,13 +252,33 @@ public class DlgMarkingImageAreaOperasi extends javax.swing.JDialog {
         } catch (AWTException ex) {
             Logger.getLogger(DlgMarkingImageAreaOperasi.class.getName()).log(Level.SEVERE, null, ex);
         }
-        Rectangle capture = 
+
+        // Buat folder tmpImageFreehand jika belum ada
+        File tmpDir = new File("tmpImageFreehand");
+        if (!tmpDir.exists()) {
+            tmpDir.mkdirs();
+            System.out.println("Folder tmpImageFreehand created");
+        }
+
+        Rectangle capture =
             new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
             BufferedImage Image = r.createScreenCapture(panelGlass9.bounds());
         try {
-            ImageIO.write(Image, "png", new File("tmpImageFreehand/PenandaanOperasi"+TNoRawat.getText().replaceAll("/", "")+".png"));
+            String fileName = "tmpImageFreehand/PenandaanOperasi"+TNoRawat.getText().replaceAll("/", "")+".png";
+            File imageFile = new File(fileName);
+
+            // Debug: Print path untuk memastikan lokasi file
+            System.out.println("Saving image to: " + imageFile.getAbsolutePath());
+
+            ImageIO.write(Image, "png", imageFile);
+            System.out.println("Image saved successfully!");
         } catch (IOException ex) {
             Logger.getLogger(DlgMarkingImageAreaOperasi.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,
+                "Gagal menyimpan gambar!\n" + ex.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+            return; // Stop jika gagal save
         }
         uploadImage("PenandaanOperasi"+TNoRawat.getText().replaceAll("/", "")+".png","PenandaanOperasi/imagemarking");
         

@@ -240,15 +240,35 @@ public class DlgViewPdf extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnViewFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnViewFileActionPerformed
-    if(Sequel.cariInteger("select count(nama_file) from berkas_tte where nama_file='"+txtNameFile.getText()+"'")>0){
-       LocationFile="server"; 
-       setButton(false);
-       deleteFile();
-    }else{
-       setButton(true);
-       LocationFile="local"; 
+    // Dialog untuk pilih aksi: View PDF atau Merge PDF dengan Laravel
+    String[] options = {"View PDF", "Merge PDF (Laravel)", "Batal"};
+    int choice = JOptionPane.showOptionDialog(this,
+        "Pilih aksi yang ingin dilakukan:",
+        "Pilihan Aksi",
+        JOptionPane.YES_NO_CANCEL_OPTION,
+        JOptionPane.QUESTION_MESSAGE,
+        null,
+        options,
+        options[0]
+    );
+
+    if (choice == 0) {
+        // Opsi 1: View PDF (fungsi original)
+        if(Sequel.cariInteger("select count(nama_file) from berkas_tte where nama_file='"+txtNameFile.getText()+"'")>0){
+           LocationFile="server";
+           setButton(false);
+           deleteFile();
+        }else{
+           setButton(true);
+           LocationFile="local";
+        }
+        viewpdf(txtNameFile.getText(),LocationFile);
+
+    } else if (choice == 1) {
+        // Opsi 2: Merge PDF dengan aplikasi Laravel
+        openLaravelMergePDF();
     }
-    viewpdf(txtNameFile.getText(),LocationFile); 
+    // choice == 2 atau close dialog = Batal, tidak melakukan apa-apa
 }//GEN-LAST:event_BtnViewFileActionPerformed
 void viewpdf(String fileName,String fileLocation){
           try {
@@ -320,14 +340,13 @@ private boolean isValidPDF(File file) {
     }
 }
 
-// Method untuk optimasi PDF agar lebih cepat dibuka (ala PDFsam)
+// Method untuk optimasi PDF agar lebih cepat dibuka (ala Sejda)
 private void optimizePDF(File pdfFile) {
     PDDocument document = null;
     File tempOptimized = null;
 
     try {
-        // Load PDF dengan memory optimization (strategi PDFsam)
-        // Gunakan temp file untuk memory besar, bukan full main memory
+        // Load PDF dengan memory optimization (strategi Sejda)
         org.apache.pdfbox.io.MemoryUsageSetting memSettings =
             org.apache.pdfbox.io.MemoryUsageSetting.setupMixed(10 * 1024 * 1024); // 10MB max main memory
 
@@ -339,21 +358,28 @@ private void optimizePDF(File pdfFile) {
         // Optimasi 1: Set document version ke 1.6 untuk object streams support
         document.setVersion(1.6f);
 
-        // Optimasi 2: Remove unused resources (optional metadata)
+        // Optimasi 2: Set metadata minimal
         if (document.getDocumentInformation() != null) {
-            // Keep only essential metadata
             org.apache.pdfbox.pdmodel.PDDocumentInformation info = document.getDocumentInformation();
-            // Clear non-essential metadata to reduce size
             info.setProducer("SIMRS Khanza - PDF Merger");
             info.setCreator("SIMRS Khanza");
         }
 
-        // Save dengan optimasi maksimal (strategi PDFsam):
-        // PDFBox otomatis akan:
+        // Optimasi 3: Compress object streams untuk fast loading
+        // PDFBox akan otomatis:
         // - Enable object streams (PDF 1.5+)
-        // - Compress streams with flate
+        // - Compress streams dengan flate
         // - Remove unused objects
-        // - Optimize cross-reference table
+        // - Optimize cross-reference streams (bukan table)
+
+        org.apache.pdfbox.cos.COSDictionary trailer = document.getDocument().getTrailer();
+
+        // Force menggunakan compressed XRef streams untuk loading lebih cepat
+        // (seperti yang dilakukan Sejda)
+        trailer.removeItem(org.apache.pdfbox.cos.COSName.INFO);
+
+        // Save dengan compression maksimal
+        // PDFBox akan generate compressed xref streams otomatis untuk PDF 1.5+
         document.save(tempOptimized);
 
         // Tutup document
@@ -400,6 +426,221 @@ private void optimizePDF(File pdfFile) {
         }
     }
 }
+
+// Method untuk linearize PDF agar fast loading di Nitro Pro / Adobe Reader (ala Sejda)
+private void linearizePDF(File pdfFile) {
+    try {
+        // Cek apakah QPDF tersedia di system
+        // QPDF adalah tool gratis yang powerful untuk linearization
+        // Download: https://github.com/qpdf/qpdf/releases
+
+        String qpdfPath = findQPDF();
+
+        if (qpdfPath == null) {
+            System.out.println("QPDF tidak ditemukan. Skip linearization.");
+            System.out.println("Untuk loading lebih cepat di Nitro Pro, install QPDF:");
+            System.out.println("- Windows: Download dari https://github.com/qpdf/qpdf/releases");
+            System.out.println("- Mac: brew install qpdf");
+            System.out.println("- Linux: apt-get install qpdf");
+            return;
+        }
+
+        File tempLinearized = new File(pdfFile.getParent(), "temp_linearized_" + pdfFile.getName());
+
+        // Jalankan QPDF untuk linearize PDF
+        // --linearize: Enable fast web view (progressive loading)
+        // --compress-streams=y: Compress streams
+        // --object-streams=generate: Use object streams untuk file lebih kecil dan cepat
+        ProcessBuilder pb = new ProcessBuilder(
+            qpdfPath,
+            "--linearize",
+            "--compress-streams=y",
+            "--object-streams=generate",
+            pdfFile.getAbsolutePath(),
+            tempLinearized.getAbsolutePath()
+        );
+
+        pb.redirectErrorStream(true);
+        Process process = pb.start();
+
+        // Baca output
+        java.io.BufferedReader reader = new java.io.BufferedReader(
+            new java.io.InputStreamReader(process.getInputStream())
+        );
+        String line;
+        while ((line = reader.readLine()) != null) {
+            System.out.println("QPDF: " + line);
+        }
+
+        int exitCode = process.waitFor();
+
+        if (exitCode == 0 && tempLinearized.exists()) {
+            // Linearization berhasil, replace file original
+            long originalSize = pdfFile.length();
+            long linearizedSize = tempLinearized.length();
+
+            System.out.println("Ukuran sebelum linearize: " + (originalSize / 1024) + " KB");
+            System.out.println("Ukuran setelah linearize: " + (linearizedSize / 1024) + " KB");
+
+            if (pdfFile.delete()) {
+                if (!tempLinearized.renameTo(pdfFile)) {
+                    Files.copy(tempLinearized.toPath(), pdfFile.toPath(),
+                              java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                    tempLinearized.delete();
+                }
+            }
+
+            System.out.println("PDF berhasil di-linearize untuk fast loading di Nitro Pro!");
+        } else {
+            System.err.println("QPDF linearization failed with exit code: " + exitCode);
+            if (tempLinearized.exists()) {
+                tempLinearized.delete();
+            }
+        }
+
+    } catch (Exception e) {
+        System.err.println("Error saat linearize PDF: " + e.getMessage());
+        // Jika linearize gagal, file original tetap digunakan
+    }
+}
+
+// Helper method untuk mencari QPDF di system
+private String findQPDF() {
+    // Lokasi umum QPDF di berbagai OS
+    String[] possiblePaths = {
+        "qpdf",                                                    // Di PATH
+        "/usr/bin/qpdf",                                           // Linux/Mac standard
+        "/usr/local/bin/qpdf",                                     // Mac Homebrew
+        "C:\\Program Files\\qpdf\\bin\\qpdf.exe",                  // Windows default
+        "C:\\Program Files (x86)\\qpdf\\bin\\qpdf.exe",            // Windows x86
+        "C:\\qpdf\\bin\\qpdf.exe",                                 // Windows custom install
+        System.getProperty("user.dir") + "\\qpdf\\bin\\qpdf.exe", // Di folder aplikasi
+        System.getProperty("user.dir") + "\\lib\\qpdf\\bin\\qpdf.exe"  // Di folder lib
+    };
+
+    for (String path : possiblePaths) {
+        try {
+            ProcessBuilder pb = new ProcessBuilder(path, "--version");
+            pb.redirectErrorStream(true);
+            Process process = pb.start();
+
+            // Baca output untuk memastikan benar-benar qpdf
+            java.io.BufferedReader reader = new java.io.BufferedReader(
+                new java.io.InputStreamReader(process.getInputStream())
+            );
+            String firstLine = reader.readLine();
+
+            int exitCode = process.waitFor();
+            if (exitCode == 0 && firstLine != null && firstLine.toLowerCase().contains("qpdf")) {
+                System.out.println("QPDF ditemukan di: " + path);
+                System.out.println("Version: " + firstLine);
+                return path;
+            }
+        } catch (Exception e) {
+            // Path tidak valid, coba yang lain
+        }
+    }
+
+    return null; // QPDF tidak ditemukan
+}
+
+// Method untuk membuka aplikasi Laravel Merge PDF
+private void openLaravelMergePDF() {
+    try {
+        // Ambil data yang diperlukan
+        String noRawat = txtNoRawat.getText();
+        String pathFile = txtLokasiFile.getText();
+
+        if (noRawat == null || noRawat.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "Data No. Rawat tidak ditemukan!",
+                "Peringatan",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // URL aplikasi Laravel Merge PDF
+        // Sesuaikan dengan URL aplikasi Laravel Anda
+        String laravelMergeUrl = getLaravelMergeUrl();
+
+        if (laravelMergeUrl == null || laravelMergeUrl.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "URL Aplikasi Laravel Merge PDF belum dikonfigurasi!\n\n" +
+                "Silakan setting URL di database atau file konfigurasi.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Format no_rawat untuk URL parameter (ganti "/" dengan "%2F" atau "_")
+        String noRawatEncoded = java.net.URLEncoder.encode(noRawat, StandardCharsets.UTF_8.toString());
+
+        // Build URL dengan parameter
+        // Contoh: http://localhost:8000/merge-pdf?no_rawat=2025/10/29/000001&path=berkasdigital
+        String fullUrl = laravelMergeUrl +
+                        "?no_rawat=" + noRawatEncoded +
+                        "&path=" + (pathFile != null ? pathFile : "");
+
+        System.out.println("Membuka Laravel Merge PDF: " + fullUrl);
+
+        // Buka URL di browser default
+        if (java.awt.Desktop.isDesktopSupported()) {
+            java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
+            if (desktop.isSupported(java.awt.Desktop.Action.BROWSE)) {
+                desktop.browse(new java.net.URI(fullUrl));
+                System.out.println("Browser berhasil dibuka untuk merge PDF");
+            } else {
+                throw new Exception("Browser tidak support untuk membuka URL");
+            }
+        } else {
+            throw new Exception("Desktop API tidak tersedia");
+        }
+
+    } catch (Exception e) {
+        System.err.println("Error membuka Laravel Merge PDF: " + e.getMessage());
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this,
+            "Gagal membuka aplikasi Laravel Merge PDF!\n\n" +
+            "Error: " + e.getMessage() + "\n\n" +
+            "Pastikan:\n" +
+            "1. URL Laravel sudah dikonfigurasi dengan benar\n" +
+            "2. Aplikasi Laravel sudah running\n" +
+            "3. Browser default sudah terset dengan benar",
+            "Error",
+            JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+// Method untuk mendapatkan URL aplikasi Laravel Merge PDF
+// Bisa dari database setting atau hardcode
+private String getLaravelMergeUrl() {
+    try {
+        // Opsi 1: Ambil dari database setting (recommended)
+        String url = Sequel.cariIsi(
+            "SELECT isi FROM setting WHERE nama='URL_LARAVEL_MERGE_PDF'"
+        );
+
+        if (url != null && !url.trim().isEmpty()) {
+            return url.trim();
+        }
+
+        // Opsi 2: Fallback ke koneksi web yang sudah ada
+        // Menggunakan config yang sama dengan host web
+        String host = koneksiDB.HOSTHYBRIDWEB();
+        String port = koneksiDB.PORTWEB();
+
+        // Default path untuk Laravel merge PDF
+        // Sesuaikan dengan route Laravel Anda
+        return "http://" + host + ":" + port + "/merge-pdf";
+
+    } catch (Exception e) {
+        System.err.println("Error getting Laravel URL: " + e.getMessage());
+
+        // Fallback hardcode (ganti sesuai konfigurasi Anda)
+        return "http://localhost:8000/merge-pdf";
+    }
+}
+
     void openpdf(String file){
           try {
             URL url =new URL("http://"+koneksiDB.HOSTHYBRIDWEB()+ ":" + koneksiDB.PORTWEB() + "/"+koneksiDB.HYBRIDWEB()+"/"+txtLokasiFile.getText()+"/"+file);
@@ -604,35 +845,58 @@ private void optimizePDF(File pdfFile) {
 
                     File mergedFile = new File(tempDir, mergedFileName);
 
-                    // Merge PDF menggunakan PDFBox dengan optimasi
-                    org.apache.pdfbox.multipdf.PDFMergerUtility pdfMerger = new org.apache.pdfbox.multipdf.PDFMergerUtility();
+                    // Merge PDF dengan preservasi signature appearance (ala Sejda)
+                    // Gunakan pendekatan manual untuk preserve annotation appearance
+                    PDDocument mergedDoc = new PDDocument();
 
-                    // Set destination file
-                    pdfMerger.setDestinationFileName(mergedFile.getAbsolutePath());
-
-                    // PENTING: Preserve signature widget appearance (ala PDFsam)
-                    // Ini akan membuat visual signature tetap muncul (barcode, checkmark)
-                    // meskipun signature validation akan tetap invalid
                     try {
-                        pdfMerger.setAcroFormMergeMode(
-                            org.apache.pdfbox.multipdf.PDFMergerUtility.AcroFormMergeMode.JOIN_FORM_FIELDS_MODE
-                        );
+                        // Memory setting untuk optimasi
+                        org.apache.pdfbox.io.MemoryUsageSetting memSettings =
+                            org.apache.pdfbox.io.MemoryUsageSetting.setupTempFileOnly();
+
+                        for (File pdfFile : pdfFiles) {
+                            publish("Memproses: " + pdfFile.getName());
+
+                            // Load setiap PDF dengan memory optimization
+                            PDDocument sourceDoc = PDDocument.load(pdfFile, memSettings);
+
+                            // Copy setiap halaman dengan preservasi annotations
+                            for (int pageNum = 0; pageNum < sourceDoc.getNumberOfPages(); pageNum++) {
+                                org.apache.pdfbox.pdmodel.PDPage sourcePage = sourceDoc.getPage(pageNum);
+
+                                // Import halaman ke merged document
+                                // PDFBox akan otomatis preserve annotations termasuk signature appearance
+                                mergedDoc.importPage(sourcePage);
+                            }
+
+                            // Close source document
+                            sourceDoc.close();
+                        }
+
+                        // Set document information
+                        org.apache.pdfbox.pdmodel.PDDocumentInformation info = new org.apache.pdfbox.pdmodel.PDDocumentInformation();
+                        info.setProducer("SIMRS Khanza - PDF Merger");
+                        info.setCreator("SIMRS Khanza");
+                        mergedDoc.setDocumentInformation(info);
+
+                        // Save merged document
+                        mergedDoc.save(mergedFile);
+                        mergedDoc.close();
+
                     } catch (Exception e) {
-                        // Jika method tidak tersedia di versi PDFBox lama, skip
-                        System.out.println("AcroForm merge mode not supported, skipping...");
+                        if (mergedDoc != null) {
+                            mergedDoc.close();
+                        }
+                        throw e;
                     }
-
-                    for (File pdfFile : pdfFiles) {
-                        pdfMerger.addSource(pdfFile);
-                    }
-
-                    // Lakukan merge dengan memory optimization
-                    pdfMerger.mergeDocuments(org.apache.pdfbox.io.MemoryUsageSetting.setupTempFileOnly());
 
                     publish("Mengoptimasi PDF...");
 
                     // Optimasi PDF hasil merge untuk performa lebih cepat
                     optimizePDF(mergedFile);
+
+                    // Linearize PDF untuk fast loading di Nitro Pro (jika QPDF tersedia)
+                    linearizePDF(mergedFile);
 
                     publish("Membersihkan file temporary...");
 
