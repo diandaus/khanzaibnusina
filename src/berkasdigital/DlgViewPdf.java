@@ -617,7 +617,7 @@ private String getLaravelMergeUrl() {
     try {
         // Opsi 1: Ambil dari database setting (recommended)
         String url = Sequel.cariIsi(
-            "SELECT isi FROM setting WHERE nama='URL_LARAVEL_MERGE_PDF'"
+            "SELECT isi FROM app_setting WHERE nama='URL_LARAVEL_MERGE_PDF'"
         );
 
         if (url != null && !url.trim().isEmpty()) {
@@ -631,13 +631,13 @@ private String getLaravelMergeUrl() {
 
         // Default path untuk Laravel merge PDF
         // Sesuaikan dengan route Laravel Anda
-        return "http://" + host + ":" + port + "/merge-pdf";
+        return "http://" + host + ":" + port + "/documents/page-editor";
 
     } catch (Exception e) {
         System.err.println("Error getting Laravel URL: " + e.getMessage());
 
         // Fallback hardcode (ganti sesuai konfigurasi Anda)
-        return "http://localhost:8000/merge-pdf";
+        return "http://192.168.1.174/documents/page-editor";
     }
 }
 
@@ -837,7 +837,7 @@ private String getLaravelMergeUrl() {
                     // Nama file hasil merge dengan format: "DD NAMAPASIEN NoSEP.pdf"
                     String mergedFileName;
                     if (!tanggal.isEmpty() && !namaPasien.isEmpty() && !noSep.isEmpty()) {
-                        mergedFileName = tanggal + " " + namaPasien + " " + noSep + ".pdf";
+                        mergedFileName = noSep + " " + namaPasien + " " + tanggal + ".pdf";
                     } else {
                         // Fallback ke format lama jika data tidak lengkap
                         mergedFileName = "Gabungan_Berkas_" + noRawatFormatted + ".pdf";
@@ -848,17 +848,20 @@ private String getLaravelMergeUrl() {
                     // Merge PDF dengan preservasi signature appearance (ala Sejda)
                     // Gunakan pendekatan manual untuk preserve annotation appearance
                     PDDocument mergedDoc = new PDDocument();
+                    java.util.List<PDDocument> sourceDocs = new java.util.ArrayList<>();
 
                     try {
                         // Memory setting untuk optimasi
                         org.apache.pdfbox.io.MemoryUsageSetting memSettings =
                             org.apache.pdfbox.io.MemoryUsageSetting.setupTempFileOnly();
 
+                        // Load semua PDF terlebih dahulu (JANGAN close dulu!)
                         for (File pdfFile : pdfFiles) {
                             publish("Memproses: " + pdfFile.getName());
 
                             // Load setiap PDF dengan memory optimization
                             PDDocument sourceDoc = PDDocument.load(pdfFile, memSettings);
+                            sourceDocs.add(sourceDoc); // Simpan reference untuk close nanti
 
                             // Copy setiap halaman dengan preservasi annotations
                             for (int pageNum = 0; pageNum < sourceDoc.getNumberOfPages(); pageNum++) {
@@ -868,9 +871,6 @@ private String getLaravelMergeUrl() {
                                 // PDFBox akan otomatis preserve annotations termasuk signature appearance
                                 mergedDoc.importPage(sourcePage);
                             }
-
-                            // Close source document
-                            sourceDoc.close();
                         }
 
                         // Set document information
@@ -879,13 +879,24 @@ private String getLaravelMergeUrl() {
                         info.setCreator("SIMRS Khanza");
                         mergedDoc.setDocumentInformation(info);
 
-                        // Save merged document
+                        publish("Menyimpan hasil gabungan...");
+
+                        // Save merged document (PENTING: Save sebelum close source docs!)
                         mergedDoc.save(mergedFile);
                         mergedDoc.close();
 
+                        // Sekarang baru safe untuk close semua source documents
+                        for (PDDocument sourceDoc : sourceDocs) {
+                            sourceDoc.close();
+                        }
+
                     } catch (Exception e) {
+                        // Cleanup jika error
                         if (mergedDoc != null) {
-                            mergedDoc.close();
+                            try { mergedDoc.close(); } catch (Exception ignored) {}
+                        }
+                        for (PDDocument sourceDoc : sourceDocs) {
+                            try { sourceDoc.close(); } catch (Exception ignored) {}
                         }
                         throw e;
                     }
