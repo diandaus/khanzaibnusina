@@ -2581,7 +2581,7 @@ public final class DlgDetailKlaim extends javax.swing.JDialog {
         panelRawatIntensif.add(jLabel106);
 
         tglIntubasi.setForeground(new java.awt.Color(50, 70, 50));
-        tglIntubasi.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "28-10-2025 01:35:36" }));
+        tglIntubasi.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "28-10-2025 20:01:30" }));
         tglIntubasi.setDisplayFormat("dd-MM-yyyy HH:mm:ss");
         tglIntubasi.setName("tglIntubasi"); // NOI18N
         tglIntubasi.setOpaque(false);
@@ -2598,7 +2598,7 @@ public final class DlgDetailKlaim extends javax.swing.JDialog {
         panelRawatIntensif.add(jLabel107);
 
         tglEkstubasi.setForeground(new java.awt.Color(50, 70, 50));
-        tglEkstubasi.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "28-10-2025 01:35:36" }));
+        tglEkstubasi.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "28-10-2025 20:01:30" }));
         tglEkstubasi.setDisplayFormat("dd-MM-yyyy HH:mm:ss");
         tglEkstubasi.setName("tglEkstubasi"); // NOI18N
         tglEkstubasi.setOpaque(false);

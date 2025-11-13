@@ -6903,13 +6903,15 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                 param.put("kotars", akses.getkabupatenrs());
                 param.put("propinsirs", akses.getpropinsirs());
                 param.put("kontakrs", akses.getkontakrs());
-                param.put("prb", Sequel.cariIsi("select bpjs_prb.prb from bpjs_prb where bpjs_prb.no_sep=?", tbDataSEP.getValueAt(tbDataSEP.getSelectedRow(), 0).toString()));
+                param.put("norawat",TNoRw.getText());
+                param.put("prb",Sequel.cariIsi("select bpjs_prb.prb from bpjs_prb where bpjs_prb.no_sep=?",tbDataSEP.getValueAt(tbDataSEP.getSelectedRow(),0).toString()));
+                param.put("noreg",Sequel.cariIsi("select no_reg from reg_periksa where no_rawat=?",TNoRw.getText()));
                 param.put("logo", Sequel.cariGambar("select gambar.bpjs from gambar"));
                 param.put("parameter", tbDataSEP.getValueAt(tbDataSEP.getSelectedRow(), 0).toString());
                 if (JenisPelayanan.getSelectedIndex() == 0) {
-                    Valid.MyReportPDFUpload("rptBridgingSEP.jasper", "report", "::[ Cetak SEP ]::", FileName, param);
+                    Valid.MyReportPDFUpload("rptBridgingSEP5.jasper", "report", "::[ Cetak SEP ]::", FileName, param);
                 } else {
-                    Valid.MyReportPDFUpload("rptBridgingSEP2.jasper", "report", "::[ Cetak SEP ]::", FileName, param);
+                    Valid.MyReportPDFUpload("rptBridgingSEP6.jasper", "report", "::[ Cetak SEP ]::", FileName, param);
                 }
 
                 this.setCursor(Cursor.getDefaultCursor());
@@ -6955,14 +6957,16 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
             param.put("kotars", akses.getkabupatenrs());
             param.put("propinsirs", akses.getpropinsirs());
             param.put("kontakrs", akses.getkontakrs());
+            param.put("norawat",TNoRw.getText());
+            param.put("noreg",Sequel.cariIsi("select no_reg from reg_periksa where no_rawat=?",TNoRw.getText()));
             param.put("prb", Sequel.cariIsi("select bpjs_prb.prb from bpjs_prb where bpjs_prb.no_sep=?", noSEP));
             param.put("logo", Sequel.cariGambar("select gambar.bpjs from gambar"));
             param.put("parameter", noSEP);
 
             if (JenisPelayanan.getSelectedIndex() == 0) {
-                Valid.MyReportPDFUpload("rptBridgingSEP.jasper", "report", "::[ Cetak SEP ]::", FileName, param);
+                Valid.MyReportPDFUpload("rptBridgingSEP5.jasper", "report", "::[ Cetak SEP ]::", FileName, param);
             } else {
-                Valid.MyReportPDFUpload("rptBridgingSEP2.jasper", "report", "::[ Cetak SEP ]::", FileName, param);
+                Valid.MyReportPDFUpload("rptBridgingSEP6.jasper", "report", "::[ Cetak SEP ]::", FileName, param);
             }
         } catch (Exception e) {
             System.out.println("Error CreatePDFAuto: " + e.getMessage());

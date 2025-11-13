@@ -56,6 +56,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import fungsi.akses;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Form untuk menampilkan Berkas Klaim BPJS dari data reg_periksa
@@ -74,6 +75,7 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
     private FileNameExtensionFilter pdfFilter = new FileNameExtensionFilter("File PDF", "pdf");
     private String sql = "";
     private String berkas = "";
+    private String username="",alasanHapus,fileOpen="",LocationFile="";
     private fungsi.akses akses = new fungsi.akses();
 
     /** Creates new form DlgManagemenFileKlaim */
@@ -218,6 +220,20 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
         // Tambahkan FormBilling ke ScrollMenu
         ScrollMenu.setViewportView(FormBilling);
 
+        // Enable mouse wheel scrolling untuk accordion panel
+        ScrollMenu.setWheelScrollingEnabled(true);
+        scrollBilling.setWheelScrollingEnabled(true);
+
+        // Set scroll speed untuk responsivitas yang lebih baik
+        if (ScrollMenu.getVerticalScrollBar() != null) {
+            ScrollMenu.getVerticalScrollBar().setUnitIncrement(16);
+            ScrollMenu.getVerticalScrollBar().setBlockIncrement(64);
+        }
+        if (scrollBilling.getVerticalScrollBar() != null) {
+            scrollBilling.getVerticalScrollBar().setUnitIncrement(16);
+            scrollBilling.getVerticalScrollBar().setBlockIncrement(64);
+        }
+
         // Set initial state accordion (collapsed)
         PanelAccor.setPreferredSize(new Dimension(20, 700));
         FormBilling.setVisible(false);
@@ -233,6 +249,7 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
     private void initComponents() {
 
         Popup = new javax.swing.JPopupMenu();
+        MnTampilPDF = new javax.swing.JMenuItem();
         MnTampilkanBerkas = new javax.swing.JMenuItem();
         MnUploadFilePDF = new javax.swing.JMenuItem();
         TNoRw = new widget.TextBox();
@@ -260,6 +277,22 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
         ScrollMenu = new widget.ScrollPane();
 
         Popup.setName("Popup"); // NOI18N
+
+        MnTampilPDF.setBackground(new java.awt.Color(255, 255, 254));
+        MnTampilPDF.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        MnTampilPDF.setForeground(new java.awt.Color(50, 50, 50));
+        MnTampilPDF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        MnTampilPDF.setText("Buka Via Merge PDF Browser");
+        MnTampilPDF.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        MnTampilPDF.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        MnTampilPDF.setName("MnTampilPDF"); // NOI18N
+        MnTampilPDF.setPreferredSize(new java.awt.Dimension(160, 26));
+        MnTampilPDF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MnTampilPDFActionPerformed(evt);
+            }
+        });
+        Popup.add(MnTampilPDF);
 
         MnTampilkanBerkas.setBackground(new java.awt.Color(255, 255, 254));
         MnTampilkanBerkas.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
@@ -321,7 +354,7 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
         panelisi3.add(jLabel7);
 
         DTPTglAwal.setForeground(new java.awt.Color(50, 70, 50));
-        DTPTglAwal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10-11-2025" }));
+        DTPTglAwal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "11-11-2025" }));
         DTPTglAwal.setDisplayFormat("dd-MM-yyyy");
         DTPTglAwal.setName("DTPTglAwal"); // NOI18N
         DTPTglAwal.setOpaque(false);
@@ -337,7 +370,7 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
         panelisi3.add(jLabel8);
 
         DTPTglAkhir.setForeground(new java.awt.Color(50, 70, 50));
-        DTPTglAkhir.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10-11-2025" }));
+        DTPTglAkhir.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "11-11-2025" }));
         DTPTglAkhir.setDisplayFormat("dd-MM-yyyy");
         DTPTglAkhir.setName("DTPTglAkhir"); // NOI18N
         DTPTglAkhir.setOpaque(false);
@@ -496,7 +529,7 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
 
         ChkAccor.setBackground(new java.awt.Color(255, 250, 250));
         ChkAccor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/kiri.png"))); // NOI18N
-        ChkAccor.setSelected(false);
+        ChkAccor.setSelected(true);
         ChkAccor.setFocusable(false);
         ChkAccor.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ChkAccor.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -513,6 +546,8 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
         PanelAccor.add(ChkAccor, java.awt.BorderLayout.WEST);
 
         ScrollMenu.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        ScrollMenu.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        ScrollMenu.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         ScrollMenu.setName("ScrollMenu"); // NOI18N
         ScrollMenu.setOpaque(true);
         ScrollMenu.setPreferredSize(new java.awt.Dimension(407, 1075));
@@ -778,6 +813,11 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
     private void ChkAccorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChkAccorActionPerformed
          isMenu();
     }//GEN-LAST:event_ChkAccorActionPerformed
+
+    private void MnTampilPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnTampilPDFActionPerformed
+        // Langsung buka Laravel Merge PDF tanpa dialog
+        openLaravelMergePDF();
+    }//GEN-LAST:event_MnTampilPDFActionPerformed
     /**
      * @param args the command line arguments
      */
@@ -803,6 +843,7 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
     private widget.Tanggal DTPTglAkhir;
     private widget.Tanggal DTPTglAwal;
     private widget.Label LCount;
+    private javax.swing.JMenuItem MnTampilPDF;
     private javax.swing.JMenuItem MnTampilkanBerkas;
     private javax.swing.JMenuItem MnUploadFilePDF;
     private widget.PanelBiasa PanelAccor;
@@ -1015,6 +1056,84 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
      
      private void tampilBilling() {
         try {
+            // Tampilkan SOAP Ralan
+            StringBuilder sb = new StringBuilder();
+            sb.append("<html><head><style>")
+                .append("body { font-family: Tahoma, Arial, sans-serif; font-size: 9px; padding: 5px; }")
+                .append("table { width: 100%; border-collapse: collapse; font-size: 9px; }")
+                .append("td { padding: 2px; border-bottom: 1px solid #e0e0e0; font-size: 9px; }")
+                .append(".header-row { background-color: #f5f5f5; font-weight: bold; }")
+                .append(".total-row { background-color: #fff4e0; font-weight: bold; border-top: 2px solid #333; font-size: 10px; }")
+                .append("</style></head><body>");
+
+            try (PreparedStatement psRalan = koneksi.prepareStatement(
+                "select pemeriksaan_ralan.tgl_perawatan, pemeriksaan_ralan.jam_rawat, " +
+                "pemeriksaan_ralan.suhu_tubuh, pemeriksaan_ralan.tensi, pemeriksaan_ralan.nadi, " +
+                "pemeriksaan_ralan.respirasi, pemeriksaan_ralan.tinggi, pemeriksaan_ralan.berat, " +
+                "pemeriksaan_ralan.spo2, pemeriksaan_ralan.gcs, pemeriksaan_ralan.kesadaran, " +
+                "pemeriksaan_ralan.keluhan, pemeriksaan_ralan.pemeriksaan, pemeriksaan_ralan.alergi, " +
+                "pemeriksaan_ralan.lingkar_perut, pemeriksaan_ralan.rtl, pemeriksaan_ralan.penilaian, " +
+                "pemeriksaan_ralan.instruksi, pemeriksaan_ralan.evaluasi, pemeriksaan_ralan.nip, " +
+                "pegawai.nama " +
+                "from pemeriksaan_ralan inner join pegawai on pemeriksaan_ralan.nip = pegawai.nik " +
+                "where pemeriksaan_ralan.no_rawat = ? order by pemeriksaan_ralan.tgl_perawatan, pemeriksaan_ralan.jam_rawat"
+            )) {
+                psRalan.setString(1, lblNoRawat.getText());
+                try (ResultSet rsRalan = psRalan.executeQuery()) {
+                    if (rsRalan.next()) {
+                        sb.append("<table>")
+                            .append("<tr class=\"header-row\"><td colspan=\"2\" style=\"background-color: #4CAF50; color: white; padding: 5px;\">")
+                            .append("PEMERIKSAAN RAWAT JALAN</td></tr>");
+
+                        do {
+                            sb.append("<tr><td colspan=\"2\" style=\"background-color: #e3f2fd; font-weight: bold; padding: 3px;\">")
+                                .append("Tanggal: ").append(rsRalan.getString("tgl_perawatan"))
+                                .append(" Jam: ").append(rsRalan.getString("jam_rawat"))
+                                .append(" Petugas: ").append(rsRalan.getString("nama"))
+                                .append("</td></tr>");
+
+                            // Vital Signs - dalam satu baris untuk lebih minimalis
+                            sb.append("<tr><td width=\"30%\">Vital Signs</td><td>: ")
+                                .append("Suhu: ").append(rsRalan.getString("suhu_tubuh")).append("°C, ")
+                                .append("Tensi: ").append(rsRalan.getString("tensi")).append("mmHg, ")
+                                .append("Nadi: ").append(rsRalan.getString("nadi")).append("x/m, ")
+                                .append("RR: ").append(rsRalan.getString("respirasi")).append("x/m, ")
+                                .append("TB: ").append(rsRalan.getString("tinggi")).append("cm, ")
+                                .append("BB: ").append(rsRalan.getString("berat")).append("kg, ")
+                                .append("SpO2: ").append(rsRalan.getString("spo2")).append("%, ")
+                                .append("GCS: ").append(rsRalan.getString("gcs")).append(", ")
+                                .append("Kesadaran: ").append(rsRalan.getString("kesadaran")).append(", ")
+                                .append("LP: ").append(rsRalan.getString("lingkar_perut")).append("cm")
+                                .append("</td></tr>");
+
+                            // SOAP
+                            sb.append("<tr><td style=\"font-weight: bold;\">Subjective (Keluhan)</td><td>: ").append(rsRalan.getString("keluhan")).append("</td></tr>")
+                                .append("<tr><td style=\"font-weight: bold;\">Objective (Pemeriksaan)</td><td>: ").append(rsRalan.getString("pemeriksaan")).append("</td></tr>")
+                                .append("<tr><td style=\"font-weight: bold;\">Assessment (Penilaian)</td><td>: ").append(rsRalan.getString("penilaian")).append("</td></tr>")
+                                .append("<tr><td style=\"font-weight: bold;\">Plan (RTL)</td><td>: ").append(rsRalan.getString("rtl")).append("</td></tr>")
+                                .append("<tr><td>Instruksi</td><td>: ").append(rsRalan.getString("instruksi")).append("</td></tr>")
+                                .append("<tr><td>Evaluasi</td><td>: ").append(rsRalan.getString("evaluasi")).append("</td></tr>")
+                                .append("<tr><td>Alergi</td><td>: ").append(rsRalan.getString("alergi")).append("</td></tr>");
+
+                            sb.append("<tr><td colspan=\"2\" style=\"height: 5px;\"></td></tr>");
+                        } while (rsRalan.next());
+
+                        sb.append("</table>");
+                        sb.append("<br/>");
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Error SOAP Ralan: " + e);
+            }
+
+            // Tampilkan Billing
+            sb.append("<table>");
+            sb.append("<tr class=\"header-row\"><td colspan=\"6\" style=\"background-color: #FF9800; color: white; padding: 5px;\">")
+                .append("BILLING</td></tr>");
+            sb.append("<tr class=\"header-row\"><td width=\"20%\">No</td><td width=\"48%\">Nama Perawatan</td>")
+                .append("<td width=\"9%\" align=\"right\">Biaya</td><td width=\"2%\" align=\"right\">Jml</td>")
+                .append("<td width=\"9%\" align=\"right\">Tambahan</td><td width=\"10%\" align=\"right\">Total</td></tr>");
+
             try (PreparedStatement ps = koneksi.prepareStatement(
                 "select b.no, b.nm_perawatan, b.pemisah, b.biaya, b.jumlah, " +
                 "b.tambahan, b.totalbiaya from billing b where b.no_rawat = ?"
@@ -1024,14 +1143,6 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
                     if (rs.next()) {
                         int row = 0;
                         double total = 0;
-                        StringBuilder sb = new StringBuilder();
-                        sb.append("<html><head><style>")
-                            .append("body { font-family: Tahoma, Arial, sans-serif; font-size: 9px; padding: 5px; }")
-                            .append("table { width: 100%; border-collapse: collapse; font-size: 9px; }")
-                            .append("td { padding: 2px; border-bottom: 1px solid #e0e0e0; font-size: 9px; }")
-                            .append(".header-row { background-color: #f5f5f5; font-weight: bold; }")
-                            .append(".total-row { background-color: #fff4e0; font-weight: bold; border-top: 2px solid #333; font-size: 10px; }")
-                            .append("</style></head><body><table>");
                         do {
                             total += rs.getDouble("totalbiaya");
                             if (row++ < 6) {
@@ -1062,17 +1173,130 @@ public class DlgManagemenFileKlaim extends javax.swing.JDialog {
                         } while (rs.next());
                         sb.append("<tr class=\"total-row\"><td width=\"20%\">TOTAL BIAYA</td><td>:</td><td colspan=\"4\" align=\"right\">")
                             .append(Valid.SetAngka(total))
-                            .append("</td></tr></table></body></html>");
-                        loadBillingHTML.setText(sb.toString());
+                            .append("</td></tr>");
                     } else {
-                        loadBillingHTML.setText("<html><body style='font-family: Tahoma; font-size: 9px; padding: 20px; text-align: center; color: #999;'>"
-                            + "<p>Tidak ada data billing untuk nomor rawat: " + lblNoRawat.getText() + "</p>"
-                            + "</body></html>");
+                        sb.append("<tr><td colspan=\"6\" style=\"text-align: center; padding: 20px; color: #999;\">")
+                            .append("Tidak ada data billing untuk nomor rawat: ").append(lblNoRawat.getText())
+                            .append("</td></tr>");
                     }
+                    sb.append("</table></body></html>");
+                    loadBillingHTML.setText(sb.toString());
                 }
             }
         } catch (Exception e) {
             System.out.println("Notif : " + e);
+        }
+    }
+     
+    // Method untuk membuka aplikasi Laravel Merge PDF
+    private void openLaravelMergePDF() {
+        try {
+            // Tentukan table mana yang aktif berdasarkan tab yang dipilih
+            JTable activeTable;
+            if (TabRawat.getSelectedIndex() == 0) {
+                activeTable = tbListPasienRalan;
+            } else {
+                activeTable = tbListPasienRanap;
+            }
+
+            // Cek apakah ada baris yang dipilih
+            if (activeTable.getSelectedRow() == -1) {
+                JOptionPane.showMessageDialog(this,
+                        "Silakan pilih data pasien terlebih dahulu!",
+                        "Peringatan",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Ambil data yang diperlukan dari row yang dipilih
+            String noRawat = activeTable.getValueAt(activeTable.getSelectedRow(), 1).toString();
+            String pathFile = "berkasrawat/pages/upload"; // Default path untuk file klaim
+
+            if (noRawat == null || noRawat.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                        "Data No. Rawat tidak ditemukan!",
+                        "Peringatan",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // URL aplikasi Laravel Merge PDF
+            String laravelMergeUrl = getLaravelMergeUrl();
+
+            if (laravelMergeUrl == null || laravelMergeUrl.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                        "URL Aplikasi Laravel Merge PDF belum dikonfigurasi!\n\n"
+                        + "Silakan setting URL di database atau file konfigurasi.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Format no_rawat untuk URL parameter
+            String noRawatEncoded = java.net.URLEncoder.encode(noRawat, StandardCharsets.UTF_8.toString());
+
+            // Build URL dengan parameter
+            String fullUrl = laravelMergeUrl
+                    + "?no_rawat=" + noRawatEncoded
+                    + "&path=" + pathFile;
+
+            System.out.println("Membuka Laravel Merge PDF: " + fullUrl);
+
+            // Buka URL di browser default
+            if (java.awt.Desktop.isDesktopSupported()) {
+                java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
+                if (desktop.isSupported(java.awt.Desktop.Action.BROWSE)) {
+                    desktop.browse(new java.net.URI(fullUrl));
+                    System.out.println("Browser berhasil dibuka untuk merge PDF");
+                } else {
+                    throw new Exception("Browser tidak support untuk membuka URL");
+                }
+            } else {
+                throw new Exception("Desktop API tidak tersedia");
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error membuka Laravel Merge PDF: " + e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                    "Gagal membuka aplikasi Laravel Merge PDF!\n\n"
+                    + "Error: " + e.getMessage() + "\n\n"
+                    + "Pastikan:\n"
+                    + "1. URL Laravel sudah dikonfigurasi dengan benar\n"
+                    + "2. Aplikasi Laravel sudah running\n"
+                    + "3. Browser default sudah terset dengan benar",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+// Method untuk mendapatkan URL aplikasi Laravel Merge PDF
+// Bisa dari database setting atau hardcode
+    private String getLaravelMergeUrl() {
+        try {
+            // Opsi 1: Ambil dari database setting (recommended)
+            String url = Sequel.cariIsi(
+                    "SELECT isi FROM app_setting WHERE nama='URL_LARAVEL_MERGE_PDF'"
+            );
+
+            if (url != null && !url.trim().isEmpty()) {
+                return url.trim();
+            }
+
+            // Opsi 2: Fallback ke koneksi web yang sudah ada
+            // Menggunakan config yang sama dengan host web
+            String host = koneksiDB.HOSTHYBRIDWEB();
+            String port = koneksiDB.PORTWEB();
+
+            // Default path untuk Laravel merge PDF
+            // Sesuaikan dengan route Laravel Anda
+            return "http://" + host + ":" + port + "/documents/page-editor";
+
+        } catch (Exception e) {
+            System.err.println("Error getting Laravel URL: " + e.getMessage());
+
+            // Fallback hardcode (ganti sesuai konfigurasi Anda)
+            return "http://192.168.1.174/documents/page-editor";
         }
     }
 }

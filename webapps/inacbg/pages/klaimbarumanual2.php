@@ -13,11 +13,12 @@
                 $tanggalawal    = validTeks4((isset($_GET['tanggalawal'])?$_GET['tanggalawal']:NULL),2);
                 $tahunakhir     = validTeks4((isset($_GET['tahunakhir'])?$_GET['tahunakhir']:NULL),4);
                 $bulanakhir     = validTeks4((isset($_GET['bulanakhir'])?$_GET['bulanakhir']:NULL),2);
-                $tanggalakhir   = validTeks4((isset($_GET['tanggalakhir'])?$_GET['tanggalakhir']:NULL),2);  
+                $tanggalakhir   = validTeks4((isset($_GET['tanggalakhir'])?$_GET['tanggalakhir']:NULL),2);
                 $action         = validTeks(isset($_GET['action'])?$_GET['action']:NULL);
                 $norawat        = validTeks4((isset($_GET['norawat'])?$_GET['norawat']:NULL),20);
                 $codernik       = validTeks4((isset($_GET['codernik'])?$_GET['codernik']:NULL),30);
                 $carabayar      = validTeks4((str_replace("_"," ",isset($_GET['carabayar']))?str_replace("_"," ",$_GET['carabayar']):NULL),40);
+                $nmpoli         = validTeks4((str_replace("_"," ",isset($_GET['nmpoli']))?str_replace("_"," ",$_GET['nmpoli']):NULL),50);
                 $keyword        = validTeks4((isset($_GET['keyword'])?$_GET['keyword']:NULL),20);
                 $statuskirim    = validTeks(str_replace("_"," ",isset($_GET['statuskirim']))?str_replace("_"," ",$_GET['statuskirim']):NULL);
                 echo "<input type=hidden name=codernik  value=$codernik><input type=hidden name=keyword value=$keyword>";
@@ -34,8 +35,9 @@
                     $tahunakhir     = validTeks4(trim($_POST['tahunakhir']),4);
                     $bulanakhir     = validTeks4(trim($_POST['bulanakhir']),2);
                     $tanggalakhir   = validTeks4(trim($_POST['tanggalakhir']),2);
-                    $codernik       = validTeks4(trim($_POST['codernik']),30); 
+                    $codernik       = validTeks4(trim($_POST['codernik']),30);
                     $carabayar      = validTeks4((str_replace("_"," ",isset($_POST['carabayar']))?str_replace("_"," ",trim($_POST['carabayar'])):NULL),40);
+                    $nmpoli         = validTeks4((str_replace("_"," ",isset($_POST['nmpoli']))?str_replace("_"," ",trim($_POST['nmpoli'])):NULL),50);
                     $statuskirim    = validTeks((str_replace("_"," ",isset($_POST['statuskirim']))?str_replace("_"," ",trim($_POST['statuskirim'])):NULL),40);
             }
             if(empty($tahunawal)){
@@ -58,10 +60,10 @@
             }
             $_sql = "select reg_periksa.no_reg,reg_periksa.no_rawat,reg_periksa.tgl_registrasi,reg_periksa.jam_reg,
                     reg_periksa.kd_dokter,dokter.nm_dokter,reg_periksa.no_rkm_medis,pasien.nm_pasien,if(pasien.jk='L','Laki-Laki','Perempuan') as jk,pasien.umur,poliklinik.nm_poli,
-                    reg_periksa.p_jawab,reg_periksa.almt_pj,reg_periksa.hubunganpj,reg_periksa.biaya_reg,reg_periksa.status_bayar,penjab.png_jawab 
+                    reg_periksa.p_jawab,reg_periksa.almt_pj,reg_periksa.hubunganpj,reg_periksa.biaya_reg,reg_periksa.status_bayar,penjab.png_jawab
                     from reg_periksa inner join dokter on reg_periksa.kd_dokter=dokter.kd_dokter inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis
-                    inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli inner join penjab on reg_periksa.kd_pj=penjab.kd_pj where  
-                    reg_periksa.stts<>'Batal' ".(!empty($carabayar)?"and penjab.png_jawab like '%".$carabayar."%'":"")." and tgl_registrasi between '".$tahunawal."-".$bulanawal."-".$tanggalawal."' and '".$tahunakhir."-".$bulanakhir."-".$tanggalakhir."' ".
+                    inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli inner join penjab on reg_periksa.kd_pj=penjab.kd_pj where
+                    reg_periksa.stts<>'Batal' ".(!empty($carabayar)?"and penjab.png_jawab like '%".$carabayar."%'":"")." ".(!empty($nmpoli)?"and poliklinik.nm_poli like '%".$nmpoli."%'":"")." and tgl_registrasi between '".$tahunawal."-".$bulanawal."-".$tanggalawal."' and '".$tahunakhir."-".$bulanakhir."-".$tanggalakhir."' ".
                     (!empty($keyword)?"and (reg_periksa.no_reg like '%".$keyword."%' or reg_periksa.no_rawat like '%".$keyword."%' or reg_periksa.tgl_registrasi like '%".$keyword."%' or reg_periksa.kd_dokter like '%".$keyword."%' or dokter.nm_dokter like '%".$keyword."%' or 
                     reg_periksa.no_rkm_medis like '%".$keyword."%' or reg_periksa.status_bayar like '%".$keyword."%' or pasien.nm_pasien like '%".$keyword."%' or poliklinik.nm_poli like '%".$keyword."%' or penjab.png_jawab like '%".$keyword."%') ":"").
                     " order by reg_periksa.tgl_registrasi,reg_periksa.jam_reg desc ";
@@ -85,14 +87,16 @@
                             }*/
 
                             $carabayar =str_replace(" ","_",$carabayar)?str_replace(" ","_",$carabayar):NULL;
+                            $nmpoli =str_replace(" ","_",$nmpoli)?str_replace(" ","_",$nmpoli):NULL;
                             $statuskirim =str_replace(" ","_",$statuskirim)?str_replace(" ","_",$statuskirim):NULL;
-                            $status="<a href='?act=DetailKirim&corona=$aksi&norawat=".$baris["no_rawat"]."&tahunawal=$tahunawal&bulanawal=$bulanawal&tanggalawal=$tanggalawal&tahunakhir=$tahunakhir&bulanakhir=$bulanakhir&tanggalakhir=$tanggalakhir&codernik=$codernik&keyword=$keyword&carabayar=$carabayar&statuskirim=$statuskirim'>[Kirim]</a>";
+                            $status="<a href='?act=DetailKirim&corona=$aksi&norawat=".$baris["no_rawat"]."&tahunawal=$tahunawal&bulanawal=$bulanawal&tanggalawal=$tanggalawal&tahunakhir=$tahunakhir&bulanakhir=$bulanakhir&tanggalakhir=$tanggalakhir&codernik=$codernik&keyword=$keyword&carabayar=$carabayar&nmpoli=$nmpoli&statuskirim=$statuskirim'>[Kirim]</a>";
                             $statusdata="Belum Terkirim";
                             if(getOne("select count(inacbg_klaim_baru2.no_rawat) from inacbg_klaim_baru2 where inacbg_klaim_baru2.no_rawat='".$baris["no_rawat"]."'")>0){
-                                $status="<a href='?act=DetailKirim&corona=$aksi&norawat=".$baris["no_rawat"]."&tahunawal=$tahunawal&bulanawal=$bulanawal&tanggalawal=$tanggalawal&tahunakhir=$tahunakhir&bulanakhir=$bulanakhir&tanggalakhir=$tanggalakhir&codernik=$codernik&keyword=$keyword&carabayar=$carabayar&statuskirim=$statuskirim'>[Kirim Ulang]</a>";
+                                $status="<a href='?act=DetailKirim&corona=$aksi&norawat=".$baris["no_rawat"]."&tahunawal=$tahunawal&bulanawal=$bulanawal&tanggalawal=$tanggalawal&tahunakhir=$tahunakhir&bulanakhir=$bulanakhir&tanggalakhir=$tanggalakhir&codernik=$codernik&keyword=$keyword&carabayar=$carabayar&nmpoli=$nmpoli&statuskirim=$statuskirim'>[Kirim Ulang]</a>";
                                 $statusdata="Sudah Terkirim";
                             }
                             $carabayar =str_replace("_"," ",$carabayar)?str_replace("_"," ",$carabayar):NULL;
+                            $nmpoli =str_replace("_"," ",$nmpoli)?str_replace("_"," ",$nmpoli):NULL;
                             $statuskirim =str_replace("_"," ",$statuskirim)?str_replace("_"," ",$statuskirim):NULL;
                             if(($statuskirim=="Semua")||($statuskirim==$statusdata)){
                                 echo "<tr class='isi' title='".$baris["no_rawat"].", ".$baris["no_rkm_medis"].", ".$baris["nm_pasien"]."'>
@@ -127,10 +131,10 @@
                                         echo $prosedur;
                                  echo  "</td>
                                         <td valign='center' align='center'>
-                                            <!-- <a href='?act=KlaimBaruManual2&action=InputCorona&norawat=".$baris["no_rawat"]."&tahunawal=$tahunawal&bulanawal=$bulanawal&tanggalawal=$tanggalawal&tahunakhir=$tahunakhir&bulanakhir=$bulanakhir&tanggalakhir=$tanggalakhir&codernik=$codernik&keyword=$keyword&carabayar=$carabayar&statuskirim=$statuskirim'>[$statuscovid]</a><br> -->
-                                            <a href='?act=KlaimBaruManual2&action=RiwayatPerawatan&norawat=".$baris["no_rawat"]."&tahunawal=$tahunawal&bulanawal=$bulanawal&tanggalawal=$tanggalawal&tahunakhir=$tahunakhir&bulanakhir=$bulanakhir&tanggalakhir=$tanggalakhir&codernik=$codernik&keyword=$keyword&carabayar=$carabayar&statuskirim=$statuskirim'>[Riwayat Perawatan]</a><br>
-                                            <a href='?act=KlaimBaruManual2&action=DataBilling&norawat=".$baris["no_rawat"]."&tahunawal=$tahunawal&bulanawal=$bulanawal&tanggalawal=$tanggalawal&tahunakhir=$tahunakhir&bulanakhir=$bulanakhir&tanggalakhir=$tanggalakhir&codernik=$codernik&keyword=$keyword&carabayar=$carabayar&statuskirim=$statuskirim'>[Billing]</a><br>
-                                            <a href='?act=KlaimBaruManual2&action=InputDiagnosa&norawat=".$baris["no_rawat"]."&tahunawal=$tahunawal&bulanawal=$bulanawal&tanggalawal=$tanggalawal&tahunakhir=$tahunakhir&bulanakhir=$bulanakhir&tanggalakhir=$tanggalakhir&codernik=$codernik&keyword=$keyword&carabayar=$carabayar&statuskirim=$statuskirim'>[Input Diagnosa]</a><br>
+                                            <!-- <a href='?act=KlaimBaruManual2&action=InputCorona&norawat=".$baris["no_rawat"]."&tahunawal=$tahunawal&bulanawal=$bulanawal&tanggalawal=$tanggalawal&tahunakhir=$tahunakhir&bulanakhir=$bulanakhir&tanggalakhir=$tanggalakhir&codernik=$codernik&keyword=$keyword&carabayar=$carabayar&nmpoli=$nmpoli&statuskirim=$statuskirim'>[$statuscovid]</a><br> -->
+                                            <a href='?act=KlaimBaruManual2&action=RiwayatPerawatan&norawat=".$baris["no_rawat"]."&tahunawal=$tahunawal&bulanawal=$bulanawal&tanggalawal=$tanggalawal&tahunakhir=$tahunakhir&bulanakhir=$bulanakhir&tanggalakhir=$tanggalakhir&codernik=$codernik&keyword=$keyword&carabayar=$carabayar&nmpoli=$nmpoli&statuskirim=$statuskirim'>[Riwayat Perawatan]</a><br>
+                                            <a href='?act=KlaimBaruManual2&action=DataBilling&norawat=".$baris["no_rawat"]."&tahunawal=$tahunawal&bulanawal=$bulanawal&tanggalawal=$tanggalawal&tahunakhir=$tahunakhir&bulanakhir=$bulanakhir&tanggalakhir=$tanggalakhir&codernik=$codernik&keyword=$keyword&carabayar=$carabayar&nmpoli=$nmpoli&statuskirim=$statuskirim'>[Billing]</a><br>
+                                            <a href='?act=KlaimBaruManual2&action=InputDiagnosa&norawat=".$baris["no_rawat"]."&tahunawal=$tahunawal&bulanawal=$bulanawal&tanggalawal=$tanggalawal&tahunakhir=$tahunakhir&bulanakhir=$bulanakhir&tanggalakhir=$tanggalakhir&codernik=$codernik&keyword=$keyword&carabayar=$carabayar&nmpoli=$nmpoli&statuskirim=$statuskirim'>[Input Diagnosa]</a><br>
                                             ".$status."
                                         </td>                                
                                      </tr>";
@@ -153,7 +157,7 @@
             if(($action=="InputDiagnosa")||($action=="InputCorona")||($action=="RiwayatPerawatan")||($action=="DataBilling")) {
                 HapusAll("temppanggilnorawat");
                 InsertData2("temppanggilnorawat","'$norawat'");
-                echo "<meta http-equiv='refresh' content='1;URL=?act=KlaimBaruManual2&tahunawal=$tahunawal&bulanawal=$bulanawal&tanggalawal=$tanggalawal&tahunakhir=$tahunakhir&bulanakhir=$bulanakhir&tanggalakhir=$tanggalakhir&codernik=$codernik&action=no&keyword=$keyword&carabayar=$carabayar&statuskirim=$statuskirim'>";
+                echo "<meta http-equiv='refresh' content='1;URL=?act=KlaimBaruManual2&tahunawal=$tahunawal&bulanawal=$bulanawal&tanggalawal=$tanggalawal&tahunakhir=$tahunakhir&bulanakhir=$bulanakhir&tanggalakhir=$tanggalakhir&codernik=$codernik&action=no&keyword=$keyword&carabayar=$carabayar&nmpoli=$nmpoli&statuskirim=$statuskirim'>";
             }
 
             $BtnKeluar=isset($_POST['BtnKeluar'])?$_POST['BtnKeluar']:NULL;
@@ -217,13 +221,13 @@
                              ?>
                         </select> 
                         &nbsp;
-                        Cara Bayar : 
+                        Cara Bayar :
                         <select name="carabayar" class="text4">
                             <?php
                                 if(!empty($carabayar)){
                                     echo "<option value='$carabayar'>$carabayar</option>";
                                 }
-                                
+
                                 if(!isset($_SESSION["penjab"])){
                                     $penjab = "<option value=''>Semua</option>";
                                     $_sql   = "SELECT penjab.png_jawab FROM penjab  ORDER BY penjab.png_jawab";
@@ -238,7 +242,29 @@
                                     echo $_SESSION["penjab"];
                                 }
                             ?>
-                        </select>                        
+                        </select>&nbsp;
+                        Poliklinik :
+                        <select name="nmpoli" class="text4">
+                            <?php
+                                if(!empty($nmpoli)){
+                                    echo "<option value='$nmpoli'>$nmpoli</option>";
+                                }
+
+                                if(!isset($_SESSION["poliklinik"])){
+                                    $poliklinik = "<option value=''>Semua</option>";
+                                    $_sql   = "SELECT poliklinik.nm_poli FROM poliklinik ORDER BY poliklinik.nm_poli";
+                                    $hasil=bukaquery($_sql);
+                                    echo "<option value=''>Semua</option>";
+                                    while($baris = mysqli_fetch_array($hasil)) {
+                                        echo "<option value='$baris[0]'>$baris[0]</option>";
+                                        $poliklinik=$poliklinik."<option value='$baris[0]'>$baris[0]</option>";
+                                    }
+                                    $_SESSION["poliklinik"]=$poliklinik;
+                                }else{
+                                    echo $_SESSION["poliklinik"];
+                                }
+                            ?>
+                        </select>
                     </td>
                 </tr>
                 <tr class="head3">					
